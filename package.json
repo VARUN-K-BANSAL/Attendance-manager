@@ -1,0 +1,23 @@
+{
+  "name": "urclass",
+  "version": "1.0.0",
+  "description": "Attendance manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VARUN-K-BANSAL/Attendance-manager.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VARUN-K-BANSAL/Attendance-manager/issues"
+  },
+  "homepage": "https://github.com/VARUN-K-BANSAL/Attendance-manager#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "nodemon": "^2.0.15"
+  }
+}
