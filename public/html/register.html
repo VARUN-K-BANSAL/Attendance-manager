@@ -7,9 +7,14 @@
     <title>Register Group 20</title>
 </head>
 <body>
-    <form action="/login" method="post">
+    <form action="/register" method="post">
+        <input type="text" name="full_name" id="full_name">
+        <input type="text" name="roll_number" id="roll_number">
         <input type="text" name="email" id="email">
         <input type="password" name="password" id="password">
+        <input type="password" name="confirm_password" id="confirm_password">
+        <input type="radio" name="user_type" id="student" value="Student">Student
+        <input type="radio" name="user_type" id="teacher" value="Teacher">Teacher
         <input type="submit" value="Click Me">
     </form>
 </body>
