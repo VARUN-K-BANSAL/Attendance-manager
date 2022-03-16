@@ -22,6 +22,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,72 +30,56 @@
     <title>Document</title>
     <link rel="stylesheet" href="../css/register.css">
 </head>
+
 <body>
-
-
-        
-        
     <div class="center_left">
         <!-- <img src="https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png" alt=""> -->
         <!-- <img src="https://web.datang.my/wp-content/uploads/2020/11/Attendance-for-the-massess-01-768x768.png" alt=""> -->
-        </div>
-    
-    <div class="register" >
+    </div>
 
-
-        <form action="#">
-            
+    <div class="register">
+        <form action="/register" method="post">
             <h1>Register</h1>
-            
             <div class="txt_field">
                 <label>Full Name</label><br>
-                
-                <input type="text" required>
+
+                <input type="text" name="full_name" required>
             </div>
             <div class="txt_field">
                 <label>Email</label><br>
-                
-                <input type="email" required>
+
+                <input type="email" name="email" required>
             </div>
             <div class="txt_field">
-                <label for="Type">Type  : </label>
-                <select  id = "usrType" >
+                <label for="Type">Type : </label>
+                <select id="usrType" name="user_type">
                     <option value="Student" selected> Student</option>
-                    <option value="Teacher" > Teacher</option> 
+                    <option value="Teacher"> Teacher</option>
                 </select>
-                
+
             </div>
             <div id="roll" class="txt_field">
-             
                 <label>Roll Number</label><br>
-                
-                <input type="text">
+                <input type="text" name="roll_number">
             </div>
             <div class="txt_field">
                 <label>Password</label><br>
                 <span></span>
-                <input type="password" pattern="{.8}" required>
+                <input type="password" name="password" pattern="{.8}" required>
             </div>
             <div class="txt_field">
                 <label>Confirm Password</label><br>
                 <span></span>
-                <input type="password" pattern="{.8}" required>
+                <input type="password" name="confirm_password" pattern="{.8}" required>
             </div>
             <input type="submit" value="Register">
-        <div class="signup_link">
-            Alredy Registered? <a href="/login">Login</a>
-        </div>
-        
-    </form>
-    
-    
-    
-    
-    
- 
-
-</div>
-<script src="../scripts/register.js"></script>
+            <div class="signup_link">
+                Already Registered? <a href="/login">Login</a>
+            </div>
+        </form>
+    </div>
+    <script src="../scripts/register.js"></script>
 
 </body>
+
 </html>
