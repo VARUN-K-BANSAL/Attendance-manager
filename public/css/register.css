@@ -20,8 +20,9 @@ body{
     margin: 0.5rem;
     
     width:45vw;
-    height: 95vh;
-    background: url(https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png) ;
+    height: 100vh;
+    background: url(https://web.datang.my/wp-content/uploads/2020/11/Attendance-for-the-massess-01-768x768.png) ;
+    /* background: url(https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png) ; */
     background-size: cover ;
  
 }
@@ -69,7 +70,7 @@ body{
 
 .register select{
     margin-top: 1rem;
-    margin-bottom: 1.3rem;
+    margin-bottom: 1.5rem;
     background-color: #2691d9;
     color: white;
     border: none;
@@ -85,13 +86,21 @@ body{
     box-sizing: border-box;
 
     left: 40%;
-    transform: translate(-0%,-90%); /*login*/
+    transform: translate(-30%,-90%); /*login*/
     border: 0.3rem solid grey;
     border-radius: 2.5rem;
     padding: 2rem;
 }
 
 
+
+/* .student_active{
+   display: visible;
+} */
+
+#roll{
+    opacity: 1;
+}
 
 form h1{
     font-size: 2.5rem;
@@ -150,7 +159,7 @@ form input[type="submit"]:hover{
 
 .signup_link{
     font-size: large;
-    margin: 0.5rem;
+    margin: 0.3rem;
 }
 
 .signup_link a{
