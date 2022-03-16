@@ -7,9 +7,9 @@ const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
 const Class = require('./public/models/class')
 const cookieParser = require('cookie-parser')
-// const { CONNECTION_URL } = require('./public/db/conn')
-// const { setCookie } = require('./public/scripts/cookies')
-// const { config } = require('process')
+const { CONNECTION_URL } = require('./public/db/conn')
+const { setCookie } = require('./public/scripts/cookies')
+const { config } = require('process')
 
 app.use(express.static(STATIC_PATH));
 app.use(cookieParser())
@@ -59,7 +59,7 @@ app.post('/register', async (req, res) => {
 
                 // saving the above created object to the database
                 const registeredStudent = await registerStudent.save()
-                console.log(registeredStudent);
+                // console.log(registeredStudent);
 
                 res.redirect('/login')
 
@@ -148,13 +148,15 @@ app.post('/addClass', async (req, res) => {
         id: teacher.id
     }
     const sID = {
-        id: student.id
+        id: student.id,
+        qrcode_string: `${student.id}_${name}`
     }
 
     const classObject = new Class({
         name: name,
         teachers: [tID],
-        students: [sID]
+        students: [sID],
+        attendance: null
     })
 
     const registeredClass = await classObject.save()

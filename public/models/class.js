@@ -1,6 +1,4 @@
 const mongoose = require('mongoose')
-const Teacher = require('./teacher')
-const Student = require('./student')
 
 const classSchema = mongoose.Schema({
     name: {
@@ -19,8 +17,27 @@ const classSchema = mongoose.Schema({
         {
             id: {
                 type: String,
-                required: true
+            },
+            qrcode_string: {
+                type: String,
             }
+        }
+    ],
+    attendance: [
+        {
+            date: {
+                type: String,
+            },
+            values: [
+                {
+                    roll_no: {
+                        type: String,
+                    },
+                    status: {
+                        type: String,
+                    }
+                }
+            ]
         }
     ]
 })

@@ -1,0 +1,3 @@
+function sendQrCode(classObject) {
+    
+}
