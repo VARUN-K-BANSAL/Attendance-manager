@@ -6,8 +6,8 @@
 }
 
 body {
-    height: 100%;
-    width: 100%;
+     height: 100%;
+     width: 100%;
 }
 
 .center_left {
@@ -16,6 +16,21 @@ body {
     height: 95vh;
     background: url("https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png");
     background-size: cover;
+}
+
+#email_err{
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+#pass_err{
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
 }
 
 .center_right {
@@ -41,6 +56,7 @@ body {
     position: absolute;
     box-sizing: border-box;
     left: 40%;
+    width: 23rem;
     transform: translate(0%, -110%);
     /*login*/
     border: 0.3rem solid grey;

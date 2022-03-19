@@ -19,6 +19,36 @@ body {
     background-size: cover;
 }
 
+
+#email_err{
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+#pass_err{
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+#c_pass_err{
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+#roll_err{
+    font-size: small;
+    color:red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+}
+
+
 .center_right {
     left: 45%;
     position: absolute;
@@ -70,7 +100,8 @@ body {
     position: absolute;
     box-sizing: border-box;
     left: 40%;
-    transform: translate(-30%, -90%);
+    width:23rem;
+    transform: translate(-20%, -75%);
     /*login*/
     border: 0.3rem solid grey;
     border-radius: 2.5rem;
