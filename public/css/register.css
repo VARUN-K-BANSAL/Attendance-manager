@@ -18,7 +18,7 @@ body{
 
 .center_left{
     display: flex;
-    margin-top: 1rem;
+    margin: 1rem;
   align-items: center;
   justify-content: center;
   width: 50vw;
@@ -65,7 +65,7 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-      width: 50%;
+    width: 50%;
       
 }
 
@@ -95,9 +95,6 @@ body{
 
 
 
-/* .student_active{
-   display: visible;
-} */
 
 #roll{
     opacity: 1;
