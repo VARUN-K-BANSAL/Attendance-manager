@@ -1,24 +1,32 @@
-* {
+
+*{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Georgia, 'Times New Roman', Times, serif
+    font-family:Georgia, 'Times New Roman', Times, serif
 }
 
-body {
-    height: 100%;
+body{
+  height:100%;
+  width: 100%;
+  display: flex;
+
+
+}
+
+
+
+.center_left{
+    display: flex;
+    margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 50vw;
+}
+
+.center_left img{
     width: 100%;
 }
-
-.center_left {
-    margin: 0.5rem;
-    width: 45vw;
-    height: 100vh;
-    background: url(https://web.datang.my/wp-content/uploads/2020/11/Attendance-for-the-massess-01-768x768.png);
-    /* background: url(https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png) ; */
-    background-size: cover;
-}
-
 
 #email_err{
     font-size: small;
@@ -49,82 +57,72 @@ body {
 }
 
 
-.center_right {
-    left: 45%;
-    position: absolute;
-    /* height: 95%; */
-    width: 50%;
+
+
+
+
+.register{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+      width: 50%;
+      
 }
 
-.center_right select {
-    margin-top: 1rem;
-    margin-bottom: 1.3rem;
+.register select{
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
     background-color: #2691d9;
     color: white;
     border: none;
     border-radius: 1rem;
     padding: 0.5rem;
     font-size: medium;
+
 }
 
-.center_right form {
-    position: absolute;
-    box-sizing: border-box;
-    left: 40%;
-    transform: translate(0%, -110%);
-    /*login*/
+
+.register form{
+   width: 23rem;
+   align-items: center;
+   justify-content: center;
+   margin-top: 5rem;
+   
     border: 0.3rem solid grey;
     border-radius: 2.5rem;
     padding: 2rem;
 }
 
-.register {
-    left: 45%;
-    position: absolute;
-    /* height: 95%; */
-    width: 50%;
+
+
+/* .student_active{
+   display: visible;
+} */
+
+#roll{
+    opacity: 1;
 }
 
-.register select {
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-    background-color: #2691d9;
-    color: white;
-    border: none;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    font-size: medium;
-}
-
-.register form {
-    position: absolute;
-    box-sizing: border-box;
-    left: 40%;
-    width:23rem;
-    transform: translate(-20%, -75%);
-    /*login*/
-    border: 0.3rem solid grey;
-    border-radius: 2.5rem;
-    padding: 2rem;
-}
-
-form h1 {
+form h1{
     font-size: 2.5rem;
     font-weight: bold;
+
     text-align: center;
     margin-bottom: 2rem;
+    
     padding-bottom: 1rem;
-    border-bottom: 0.2rem solid gray;
+    border-bottom: 0.2rem solid gray; 
     margin-bottom: 1.5rem;
 }
 
-form label {
+form label{
     font-size: large;
     margin-top: 2rem;
     color: #2691d9;
+    
 }
 
-form input {
+form input{
     border: none;
     margin-top: 0.5rem;
     border-bottom: 0.1rem solid grey;
@@ -135,41 +133,44 @@ form input {
     font-size: large;
 }
 
-form input[type="submit"] {
-    background-color: #2691d9;
-    color: white;
-    border: none;
-    width: 100%;
-    border-radius: 2rem;
-    padding: 0.5rem;
-    font-size: larger;
-    /* font-weight: bold; */
+form input[type="submit"]
+{
+background-color: #2691d9;
+color: white;
+border: none;
+width: 100%;
+border-radius: 2rem;
+padding: 0.5rem;
+font-size: larger;
+/* font-weight: bold; */
+
 }
 
 
-form input[type="submit"]:hover {
-    background-color: #4070f4;
+form input[type="submit"]:hover{
+    background-color: #4070f4 ;
 }
 
-.pass {
+.pass{
     color: grey;
     /* margin: 0.5rem ; */
     margin-bottom: 1rem;
     font-size: large;
 }
 
-.signup_link {
+.signup_link{
     font-size: large;
     margin: 0.3rem;
 }
 
-.signup_link a {
-    text-decoration: none;
-    color: #2691d9;
+.signup_link a{
+text-decoration: none;
+color: #2691d9;
 }
 
-.signup_link a:hover {
+.signup_link a:hover{
     text-decoration: underline;
     /* font-size: larger; */
     color: #4070f4;
 }
+
