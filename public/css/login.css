@@ -6,12 +6,13 @@
 }
 
 body {
-     height: 100vh;
-     width: 100vw;
-     display: flex;
-    
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    display: scroll;
+    min-height: 100%;
+    background-color: #f6f6f6;
 }
-
 
 .center_left {
     display: flex;
@@ -21,32 +22,75 @@ body {
     margin: 5rem;
 }
 
-.center_left img{
+.center_left img {
     /* align-items: center;
     justify-content: center; */
-    width: 100%;
+    width: 95%;
 }
 
-#email_err{
-    font-size: small;
-    color: red;
-    margin-top: 0.2rem;
-    margin-bottom: 01rem;
+@media screen and (max-width:950px) {
+/* .column {
+    width: 50%;
+} */
 
+.center_left {
+    display: flex;
+    width: 0;
+    /* align-items: center; */
+    margin: 0;
 }
-#pass_err{
-    font-size: small;
-    color: red;
-    margin-top: 0.2rem;
-    margin-bottom: 01rem;
 
+.center_left img {
+    width: 0;
+    display: none;
 }
 
 .center_right {
     display: flex;
     align-items: center;
-    justify-content:center ;
-    width: 50%;
+    justify-content: center;
+    width: 100%;
+    /* left:55%; */
+}
+
+.center_right form {
+    /* box-sizing: border-box;
+    left: 50vw;
+    width: 90%;
+    transform: translate(0%, -110%);
+    */
+    left: 50vw;
+    max-width: 23rem;
+    /* border: 0.3rem solid grey; */
+    box-shadow: 0px 0px 10px rgba(70, 70, 70, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    /* height: fit-content; */
+    }
+}
+
+#email_err {
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+
+#pass_err {
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+}
+
+.center_right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 50%; */
     /* left:55%; */
 }
 
@@ -63,24 +107,18 @@ body {
 
 
 .center_right form {
-
     /* box-sizing: border-box;
     left: 50vw;
     width: 90%;
-    transform: translate(0%, -110%);
-    
-    */
+    transform: translate(0%, -110%); */
     width: 23rem;
-    border: 0.3rem solid grey;
-    border-radius: 2.5rem;
-    padding: 2rem; 
+    /* border: 0.3rem solid grey; */
+    box-shadow: 0px 0px 10px rgba(70, 70, 70, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
     align-items: center;
-    justify-content: center;
-
-
+    /* justify-content: center; */
 }
-
-
 
 form h1 {
     font-size: 2.5rem;
