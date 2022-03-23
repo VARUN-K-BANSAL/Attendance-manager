@@ -10,9 +10,7 @@
 </head>
 
 <body>
-    
-   
-         <div class="center_left">
+        <div class="center_left">
              <img src="../assets/Login-QR.png" alt="">
         </div>
         <div class="center_right">
@@ -20,27 +18,26 @@
                 <h1>Login</h1>
                 <div class="txt_field">
                     <label>Email</label><br>
-                <input type="email" name="email"  oninput="check_email()" onchange="check_email()" id="email" required autocomplete="off">
+                <input type="email" name="email"  oninput="check_email()" onchange="check_email()" id="email" required >
                 <div class="txt_field" id="email_err"></div>
-            </div>
-            
-            <div class="txt_field">
+                </div>
+                <div class="txt_field">
                 <label>Password</label><br>
                 <span></span>
-                <input type="password" name="password" id="pass" required autocomplete="off"  >
+                <input type="password" name="password" id="pass" required   >
                 <div class="txt_field" id="pass_err"></div>
-            </div>
-            
-            <div class="pass">Forgot Password?</div>
-            <input type="submit" value="Login">
-            <div class="signup_link">
-                Not a member? <a href="/register">Register</a>
-            </div>
-        </form>
-    </div>
-   
-    <script src="../scripts/login.js"></script>
-
-</body>
-
+                </div>
+                <div class="pass">Forgot Password?</div>
+                <input type="submit" value="Login">
+                <div class="signup_link">
+                    Not a member? <a href="/register">Register</a>
+                </div>
+            </form>
+        </div>
+        <script src="../scripts/login.js"></script>
+    </body>
 </html>
+            
+            
+   
+
