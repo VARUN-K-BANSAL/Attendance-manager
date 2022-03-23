@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=6.0">
+    <title>Attendance</title>
+
+    <link rel="stylesheet" href="../css/showAttendance.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+</head>
+
+<body>
+    <section>
+        <div class="class_name">
+            <p>FFSD - 1</p>
+        </div>
+    </section>
+    <section>
+        <input type="button" value="Get Excel File" id="export_btn" onclick="exportTable()">
+        <div class="outer_Container">
+        <div class="table_container" id="table_container">
+            <table class="attendance_sheet" id="sheet">
+                <thead>
+                    <tr>
+                        <th class="fixed_column" scope="column">&nbsp;</th>
+                        <th scope="col">26/02/2022</th>
+                        <th scope="col">27/02/2022</th>
+                        <th scope="col">28/02/2022</th>
+                        <th scope="col">02/03/2022</th>
+                        <th scope="col">03/03/2022</th>
+                        <th scope="col">04/03/2022</th>
+                        <th scope="col">08/03/2022</th>
+                        <th scope="col">26/02/2022</th>
+                        <th scope="col">27/02/2022</th>
+                        <th scope="col">28/02/2022</th>
+                        <th scope="col">02/03/2022</th>
+                        <th scope="col">03/03/2022</th>
+                        <th scope="col">04/03/2022</th>
+                        <th scope="col">08/03/2022</th>
+                        <th scope="col">26/02/2022</th>
+                        <th scope="col">27/02/2022</th>
+                        <th scope="col">28/02/2022</th>
+                        <th scope="col">02/03/2022</th>
+                        <th scope="col">03/03/2022</th>
+                        <th scope="col">04/03/2022</th>
+                        <th scope="col">08/03/2022</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th class="fixed_column" scope="column">Student 1</th>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                        <td>P</td>
+                        <td>A</td>
+                        <td>P</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </section>
+
+    <footer>
+        &#169;Group-27
+    </footer>
+
+    <script>
+        function exportTable() {
+            $("#sheet").table2excel({
+                name: "Class Attendance",
+                filename: "attendance.xls",
+                preserveColors: true
+            });
+            // console.log('Got excel file');
+        }
+    </script>
+</body>
+
+</html>

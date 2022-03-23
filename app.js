@@ -164,3 +164,11 @@ app.post('/addClass', async (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html')
 });
+
+app.get('/scanQrCode', (req, res) => {
+    res.sendFile(__dirname + '/public/html/scanQrCode.html')
+});
+
+app.get('/showAttendance', (req, res) => {
+    res.sendFile(__dirname + '/public/html/showAttendance.html')
+});
