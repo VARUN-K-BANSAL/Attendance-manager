@@ -83,12 +83,13 @@ app.post('/register', async (req, res) => {
                 password: password
             })
             const registeredTeacher = await registerTeacher.save()
-            console.log(registeredTeacher);
+            res.redirect('/login')
+            // console.log(registeredTeacher);
             // res.cookie('user_creds', setCookie(email, password), {
             //     maxAge: 20000,
             //     httpOnly: true
             // })
-            res.sendFile(__dirname + '/public/html/dashboard.html')
+            // res.sendFile(__dirname + '/public/html/dashboard.html')
         } catch (error) {
             console.log(error);
         }
