@@ -1,4 +1,6 @@
 /node_modules
 requirements.txt
 temp.js
-/.vscode
+.DS_STORE
+/public/.DS_STORE
+/public/html/.DS_STORE
