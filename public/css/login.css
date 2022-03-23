@@ -6,23 +6,92 @@
 }
 
 body {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    display: scroll;
+    min-height: 100%;
+    background-color: #f6f6f6;
 }
 
 .center_left {
-    margin: 0.5rem;
-    width: 45vw;
-    height: 95vh;
-    background: url("https://web.datang.my/wp-content/uploads/2020/09/Unlimited-QR.png");
-    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin: 5rem;
+}
+
+.center_left img {
+    /* align-items: center;
+    justify-content: center; */
+    width: 95%;
+}
+
+@media screen and (max-width:950px) {
+/* .column {
+    width: 50%;
+} */
+
+.center_left {
+    display: flex;
+    width: 0;
+    /* align-items: center; */
+    margin: 0;
+}
+
+.center_left img {
+    width: 0;
+    display: none;
 }
 
 .center_right {
-    left: 45%;
-    position: absolute;
-    /* height: 95%; */
-    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* left:55%; */
+}
+
+.center_right form {
+    /* box-sizing: border-box;
+    left: 50vw;
+    width: 90%;
+    transform: translate(0%, -110%);
+    */
+    left: 50vw;
+    max-width: 23rem;
+    /* border: 0.3rem solid grey; */
+    box-shadow: 0px 0px 10px rgba(70, 70, 70, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+    /* height: fit-content; */
+    }
+}
+
+#email_err {
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+
+}
+
+#pass_err {
+    font-size: small;
+    color: red;
+    margin-top: 0.2rem;
+    margin-bottom: 01rem;
+}
+
+.center_right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 50%; */
+    /* left:55%; */
 }
 
 .center_right select {
@@ -38,44 +107,17 @@ body {
 
 
 .center_right form {
-    position: absolute;
-    box-sizing: border-box;
-    left: 40%;
-    transform: translate(0%, -110%);
-    /*login*/
-    border: 0.3rem solid grey;
-    border-radius: 2.5rem;
+    /* box-sizing: border-box;
+    left: 50vw;
+    width: 90%;
+    transform: translate(0%, -110%); */
+    width: 23rem;
+    /* border: 0.3rem solid grey; */
+    box-shadow: 0px 0px 10px rgba(70, 70, 70, 0.2);
+    border-radius: 1.5rem;
     padding: 2rem;
-}
-
-
-.register {
-    left: 45%;
-    position: absolute;
-    /* height: 95%; */
-    width: 50%;
-}
-
-.register select {
-    margin-top: 1rem;
-    margin-bottom: 1.3rem;
-    background-color: #2691d9;
-    color: white;
-    border: none;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    font-size: medium;
-}
-
-.register form {
-    position: absolute;
-    box-sizing: border-box;
-    left: 40%;
-    transform: translate(-0%, -90%);
-    /*login*/
-    border: 0.3rem solid grey;
-    border-radius: 2.5rem;
-    padding: 2rem;
+    align-items: center;
+    /* justify-content: center; */
 }
 
 form h1 {

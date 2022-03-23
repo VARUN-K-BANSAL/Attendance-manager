@@ -40,92 +40,88 @@ app.post('/register', async (req, res) => {
         confirm_password
     } = req.body
 
-    // check if password and confirm password are matching or not
-    // if (password === confirm_password) {
-        if (user_type == 'Student') {
-            try {
-                let student = await Student.findOne({email})
-                if(student) {
-                    // alert('Email already registered');
-                    return res.redirect('/register')
-                }
-                // creating a new object of type Student whose model is defined
-                const registerStudent = new Student({
-                    name: full_name,
-                    roll_number: roll_number,
-                    email: email,
-                    password: password
-                })
-
-                // saving the above created object to the database
-                const registeredStudent = await registerStudent.save()
-                // console.log(registeredStudent);
-
-                res.redirect('/login')
-
-                // // setting cookie for the login session
-                // setCookie(email, password);
-
-                // redirecting to the next page
-                // res.sendFile(__dirname + '/public/html/dashboard.html')
-            } catch (error) {
-                console.log(error);
+    if (user_type == 'Student') {
+        try {
+            let student = await Student.findOne({ email })
+            if (student) {
+                // alert('Email already registered');
+                return res.redirect('/register')
             }
-        } else if (user_type == 'Teacher') {
-            try {
-                let teacher = await Teacher.findOne({email})
-                if(teacher) {
-                    // alert('Email already registered');
-                    return res.redirect('/register')
-                }
+            // creating a new object of type Student whose model is defined
+            const registerStudent = new Student({
+                name: full_name,
+                roll_number: roll_number,
+                email: email,
+                password: password
+            })
 
-                const registerTeacher = new Teacher({
-                    name: full_name,
-                    email: email,
-                    password: password
-                })
-                const registeredTeacher = await registerTeacher.save()
-                console.log(registeredTeacher);
-                // res.cookie('user_creds', setCookie(email, password), {
-                //     maxAge: 20000,
-                //     httpOnly: true
-                // })
-                res.sendFile(__dirname + '/public/html/dashboard.html')
-            } catch (error) {
-                console.log(error);
-            }
-        } else {
-            // alert('User type is not correct');
+            // saving the above created object to the database
+            const registeredStudent = await registerStudent.save()
+            // console.log(registeredStudent);
+
+            res.redirect('/login')
+
+            // // setting cookie for the login session
+            // setCookie(email, password);
+
+            // redirecting to the next page
+            // res.sendFile(__dirname + '/public/html/dashboard.html')
+        } catch (error) {
+            console.log(error);
         }
-    // } else {
-    //     // alert('password and confirm password does not match');
-    // }
+    } else if (user_type == 'Teacher') {
+        try {
+            let teacher = await Teacher.findOne({ email })
+            if (teacher) {
+                // alert('Email already registered');
+                return res.redirect('/register')
+            }
+
+            const registerTeacher = new Teacher({
+                name: full_name,
+                email: email,
+                password: password
+            })
+            const registeredTeacher = await registerTeacher.save()
+            res.redirect('/login')
+            // console.log(registeredTeacher);
+            // res.cookie('user_creds', setCookie(email, password), {
+            //     maxAge: 20000,
+            //     httpOnly: true
+            // })
+            // res.sendFile(__dirname + '/public/html/dashboard.html')
+        } catch (error) {
+            console.log(error);
+        }
+    } else {
+        // alert('User type is not correct');
+    }
 });
 
-app.get('/login', (req,res) => {
+app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/html/login.html');
 })
 
-app.post('/login', async (req,res) => {
-    const {email, password} = req.body
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body
 
-    let student = await Student.findOne({email})
-    let teacher = await Teacher.findOne({email})
+    let student = await Student.findOne({ email })
+    let teacher = await Teacher.findOne({ email })
 
-    if(!student && !teacher) {
+    if (!student && !teacher) {
         // alert('Email not registered');
         return res.redirect('/login')
     }
 
-    if(student != null) {
-        if(password == student.password) {
+    if (student != null) {
+        if (password == student.password) {
             return res.redirect('/dashboard')
         } else {
             // alert('password does not match');
             return res.redirect('/login')
         }
-    }else if(teacher != null) {
-        if(password == teacher.password) {
+    } else if (teacher != null) {
+        if (password == teacher.password) {
             res.redirect('/dashboard')
         } else {
             // alert('password does not match');
@@ -139,10 +135,10 @@ app.get('/addClass', (req, res) => {
 })
 
 app.post('/addClass', async (req, res) => {
-    const {name, teacher_email, student_email} = req.body
+    const { name, teacher_email, student_email } = req.body
 
-    let student = await Student.findOne({student_email})
-    let teacher = await Teacher.findOne({teacher_email})
+    let student = await Student.findOne({ student_email })
+    let teacher = await Teacher.findOne({ teacher_email })
 
     const tID = {
         id: teacher.id
@@ -167,4 +163,12 @@ app.post('/addClass', async (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html')
+});
+
+app.get('/scanQrCode', (req, res) => {
+    res.sendFile(__dirname + '/public/html/scanQrCode.html')
+});
+
+app.get('/showAttendance', (req, res) => {
+    res.sendFile(__dirname + '/public/html/showAttendance.html')
 });
