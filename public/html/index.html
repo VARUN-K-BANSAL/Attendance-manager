@@ -14,6 +14,7 @@
 <body>
 
     <header>
+
         <div class="brand">
             <div class="brand--logo">
                 <a href="/">
@@ -24,13 +25,16 @@
         </div>
 
         <nav class="main-nav">
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="/login" id="login">Login / Register</a>
+            <!-- <a href="#">Home</a> -->
+            <a href="/login" id="login">Login</a>
+            <!-- <span class = "separator">/</span> -->
+            <a href="/register" id="register">Register</a>
         </nav>
     </header>
 
     <main>
+
+        <!-- PAGE-1 -->
 
         <section class="page-1">
 
@@ -41,9 +45,16 @@
             <div class="student-image">
                 <img src="../assets/attendance.png" alt="">
             </div>
+
+            <div class = "extra_buttons">
+                <a href="/login" id="login">Login</a>
+                <a href="/register" id="register">Register</a>
+            </div>
         </section>
 
         <hr>
+
+        <!-- PAGE-2 -->
 
         <section class="page-2">
 
@@ -60,6 +71,8 @@
             </div>
 
         </section>
+
+        <!-- PAGE - 3 -->
 
         <section class="page-3">
 
@@ -90,7 +103,8 @@
     </main>
 
     <footer>
-        <p>© Group-27</p>
+        <a href="#" class = "content" >About Us</a>
+        <p class = "content" >© Group-27</p>
     </footer>
 
     <script src="../scripts/index.js"></script>
