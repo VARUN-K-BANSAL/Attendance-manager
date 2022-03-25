@@ -118,6 +118,14 @@ app.post('/login', async (req, res) => {
     }
 })
 
+app.get('/aboutus' , (req,res) => {
+    res.sendFile(__dirname + '/public/html/aboutus.html')
+})
+
+app.get('/info' , (req,res) => {
+    res.sendFile(__dirname + '/public/html/info.html')
+})
+
 app.get('/addClass', (req, res) => {
     res.sendFile(__dirname + '/public/html/class.html')
 })

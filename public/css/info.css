@@ -1,0 +1,72 @@
+img::-webkit-scrollbar {
+    display: none
+
+}
+
+h1{
+    font-size: 100px;
+    font-family: Roboto;
+    text-align: center;
+    background-color: rgb(117, 75, 156);
+
+}
+
+p{
+    font-size: 30px;
+    font-family: Roboto;
+    padding-left: 20px;
+    text-transform: capitalize;
+    
+    
+
+}
+
+h2{
+    font-size:40px ;
+    text-transform: uppercase;
+}
+
+ul{
+    font-size: 30px;
+    text-transform: capitalize;
+    font-family:Roboto;
+}
+
+img{
+
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+
+}
+
+
+
+.column{
+    float: left;
+    width: 40%;
+    padding: 5px;
+}
+
+
+
+.column ul{
+    
+    font-size: x-large;
+}
+
+footer p{
+    padding-top: 90px;
+    text-align: center;
+    font-size: large;
+}
+
+.button {
+    padding-top: 1100px;
+    text-align: center;
+    size-adjust: 20px;
+}
+
+
+
+
