@@ -4,3 +4,5 @@ temp.js
 .DS_STORE
 /public/.DS_STORE
 /public/html/.DS_STORE
+
+/.vscode

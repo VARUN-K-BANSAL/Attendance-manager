@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const app = express()
-const PORT = 3000
+const PORT = 80
 const STATIC_PATH = path.join(__dirname + '/public')
 const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
@@ -60,12 +60,6 @@ app.post('/register', async (req, res) => {
             // console.log(registeredStudent);
 
             res.redirect('/login')
-
-            // // setting cookie for the login session
-            // setCookie(email, password);
-
-            // redirecting to the next page
-            // res.sendFile(__dirname + '/public/html/dashboard.html')
         } catch (error) {
             console.log(error);
         }
@@ -84,12 +78,6 @@ app.post('/register', async (req, res) => {
             })
             const registeredTeacher = await registerTeacher.save()
             res.redirect('/login')
-            // console.log(registeredTeacher);
-            // res.cookie('user_creds', setCookie(email, password), {
-            //     maxAge: 20000,
-            //     httpOnly: true
-            // })
-            // res.sendFile(__dirname + '/public/html/dashboard.html')
         } catch (error) {
             console.log(error);
         }
@@ -130,12 +118,21 @@ app.post('/login', async (req, res) => {
     }
 })
 
+app.get('/aboutus' , (req,res) => {
+    res.sendFile(__dirname + '/public/html/aboutus.html')
+})
+
+app.get('/info' , (req,res) => {
+    res.sendFile(__dirname + '/public/html/info.html')
+})
+
 app.get('/addClass', (req, res) => {
     res.sendFile(__dirname + '/public/html/class.html')
 })
 
 app.post('/addClass', async (req, res) => {
     const { name, teacher_email, student_email } = req.body
+    let date = new Date()
 
     let student = await Student.findOne({ student_email })
     let teacher = await Teacher.findOne({ teacher_email })
@@ -145,14 +142,14 @@ app.post('/addClass', async (req, res) => {
     }
     const sID = {
         id: student.id,
-        qrcode_string: `${student.id}_${name}`
+        qrcode_string: `${student.id}%%${name}%%${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
     }
 
     const classObject = new Class({
         name: name,
         teachers: [tID],
         students: [sID],
-        attendance: null
+        attendance: []
     })
 
     const registeredClass = await classObject.save()
@@ -172,3 +169,44 @@ app.get('/scanQrCode', (req, res) => {
 app.get('/showAttendance', (req, res) => {
     res.sendFile(__dirname + '/public/html/showAttendance.html')
 });
+
+app.get('/markAttendance', (req, res) => {
+    res.sendFile(__dirname + '/public/html/markAttendance.html')
+})
+
+app.post('/markAttendance', async (req, res) => {
+    const {roll_no, status, date, className} = req.body;
+
+    let classObject = await Class.findOne({name: className})
+
+    if(classObject != null) {
+        isFound = false
+        classObject.attendance.forEach(element => {
+            if(element.date == date) {
+                element.values.push({
+                    roll_no,
+                    status
+                })
+                classObject.save()
+                isFound = true
+            }
+        });
+
+        if(!isFound) {
+            let obj = {
+                date,
+                values: [{
+                    roll_no,
+                    status
+                }]
+            }
+            classObject.attendance.push(obj)
+            classObject.save()
+        }
+    }
+    res.redirect('/')
+})
+
+app.get('/profile', (req, res) => {
+    res.sendFile(__dirname + '/public/html/profile.html')
+})
