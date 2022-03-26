@@ -1,6 +1,17 @@
-img::-webkit-scrollbar {
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+::-webkit-scrollbar {
     display: none
 
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 1rem;
+    font-family: "Roboto",sans-serif;
 }
 
 h1{
