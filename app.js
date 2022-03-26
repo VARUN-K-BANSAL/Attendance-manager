@@ -7,27 +7,31 @@ const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
 const Class = require('./public/models/class')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const COOKIE_NAME = 'user'
 const { CONNECTION_URL } = require('./public/db/conn')
 const { setCookie } = require('./public/scripts/cookies')
 const { config } = require('process')
 
+app.set("view engine", "ejs")
+app.set("views", __dirname + "/public/views")
+
 app.use(express.static(STATIC_PATH));
 app.use(cookieParser())
 
-// I was not able to save the data from html to db so after adding these two lines I was able to save it
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.listen(PORT, (req, res) => {
     console.log(`Server started at http://localhost:${PORT}`);
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/html/index.html')
+    res.render('index')
 });
 
 app.get('/register', (req, res) => {
-    res.sendFile(__dirname + '/public/html/register.html')
+    res.render('register')
 });
 
 app.post('/register', async (req, res) => {
@@ -44,10 +48,8 @@ app.post('/register', async (req, res) => {
         try {
             let student = await Student.findOne({ email })
             if (student) {
-                // alert('Email already registered');
                 return res.redirect('/register')
             }
-            // creating a new object of type Student whose model is defined
             const registerStudent = new Student({
                 name: full_name,
                 roll_number: roll_number,
@@ -55,10 +57,9 @@ app.post('/register', async (req, res) => {
                 password: password
             })
 
-            // saving the above created object to the database
             const registeredStudent = await registerStudent.save()
-            // console.log(registeredStudent);
 
+            res.cookie(COOKIE_NAME, registeredStudent)
             res.redirect('/login')
         } catch (error) {
             console.log(error);
@@ -77,6 +78,7 @@ app.post('/register', async (req, res) => {
                 password: password
             })
             const registeredTeacher = await registerTeacher.save()
+            res.cookie(COOKIE_NAME, registeredTeacher)
             res.redirect('/login')
         } catch (error) {
             console.log(error);
@@ -87,7 +89,10 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/public/html/login.html');
+    if(req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
+        res.render('login')
+    }
+    res.redirect('/dashboard');
 })
 
 app.post('/login', async (req, res) => {
@@ -97,37 +102,36 @@ app.post('/login', async (req, res) => {
     let teacher = await Teacher.findOne({ email })
 
     if (!student && !teacher) {
-        // alert('Email not registered');
         return res.redirect('/login')
     }
 
     if (student != null) {
         if (password == student.password) {
+            res.cookie(COOKIE_NAME, student)
             return res.redirect('/dashboard')
         } else {
-            // alert('password does not match');
             return res.redirect('/login')
         }
     } else if (teacher != null) {
         if (password == teacher.password) {
-            res.redirect('/dashboard')
+            res.cookie(COOKIE_NAME, teacher)
+            return res.redirect('/dashboard')
         } else {
-            // alert('password does not match');
             return res.redirect('/login')
         }
     }
 })
 
 app.get('/aboutus' , (req,res) => {
-    res.sendFile(__dirname + '/public/html/aboutus.html')
+    res.render('aboutus')
 })
 
 app.get('/info' , (req,res) => {
-    res.sendFile(__dirname + '/public/html/info.html')
+    res.render('info')
 })
 
 app.get('/addClass', (req, res) => {
-    res.sendFile(__dirname + '/public/html/class.html')
+    res.render('class')
 })
 
 app.post('/addClass', async (req, res) => {
@@ -159,19 +163,23 @@ app.post('/addClass', async (req, res) => {
 })
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile(__dirname + '/public/html/dashboard.html')
+    if(req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        res.redirect('login')
+    } else {
+        res.render('dashboard', req.cookies[COOKIE_NAME])
+    }
 });
 
 app.get('/scanQrCode', (req, res) => {
-    res.sendFile(__dirname + '/public/html/scanQrCode.html')
+    res.render('scanQrCode')
 });
 
 app.get('/showAttendance', (req, res) => {
-    res.sendFile(__dirname + '/public/html/showAttendance.html')
+    res.render('showAttendance')
 });
 
 app.get('/markAttendance', (req, res) => {
-    res.sendFile(__dirname + '/public/html/markAttendance.html')
+    res.render('markAttendance')
 })
 
 app.post('/markAttendance', async (req, res) => {
@@ -208,5 +216,10 @@ app.post('/markAttendance', async (req, res) => {
 })
 
 app.get('/profile', (req, res) => {
-    res.sendFile(__dirname + '/public/html/profile.html')
+    res.render('profile')
+})
+
+app.get('/logout', (req, res) => {
+    res.clearCookie(COOKIE_NAME);
+    res.redirect('/');
 })
