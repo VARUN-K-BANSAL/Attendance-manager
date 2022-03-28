@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/dashboardTeacher.css">
 </head>
 
 <body>
     <div class="container">
-        <div class="navigation">
+        <div class="navigation active">
             <ul>
                 <li>
                     <a href="#">
@@ -40,9 +40,15 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/info">
                         <span class="icon"><ion-icon name="help-outline"></ion-icon></span>
                         <span class="title">help</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/aboutus">
+                        <span class="icon"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></span>
+                        <span class="title">About us</span>
                     </a>
                 </li>
                 <li>
@@ -57,7 +63,7 @@
         </div>
 
         <!--main-->
-        <div class="main">
+        <div class="main active">
             <div class="topbar">
                 <div class="toggle">
                     <ion-icon name="menu-outline"></ion-icon>
@@ -104,7 +110,6 @@
             navigation.classList.toggle('active');
             main.classList.toggle('active')
         }
-
 
         let list = document.querySelectorAll('.navigation li ');
 
