@@ -26,65 +26,19 @@
         <div class="get_xl_btn">
             <input type="button" value="Get Excel File" class = "btn" id="export_btn" onclick="exportTable()">
         </div>
-    </section>
-    <section>
-        <input type="button" value="Get Excel File" id="export_btn" onclick="exportTable()">
-        <div class="outer_Container">
-        <div class="table_container" id="table_container">
-            <table class="attendance_sheet" id="sheet">
-                <thead>
-                    <!-- <tr>
-                        <th class="fixed_column" scope="column">&nbsp;</th>
-                        <th scope="col">26/02/2022</th>
-                        <th scope="col">27/02/2022</th>
-                        <th scope="col">28/02/2022</th>
-                        <th scope="col">02/03/2022</th>
-                        <th scope="col">03/03/2022</th>
-                        <th scope="col">04/03/2022</th>
-                        <th scope="col">08/03/2022</th>
-                        <th scope="col">26/02/2022</th>
-                        <th scope="col">27/02/2022</th>
-                        <th scope="col">28/02/2022</th>
-                        <th scope="col">02/03/2022</th>
-                        <th scope="col">03/03/2022</th>
-                        <th scope="col">04/03/2022</th>
-                        <th scope="col">08/03/2022</th>
-                        <th scope="col">26/02/2022</th>
-                        <th scope="col">27/02/2022</th>
-                        <th scope="col">28/02/2022</th>
-                        <th scope="col">02/03/2022</th>
-                        <th scope="col">03/03/2022</th>
-                        <th scope="col">04/03/2022</th>
-                        <th scope="col">08/03/2022</th>
-                    </tr> -->
-                </thead>
-                <tbody>
-                    <!-- <tr>
-                        <th class="fixed_column" scope="column">Student 1</th>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                        <td>P</td>
-                        <td>A</td>
-                        <td>P</td>
-                    </tr> -->
-                </tbody>
-            </table>
+
+        <div class="filters">
+            <div class="search_std">
+                <input type="text" name="student_name" id="searchByName">
+                <button class = "std_search btn">Search</button>
+            </div>
+
+            <div class="filter_date">
+                <label for="date_from">From: </label>
+                <input type="date" name="date_from" id="date_from">
+                <label for="date_to">To: </label>
+                <input type="date" name="date_to" id="date_to">
+                <button class = "date_filter btn">Filter</button>
         </div>
 
         <section class="content">
@@ -371,67 +325,6 @@
                 </table>
             </section>
         </section>
-
-        <!-- <section>
-            <div class="outer_Container">
-            <div class="table_container" id="table_container">
-                <table class="attendance_sheet" id="sheet">
-                    <thead>
-                        <tr>
-                            <th  scope="column">&nbsp;</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th  scope="column">Student 1</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-                    </tbody>
-                </table>
-                </div>
-            </div>
-        </section> -->
 
     </main>
 
