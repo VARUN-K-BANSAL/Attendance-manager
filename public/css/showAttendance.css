@@ -1,16 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    min-height: 100vh;
-    width: 100%;
-    background: linear-gradient(125deg, #d3eeff, #fafafa, #d3eeff) no-repeat;
+:root {
+    
+    --off-black: #151D3B;
+    --red-pink: #D82148;
+    /* --green: #007e1b; */
+    --green: #118f2c;
 }
 
-ul li {
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    /* min-height: 100vh;
+    width: 100%; */
+    /* background: linear-gradient(125deg, #d3eeff, #fafafa, #d3eeff) no-repeat; */
+    background-color: #fcfcfc;
+    font-family: "Roboto",sans-serif;
+    height: 100vh;
+}
+
+/* Header */
+
+header {
+    margin-bottom: 2rem;
+}
+
+.class_name {
+    font-family: 'Dancing Script',"Roboto",sans-serif;
+    text-align: center;
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+/* Body  */
+
+.get_xl_btn {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    padding:  0.7rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: inherit;
+    background-color: var(--green);
+    border: none;
+    border-radius: 8px;
+    color: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    color: var(--green);
+    background-color: #fafafa;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 1rem 0 ;
+    margin-bottom: 2rem;
+}
+
+.filters input {
+    font-size: 1.1rem;
+}
+
+.filters .btn {
+    padding:  0.5rem 0.8rem;
+    font-size: 1rem;
+}
+
+/* Table  */
+
+.content {
+    margin: 2rem 0rem;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+.table_container {
+    overflow: auto;
+    width: 90vw;
+    height: 60vh;
+    overflow: auto;
+}
+
+table,
+th,
+td {
+    border: 2px solid var(--off-black);
+    padding: 8px;
+    border-collapse: collapse;
+    text-align: center;
+    /* border-radius: 8px; */
+    background-color: #fafafa;
+}
+
+.table_container table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+
+.table_container table tr:first-child th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Footer  */
+
+footer {
+    position:sticky;
+    /* bottom: 0rem; */
+    top: 100%;
+    background-color: var(--off-black);
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fafafa;
+    width: 100vw;
+    z-index: 10;
+}
+
+footer .content {
+    text-decoration: none;
+    margin: 0rem 0rem;
+    color: inherit;
+}
+
+footer a:hover {
+    color: #d1d1d1;
+}
+
+/* ul li {
     list-style: none;
 }
 
@@ -35,9 +179,9 @@ ul li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* position: absolute; */
-    /* background: url('https://dreamsoft4u.com/blog/wp-content/uploads/2019/05/Full-Stack-Development.png'); */
-    /* height: 200px; */
+     position: absolute; 
+     background: url('https://dreamsoft4u.com/blog/wp-content/uploads/2019/05/Full-Stack-Development.png'); 
+     height: 200px; 
 }
 
 header {
@@ -100,11 +244,11 @@ footer {
     width: 100vw;
     background: #000;
     color: #fff;
-    /* margin-top: 30px; */
+    margin-top: 30px;
     position: sticky;
     top: 100%;
     padding: 10px;
     justify-content: center;
     text-align: center;
     
-}
+} */
