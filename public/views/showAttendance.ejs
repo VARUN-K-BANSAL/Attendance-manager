@@ -25,7 +25,7 @@
         <div class="table_container" id="table_container">
             <table class="attendance_sheet" id="sheet">
                 <thead>
-                    <tr>
+                    <!-- <tr>
                         <th class="fixed_column" scope="column">&nbsp;</th>
                         <th scope="col">26/02/2022</th>
                         <th scope="col">27/02/2022</th>
@@ -48,10 +48,10 @@
                         <th scope="col">03/03/2022</th>
                         <th scope="col">04/03/2022</th>
                         <th scope="col">08/03/2022</th>
-                    </tr>
+                    </tr> -->
                 </thead>
                 <tbody>
-                    <tr>
+                    <!-- <tr>
                         <th class="fixed_column" scope="column">Student 1</th>
                         <td>P</td>
                         <td>P</td>
@@ -74,7 +74,7 @@
                         <td>P</td>
                         <td>A</td>
                         <td>P</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
         </div>
@@ -85,16 +85,7 @@
         &#169;Group-27
     </footer>
 
-    <script>
-        function exportTable() {
-            $("#sheet").table2excel({
-                name: "Class Attendance",
-                filename: "attendance.xls",
-                preserveColors: true
-            });
-            // console.log('Got excel file');
-        }
-    </script>
+    <script src="../scripts/showAttendance.js"></script>
 </body>
 
 </html>

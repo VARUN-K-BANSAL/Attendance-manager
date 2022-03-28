@@ -92,7 +92,10 @@ app.get('/login', (req, res) => {
     if(req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.render('login')
     }
-    res.redirect('/dashboard');
+    if(req.cookies[COOKIE_NAME].roll_number != undefined) {
+        res.redirect('/dashboardStudent');
+    }
+    res.redirect('/dashboardTeacher')
 })
 
 app.post('/login', async (req, res) => {
@@ -108,14 +111,14 @@ app.post('/login', async (req, res) => {
     if (student != null) {
         if (password == student.password) {
             res.cookie(COOKIE_NAME, student)
-            return res.redirect('/dashboard')
+            return res.redirect('/dashboardStudent')
         } else {
             return res.redirect('/login')
         }
     } else if (teacher != null) {
         if (password == teacher.password) {
             res.cookie(COOKIE_NAME, teacher)
-            return res.redirect('/dashboard')
+            return res.redirect('/dashboardTeacher')
         } else {
             return res.redirect('/login')
         }
@@ -157,16 +160,23 @@ app.post('/addClass', async (req, res) => {
     })
 
     const registeredClass = await classObject.save()
-    console.log(registeredClass);
+    // console.log(registeredClass);
     res.redirect('/')
-
 })
 
-app.get('/dashboard', (req, res) => {
+app.get('/dashboardStudent', (req, res) => {
     if(req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
     } else {
-        res.render('dashboard', req.cookies[COOKIE_NAME])
+        res.render('dashboardStudent', req.cookies[COOKIE_NAME])
+    }
+});
+
+app.get('/dashboardTeacher', (req, res) => {
+    if(req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        res.redirect('login')
+    } else {
+        res.render('dashboardTeacher', req.cookies[COOKIE_NAME])
     }
 });
 
@@ -174,8 +184,10 @@ app.get('/scanQrCode', (req, res) => {
     res.render('scanQrCode')
 });
 
-app.get('/showAttendance', (req, res) => {
-    res.render('showAttendance')
+app.get('/showAttendance', async (req, res) => {
+    let classObj = await Class.findOne({ name : "FSD-1"})
+    console.log(classObj);
+    res.render('showAttendance', classObj)
 });
 
 app.get('/markAttendance', (req, res) => {
@@ -215,8 +227,21 @@ app.post('/markAttendance', async (req, res) => {
     res.redirect('/')
 })
 
-app.get('/profile', (req, res) => {
-    res.render('profile')
+app.get('/profile', async (req, res) => {
+    try {
+        let classObj = await Class.findOne({name : "FSD-1"})
+        let id = ""
+        classObj.students.forEach(element => {
+            if(element.id == req.cookies[COOKIE_NAME]._id) {
+                id = element.id;
+            }
+        });
+        res.render('profile', {
+            tempID : id
+        })
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 app.get('/logout', (req, res) => {
