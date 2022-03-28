@@ -58,12 +58,6 @@ body {
     margin-bottom: 01rem;
 }
 
-.register {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-}
 
 @media screen and (max-width:950px) {
 .center_left {
@@ -82,7 +76,7 @@ body {
     align-items: center;
     justify-content: center;
     width: 100%;
-    /* left:55%; */
+    
 }
 
 .register form {
@@ -100,9 +94,15 @@ body {
     align-items: center;
     justify-content: center;
     /* height: fit-content; */
-    }
+}
 }
 
+.register {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
 
 
 .register select {
@@ -144,6 +144,7 @@ form h1 {
 form label {
     font-size: large;
     margin-top: 2rem;
+    left: 1rem;
     color: #2691d9;
 }
 
