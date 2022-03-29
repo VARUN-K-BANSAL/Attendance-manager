@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css"
+        integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/dashboardAdmin.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navigation active">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="accessibility-outline"></ion-icon>
+                        </span>
+                        <span class="title">
+                            <h2>Group-27</h2>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/profile">
+                        <span class="icon">
+                            <ion-icon name="person-outline"></ion-icon>
+                        </span>
+                        <span class="title">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="settings-outline"></ion-icon>
+                        </span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/info">
+                        <span class="icon">
+                            <ion-icon name="help-outline"></ion-icon>
+                        </span>
+                        <span class="title">help</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/aboutus">
+                        <span class="icon">
+                            <ion-icon name="chatbubble-ellipses-outline"></ion-icon>
+                        </span>
+                        <span class="title">About us</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <span class="icon">
+                            <ion-icon name="power-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+        <!--main-->
+        <div class="main active">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+                <!--search-->
+                <div class="search">
+                    <label>
+                        <input type="text" placeholder="search here">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </label>
+                </div>
+                <!--user-->
+                <div class="user">
+                    <img src="" alt="user-img">
+                </div>
+            </div>
+            <section class="brief">
+                <h1>Admin Dashboard</h1>
+                <div class="row">
+                    <div class="brief-colm">
+                        <h3>Number of Students</h3>
+                        <p><%= studentCount%></p>
+                    </div>
+                    <div class="brief-colm">
+                        <h3>Number of Teachers</h3>
+                        <p><%= teacherCount%></p>
+                    </div>
+                    <div class="brief-colm">
+                        <h3>Number of Courses</h3>
+                        <p><%= courseCount%></p>
+                    </div>
+                </div>
+
+                <button id="addAdmin">Add new admin</button>
+
+                <div class="modal" id="addAdminModal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Add new admin</h2>
+                        <form action="/admin/addAdmin" method="post">
+                            <div class="txt_field">
+                                <label>Full Name</label><br>
+                                <input type="text" name="full_name" onfocus="check_name()" id="full_name" placeholder="Enter Full name" required>
+                                <!-- <div class="txt_field" id="name_err"></div> -->
+                            </div>
+                            <div class="txt_field">
+                                <label>Email</label><br>
+                                <input type="email" name="email" onchange="check_email()" oninput="check_email()" id="email" placeholder="Enter Email" required>
+                                <!-- <div class="txt_field" id="email_err"></div> -->
+                                <p style="display: none;" id="temp_pass"><%= password%></p>
+                            </div>
+                            <div class="txt_field">
+                                <label>Password</label><br>
+                                <span></span>
+                                <input type="password" name="password" onchange="check_pass()" oninput="check_pass()" id="pass" placeholder="Enter password"
+                                    required>
+                                <!-- <div class="txt_field" id="pass_err"></div> -->
+                            </div>
+                            <div class="txt_field">
+                                <label>Confirm Password</label><br>
+                                <span></span>
+                                <input type="password" name="confirm_password" onchange="conf_pass()" oninput="conf_pass()" id="c_pass" placeholder="Confirm password"
+                                    required>
+                                <!-- <div class="txt_field" id="c_pass_err"></div> -->
+                            </div>
+                            <div class="txt_field">
+                                <label>Enter Your Password</label><br>
+                                <span></span>
+                                <input type="password" name="admin_password" id="admin_pass" onchange="check_pass()" oninput="check_pass()" id="admin_pass" placeholder="Enter your password"
+                                    required>
+                                <!-- <div class="txt_field" id="c_pass_err"></div> -->
+                            </div><br>
+                            <input type="submit" value="Add admin" onclick="return check()">
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../scripts/dashboardAdmin.js"></script>
+    <script src="../scripts/register.js"></script>
+
+</body>
+
+
+</html>
