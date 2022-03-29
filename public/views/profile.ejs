@@ -1,15 +1,130 @@
-<!doctype html>
-	<head>
-		
-		<title>JavaScript qr code generator</title>
-	</head>
-	<body>
-		<h3>Profile</h3>
-        <p id="qr-result">This is deault QR code:</p>
-        <canvas id="qr-code"></canvas>
-		<h3 id="tempID" style="display: none;"><%= tempID%></h3>
+<!DOCTYPE html>
+<html lang="en">
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
-		<script src="../scripts/profile.js"></script>
-	</body>
-</html> 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/profile.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="accessibility-outline"></ion-icon></span>
+                        <span class="title"><h2>Group-27</h2></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/profile">
+                        <span class="icon"><ion-icon name="person-outline"></ion-icon></span>
+                        <span class="title">Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="settings-outline"></ion-icon></span>
+                        <span class="title">Settings</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span class="icon"><ion-icon name="help-outline"></ion-icon></span>
+                        <span class="title">help</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/logout">
+                        <span class="icon"><ion-icon name="power-outline"></ion-icon></span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+               
+                <div class="search">
+                   
+                </div>
+              
+                <div class="user">
+                    <img src="" alt="user-img">
+                  
+                </div>
+            </div>
+            <section class="brief">
+                <div class="row">
+                     <div class="brief-colm">
+					<form action="/register" method="post" >
+						<h1>Your Profile</h1>
+						<div class="txt_field">
+							<label>Full Name</label>
+							<input type="text" name="full_name" onfocus="check_name()" id="full_name" required>
+						</div>
+						<div class="txt_field">
+							<label>Email</label><br>
+							<input type="email" name="email" onchange="check_email()" oninput="check_email()" id="email" required>
+						</div>
+						<div class="txt_field">
+							<label>Type</label>
+							<input type="text" name="type" id="type" required>
+						</div>
+						<div id="roll" class="txt_field">
+							<label>Roll Number</label><br>
+							<input type="text" name="roll_number"  oninput="check_roll()" onchange="check_roll()"  id="roll">
+							
+						</div>
+						<div class="txt_field">
+							<label>Password</label><br>
+							<span></span>
+							<input type="password" name="password" onchange="check_pass()" oninput="check_pass()" id="pass"
+								required>
+						</div>
+				            <input type="submit" value="Update">
+                    </form>
+				</div>
+                </div>
+            </section>
+        </div>
+    </div> 
+
+<script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script> 
+
+    <script>
+        let toggle = document.querySelector('.toggle');
+        let navigation = document.querySelector('.navigation');
+        let main = document.querySelector('.main');
+        toggle.onclick = function() {
+            navigation.classList.toggle('active');
+            main.classList.toggle('active')
+        }
+        let list = document.querySelectorAll('.navigation li');
+        function activelink() {
+            list.forEach((item) =>
+                item.classList.remove('hovered'));
+            this.classList.add('hovered');
+        }
+        list.forEach((item) =>
+            item.addEventListener('mouseover', activelink));
+    </script>
+</body>
+</html>

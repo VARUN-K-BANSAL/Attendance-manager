@@ -14,17 +14,17 @@
         <img src="../assets/Register-Qr.png" alt="">
     </div>
     <div class="register">
-        <form action="/register" method="post">
+        <form action="/register" method="post" onsubmit = 'return validate();'>
             <h1>Register</h1>
             <div class="txt_field">
                 <label>Full Name</label><br>
                 <input type="text" name="full_name" onfocus="check_name()" id="full_name" required>
-                <div class="txt_field" id="name_err"></div>
+                <div class="txt_field" id="name_err">Mandatory Field</div>
             </div>
             <div class="txt_field">
                 <label>Email</label><br>
                 <input type="email" name="email" onchange="check_email()" oninput="check_email()" id="email" required>
-                <div class="txt_field" id="email_err"></div>
+                <div class="txt_field" id="email_err">Mandatory Field</div>
             </div>
             <div class="txt_field">
                 <label for="Type">Type : </label>
@@ -35,22 +35,22 @@
             </div>
             <div id="roll" class="txt_field">
                 <label>Roll Number</label><br>
-                <input type="text" name="roll_number" onfocus="check_roll()" id="roll">
-                <div class="txt_field" id="roll_err"></div>
+                <input type="text" name="roll_number"  oninput="check_roll()" onchange="check_roll()"  id="roll">
+                <div class="txt_field" id="roll_err">Mandatory Field</div>
             </div>
             <div class="txt_field">
                 <label>Password</label><br>
                 <span></span>
                 <input type="password" name="password" onchange="check_pass()" oninput="check_pass()" id="pass"
                     required>
-                <div class="txt_field" id="pass_err"></div>
+                <div class="txt_field" id="pass_err">Mandatory Field</div>
             </div>
             <div class="txt_field">
                 <label>Confirm Password</label><br>
                 <span></span>
                 <input type="password" name="confirm_password" onchange="conf_pass()" oninput="conf_pass()" id="c_pass"
                     required>
-                <div class="txt_field" id="c_pass_err"></div>
+                <div class="txt_field" id="c_pass_err">Mandatory Field</div>
             </div>
             <input type="submit" value="Register">
             <div class="signup_link">

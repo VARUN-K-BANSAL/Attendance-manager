@@ -6,10 +6,11 @@ const STATIC_PATH = path.join(__dirname + '/public')
 const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
 const Class = require('./public/models/class')
+const Admin = require('./public/models/Admin')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
-const { CONNECTION_URL } = require('./public/db/conn')
+const { CONNECTION_URL } = require('./public/db/conn')//used
 const { setCookie } = require('./public/scripts/cookies')
 const { config } = require('process')
 
@@ -44,12 +45,14 @@ app.post('/register', async (req, res) => {
         confirm_password
     } = req.body
 
+    let student = await Student.findOne({ email })
+    let teacher = await Teacher.findOne({ email })
+    if (student || teacher) {
+        return res.redirect('/register')
+    }
+
     if (user_type == 'Student') {
         try {
-            let student = await Student.findOne({ email })
-            if (student) {
-                return res.redirect('/register')
-            }
             const registerStudent = new Student({
                 name: full_name,
                 roll_number: roll_number,
@@ -58,6 +61,7 @@ app.post('/register', async (req, res) => {
             })
 
             const registeredStudent = await registerStudent.save()
+            registerStudent.userType = "student";
 
             res.cookie(COOKIE_NAME, registeredStudent)
             res.redirect('/login')
@@ -66,18 +70,13 @@ app.post('/register', async (req, res) => {
         }
     } else if (user_type == 'Teacher') {
         try {
-            let teacher = await Teacher.findOne({ email })
-            if (teacher) {
-                // alert('Email already registered');
-                return res.redirect('/register')
-            }
-
             const registerTeacher = new Teacher({
                 name: full_name,
                 email: email,
                 password: password
             })
             const registeredTeacher = await registerTeacher.save()
+            registerTeacher.userType = "teacher";
             res.cookie(COOKIE_NAME, registeredTeacher)
             res.redirect('/login')
         } catch (error) {
@@ -89,13 +88,18 @@ app.post('/register', async (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    if(req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.render('login')
     }
-    if(req.cookies[COOKIE_NAME].roll_number != undefined) {
+    if (req.cookies[COOKIE_NAME].userType == "student") {
         res.redirect('/dashboardStudent');
+    } else if(req.cookies[COOKIE_NAME].userType == "teacher") {
+        res.redirect('/dashboardTeacher')
+    } else if(req.cookies[COOKIE_NAME].userType == "admin")  {
+        res.redirect('/dashboardAdmin')
+    } else {
+        res.render('404NotFound')
     }
-    res.redirect('/dashboardTeacher')
 })
 
 app.post('/login', async (req, res) => {
@@ -103,13 +107,15 @@ app.post('/login', async (req, res) => {
 
     let student = await Student.findOne({ email })
     let teacher = await Teacher.findOne({ email })
+    let admin = await Admin.findOne({ email })
 
-    if (!student && !teacher) {
-        return res.redirect('/login')
-    }
+    // if (!student && !teacher && !admin) {
+    //     return res.redirect('/login')
+    // }
 
     if (student != null) {
         if (password == student.password) {
+            student.userType = "student"
             res.cookie(COOKIE_NAME, student)
             return res.redirect('/dashboardStudent')
         } else {
@@ -117,19 +123,28 @@ app.post('/login', async (req, res) => {
         }
     } else if (teacher != null) {
         if (password == teacher.password) {
+            teacher.userType = "teacher"
             res.cookie(COOKIE_NAME, teacher)
             return res.redirect('/dashboardTeacher')
+        } else {
+            return res.redirect('/login')
+        }
+    } else {
+        if(password == admin.password) {
+            admin.userType = "admin"
+            res.cookie(COOKIE_NAME, admin)
+            return res.redirect('/admin')
         } else {
             return res.redirect('/login')
         }
     }
 })
 
-app.get('/aboutus' , (req,res) => {
+app.get('/aboutus', (req, res) => {
     res.render('aboutus')
 })
 
-app.get('/info' , (req,res) => {
+app.get('/info', (req, res) => {
     res.render('info')
 })
 
@@ -149,7 +164,7 @@ app.post('/addClass', async (req, res) => {
     }
     const sID = {
         id: student.id,
-        qrcode_string: `${student.id}%%${name}%%${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+        qrcode_string: `${student.id}%%${name}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
 
     const classObject = new Class({
@@ -165,7 +180,7 @@ app.post('/addClass', async (req, res) => {
 })
 
 app.get('/dashboardStudent', (req, res) => {
-    if(req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
     } else {
         res.render('dashboardStudent', req.cookies[COOKIE_NAME])
@@ -173,7 +188,7 @@ app.get('/dashboardStudent', (req, res) => {
 });
 
 app.get('/dashboardTeacher', (req, res) => {
-    if(req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
     } else {
         res.render('dashboardTeacher', req.cookies[COOKIE_NAME])
@@ -185,7 +200,7 @@ app.get('/scanQrCode', (req, res) => {
 });
 
 app.get('/showAttendance', async (req, res) => {
-    let classObj = await Class.findOne({ name : "FSD-1"})
+    let classObj = await Class.findOne({ name: "FSD-1" })
     console.log(classObj);
     res.render('showAttendance', classObj)
 });
@@ -195,14 +210,14 @@ app.get('/markAttendance', (req, res) => {
 })
 
 app.post('/markAttendance', async (req, res) => {
-    const {roll_no, status, date, className} = req.body;
+    const { roll_no, status, date, className } = req.body;
 
-    let classObject = await Class.findOne({name: className})
+    let classObject = await Class.findOne({ name: className })
 
-    if(classObject != null) {
+    if (classObject != null) {
         isFound = false
         classObject.attendance.forEach(element => {
-            if(element.date == date) {
+            if (element.date == date) {
                 element.values.push({
                     roll_no,
                     status
@@ -212,7 +227,7 @@ app.post('/markAttendance', async (req, res) => {
             }
         });
 
-        if(!isFound) {
+        if (!isFound) {
             let obj = {
                 date,
                 values: [{
@@ -229,15 +244,15 @@ app.post('/markAttendance', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
     try {
-        let classObj = await Class.findOne({name : "FSD-1"})
+        let classObj = await Class.findOne({ name: "FSD-1" })
         let id = ""
         classObj.students.forEach(element => {
-            if(element.id == req.cookies[COOKIE_NAME]._id) {
+            if (element.id == req.cookies[COOKIE_NAME]._id) {
                 id = element.id;
             }
         });
         res.render('profile', {
-            tempID : id
+            tempID: id
         })
     } catch (error) {
         console.log(error);
@@ -247,4 +262,32 @@ app.get('/profile', async (req, res) => {
 app.get('/logout', (req, res) => {
     res.clearCookie(COOKIE_NAME);
     res.redirect('/');
+})
+
+app.get('/admin', async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        res.redirect('login')
+    } else {
+        req.cookies[COOKIE_NAME].studentCount = await Student.estimatedDocumentCount();
+        req.cookies[COOKIE_NAME].teacherCount = await Teacher.estimatedDocumentCount();
+        req.cookies[COOKIE_NAME].courseCount = await Class.estimatedDocumentCount();
+        res.render('dashboardAdmin', req.cookies[COOKIE_NAME])
+    }
+})
+
+app.post('/admin/addAdmin', async (req, res) => {
+    const {
+        full_name,
+        email,
+        password,
+    } = req.body
+    const registerAdmin = new Admin({
+        name: full_name,
+        email,
+        password
+    })
+
+    const registeredAdmin = await registerAdmin.save()
+    console.log(registeredAdmin);
+    res.redirect('/admin')
 })
