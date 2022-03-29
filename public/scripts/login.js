@@ -7,6 +7,7 @@ function check_email() {
     if (val.includes("@") && !val.includes("@iiits.in")) {
         ele.style.borderBottom = "2px solid blue";
         msg.innerHTML = "Only iiits.in extension allowed";
+        return false
 
     } else if (val.includes("@iiits.in")) {
         ele.style.borderBottom = "2px solid green";
@@ -14,5 +15,6 @@ function check_email() {
     } else {
         ele.style.borderBottom = "2px solid red";
         msg.innerHTML = "Username must contain an @ and iiits.in extension";
+        return false
     }
 }
