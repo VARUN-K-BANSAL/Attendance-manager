@@ -14,70 +14,104 @@ body {
     font-family: "Roboto",sans-serif;
 }
 
-h1{
-    font-size: 100px;
-    font-family: Roboto;
-    text-align: center;
-    background-color: rgb(117, 75, 156);
+
+h2{
+    
+    margin: 0;
+    font-family:"Roboto",sans-serif;
+    font-size: 2rem;
+    text-transform: capitalize;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    -ms-flex-align: start;
+    padding-bottom: 0.5rem;
+    display: flex;
+    
+}
+
+h3{
+    
+    font-family: "Roboto",sans-serif;
+    font-size: 1.7rem;
+    text-transform: capitalize;
+    -ms-flex-align: start;
+    padding-left: 1rem;
+
+
+}
+
+.ordering{
+    
+    font-family:"Roboto",sans-serif;
+    font-size: 1.3rem;
+    text-transform: capitalize;
+    justify-content: left; 
+    font-weight: 50px; 
+
+}
+
+.ordering-1{
+    font-family:"Roboto",sans-serif;
+    font-size: 1.3rem;
+    text-transform: capitalize;
+    justify-content: left; 
+    
+}
+
+li{
+    margin-bottom: 1.1rem;
+
+}
+
+.paragraph{
+    display:flex;
+    font-size: 1.36rem;
+    font-family: "Roboto",sans-serif;
+    padding-left: 1rem;
+    justify-content: center;
+    text-transform: capitalize;
+    line-height: 2rem;
+    padding-right: 2rem;
+    
+    
+}
+
+.ordering-2{
+    font-family:"Roboto",sans-serif;
+    font-size: 1.36rem;
+    display: flex;
+    font-weight: 40;
+
+}
+
+
+h4{
+       font-size: 1.5rem;
+       font-family:"Roboto",sans-serif ;
+       padding-left: 1rem;
+       text-transform: capitalize;
+       
+}
+h5{
+    font-size: 1.5rem;
+    font-family:"Roboto",sans-serif ;
+    padding-left: 1rem;
+    text-transform: capitalize;
+    padding-top: 1.5rem;
+}
+
+h6{
+    font-size: 1.3rem;
+    font-family:"Roboto",sans-serif ;
+    padding-left: 1rem;
+    text-transform: capitalize;
+    padding-top: 1rem;
 
 }
 
 p{
-    font-size: 30px;
-    font-family: Roboto;
-    padding-left: 20px;
-    text-transform: capitalize;
-    
-    
-
+    font-size:1.4rem;
+    padding-left: 1rem;
 }
-
-h2{
-    font-size:40px ;
-    text-transform: uppercase;
-}
-
-ul{
-    font-size: 30px;
-    text-transform: capitalize;
-    font-family:Roboto;
-}
-
-img{
-
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-
-}
-
-
-
-.column{
-    float: left;
-    width: 40%;
-    padding: 5px;
-}
-
-
-
-.column ul{
-    
-    font-size: x-large;
-}
-
-footer p{
-    padding-top: 90px;
-    text-align: center;
-    font-size: large;
-}
-
-.button {
-    padding-top: 1100px;
-    text-align: center;
-    size-adjust: 20px;
-}
-
-
 
 
