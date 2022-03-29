@@ -10,7 +10,7 @@ const Admin = require('./public/models/Admin')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
-const { CONNECTION_URL } = require('./public/db/conn')//used
+const { CONNECTION_URL } = require('./public/db/conn')
 const { setCookie } = require('./public/scripts/cookies')
 const { config } = require('process')
 
@@ -48,7 +48,7 @@ app.post('/register', async (req, res) => {
     let student = await Student.findOne({ email })
     let teacher = await Teacher.findOne({ email })
     if (student || teacher) {
-        return res.redirect('/register')
+        return res.redirect('/register') //if student already exist then redirect to register
     }
 
     if (user_type == 'Student') {
