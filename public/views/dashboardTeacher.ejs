@@ -8,6 +8,7 @@
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/dashboardTeacher.css">
+    <link rel="stylesheet" href="../css/animation.css">
 </head>
 
 <body>
@@ -86,15 +87,28 @@
                 <div class="class" id = "class-1">
                     <div class = "class_name">
                         <h3>FSD - 1</h3>
-                    </div>
-                        <!-- <p>Easy to take attendence.<br>Just to place the scanner .<br>Track all class attendence. <br>View the students excuses and queries</p> -->
-                    
+                    </div>                    
                     <div class = "function_links">
-                        <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
+                        <button class = "btn" id="scanQrCodeBtn" style="border: none; outline: none;">Scan QR Code</button>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
                         <a href="/addClass" class = "btn" target="__blank">Add Class</a>
                         <a href="#" class = "btn" target="__blank">Generate QR</a>
                         <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
+                    </div>
+
+                    <div class="modal modal-animate" id="qrCodeScannerModal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="row">
+                                <div class="col">
+                                    <div id="reader"></div>
+                                </div>
+                                <div class="col" style="padding:3rem;">
+                                    <h4>SCAN RESULT</h4>
+                                    <div id="result">Result Here</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
         
                 </div>
@@ -153,28 +167,8 @@
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-    <script>
-        //Menu Toggle
-        let toggle = document.querySelector('.toggle');
-        let navigation = document.querySelector('.navigation');
-        let main = document.querySelector('.main');
-
-        toggle.onclick = function() {
-            navigation.classList.toggle('active');
-            main.classList.toggle('active')
-        }
-
-        let list = document.querySelectorAll('.navigation li ');
-
-        function activelink() {
-            list.forEach((item) =>
-                item.classList.remove('hovered'));
-            this.classList.add('hovered');
-        }
-        list.forEach((item) =>
-            item.addEventListener('mouseover', activelink));
-    </script>
+    <script src="../scripts/qrcode.min.js"></script>
+    <script src="../scripts/dashboardTeacher.js"></script>
 </body>
 
 

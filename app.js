@@ -57,12 +57,11 @@ app.post('/register', async (req, res) => {
                 name: full_name,
                 roll_number: roll_number,
                 email: email,
-                password: password
+                password: password,
+                userType: "student"
             })
 
             const registeredStudent = await registerStudent.save()
-            registerStudent.userType = "student";
-
             res.cookie(COOKIE_NAME, registeredStudent)
             res.redirect('/login')
         } catch (error) {
@@ -73,10 +72,11 @@ app.post('/register', async (req, res) => {
             const registerTeacher = new Teacher({
                 name: full_name,
                 email: email,
-                password: password
+                password: password,
+                userType: "teacher"
             })
             const registeredTeacher = await registerTeacher.save()
-            registerTeacher.userType = "teacher";
+            console.log(registeredTeacher);
             res.cookie(COOKIE_NAME, registeredTeacher)
             res.redirect('/login')
         } catch (error) {
@@ -87,18 +87,24 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.render('login')
     }
-    if (req.cookies[COOKIE_NAME].userType == "student") {
+
+    const email = req.cookies[COOKIE_NAME].email;
+    let student = await Student.findOne({ email })
+    let teacher = await Teacher.findOne({ email })
+    let admin = await Admin.findOne({ email })
+
+    if (student != null) {
         res.redirect('/dashboardStudent');
-    } else if(req.cookies[COOKIE_NAME].userType == "teacher") {
+    } else if (teacher != null) {
         res.redirect('/dashboardTeacher')
-    } else if(req.cookies[COOKIE_NAME].userType == "admin")  {
-        res.redirect('/dashboardAdmin')
+    } else if (admin != null) {
+        res.redirect('/admin')
     } else {
-        res.render('404NotFound')
+        res.render('login')
     }
 })
 
@@ -129,14 +135,16 @@ app.post('/login', async (req, res) => {
         } else {
             return res.redirect('/login')
         }
-    } else {
-        if(password == admin.password) {
+    } else if (admin != null) {
+        if (password == admin.password) {
             admin.userType = "admin"
             res.cookie(COOKIE_NAME, admin)
             return res.redirect('/admin')
         } else {
             return res.redirect('/login')
         }
+    } else {
+        return res.redirect('/login')
     }
 })
 
@@ -193,10 +201,6 @@ app.get('/dashboardTeacher', (req, res) => {
     } else {
         res.render('dashboardTeacher', req.cookies[COOKIE_NAME])
     }
-});
-
-app.get('/scanQrCode', (req, res) => {
-    res.render('scanQrCode')
 });
 
 app.get('/showAttendance', async (req, res) => {
@@ -290,4 +294,8 @@ app.post('/admin/addAdmin', async (req, res) => {
     const registeredAdmin = await registerAdmin.save()
     console.log(registeredAdmin);
     res.redirect('/admin')
+})
+
+app.get('*', (req, res) => {
+    res.render('404NotFound')
 })
