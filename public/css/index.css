@@ -13,7 +13,7 @@
 }
 
 body {
-    margin: auto;
+    /* margin: auto; */
     font-family: "Roboto",sans-serif;
     overflow-x: hidden;
     color: var(--off-black);
@@ -283,7 +283,7 @@ hr {
 
 footer {
     background-color: var(--off-black);
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
