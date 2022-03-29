@@ -1,110 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-body {
-    min-height: 100vh;
-    width: 100%;
-    background: linear-gradient(125deg, #d3eeff, #fafafa, #d3eeff) no-repeat;
-}
-
-ul li {
-    list-style: none;
-}
-
-#logo {
-    color: #fff;
-    font-size: 30px;
-    font-family: 'Dancing Script';
-    font-weight: bold;
-    padding: 10px;
-    padding-left: 30px;
-    text-shadow: 0 0 10px #fff;
-    transition: 1s ease;
-}
-
-#logo:hover {
-    cursor: pointer;
-    transform: scale(1.2);
-}
-
-.nav_bar {
-    background: #000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    /* position: absolute; */
-    /* background: url('https://dreamsoft4u.com/blog/wp-content/uploads/2019/05/Full-Stack-Development.png'); */
-    /* height: 200px; */
-}
-
-header {
-    width: 100vw;
-}
-.banner_image {
-    width: 100vw;
-}
-
-#home_btn {
-    font-size: 17px;
-    color: #fff;
-    padding: 10px;
-    padding-right: 40px;
+:root {
+    
+    --off-black: #151D3B;
+    --red-pink: #D82148;
+    --green: #118f2c;
 }
 
 ::-webkit-scrollbar {
     display: none;
 }
 
-.outer_Container {
+body {
+    background-color: #fcfcfc;
+    font-family: "Roboto",sans-serif;
+    height: 100vh;
+}
+
+/* Header */
+
+header {
+    margin-bottom: 2rem;
+}
+
+.class_name {
+    font-family: 'Dancing Script',"Roboto",sans-serif;
+    text-align: center;
+    padding: 1rem;
+    font-size: 3rem;
+}
+
+/* Body  */
+
+.get_xl_btn {
+    display: flex;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn {
+    padding:  0.7rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: inherit;
+    background-color: var(--green);
+    border: none;
+    border-radius: 8px;
+    color: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    color: var(--green);
+    background-color: #fafafa;
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 1rem 0 ;
+    margin-bottom: 2rem;
+}
+
+.filters input {
+    font-size: 1.1rem;
+}
+
+.filters .btn {
+    padding:  0.5rem 0.8rem;
+    font-size: 1rem;
+}
+
+/* Table  */
+
+.content {
+    margin: 2rem 0rem;
+    padding: 1rem 1.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    height: auto;
 }
 
 .table_container {
-	width: 90%;
+    overflow: auto;
+    width: 90vw;
+    height: 60vh;
     overflow: auto;
 }
 
-table,td,th {
-    border: 2px solid #000;
-    text-align: center;
+table,
+th,
+td {
+    border: 2px solid var(--off-black);
+    padding: 8px;
     border-collapse: collapse;
-    padding: 5px;
+    text-align: center;
+    /* border-radius: 8px; */
+    background-color: #fafafa;
 }
 
-.table_container table th:first-child, .table_container table td:first-child {
+.table_container table th:first-child {
     position: sticky;
     left: 0;
     z-index: 2;
-    background: #eee;
 }
 
-.table_container table th, .table_container table td {
-    white-space: nowrap;
+.table_container table tr:first-child th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
-#export_btn {
-    margin: 10px;
-}
-
-#export_btn:hover {
-    cursor: pointer;
-}
+/* Footer  */
 
 footer {
-    width: 100vw;
-    background: #000;
-    color: #fff;
-    /* margin-top: 30px; */
-    position: sticky;
+    position:sticky;
+    /* bottom: 0rem; */
     top: 100%;
-    padding: 10px;
+    background-color: var(--off-black);
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    
+    align-items: center;
+    color: #fafafa;
+    width: 100vw;
+    z-index: 10;
+}
+
+footer .content {
+    text-decoration: none;
+    margin: 0rem 0rem;
+    color: inherit;
+}
+
+footer a:hover {
+    color: #d1d1d1;
 }
