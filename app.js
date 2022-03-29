@@ -89,7 +89,7 @@ app.post('/register', async (req, res) => {
 
 app.get('/login', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
-        res.render('login')
+        return res.render('login')
     }
 
     const email = req.cookies[COOKIE_NAME].email;
@@ -155,7 +155,7 @@ app.get('/aboutus', (req, res) => {
 app.get('/info', (req, res) => {
     res.render('info')
 })
-
+//temporary get not used now
 app.get('/addClass', (req, res) => {
     res.render('class')
 })
@@ -208,6 +208,8 @@ app.get('/showAttendance', async (req, res) => {
     console.log(classObj);
     res.render('showAttendance', classObj)
 });
+
+//temporary get not used now
 
 app.get('/markAttendance', (req, res) => {
     res.render('markAttendance')
@@ -283,7 +285,7 @@ app.post('/admin/addAdmin', async (req, res) => {
     const {
         full_name,
         email,
-        password,
+        password
     } = req.body
     const registerAdmin = new Admin({
         name: full_name,
