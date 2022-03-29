@@ -13,14 +13,14 @@ body {
 
 .center_left {
     display: flex;
-    margin: 1rem;
+    margin: 5rem;
     align-items: center;
     justify-content: center;
-    width: 50vw;
+    width: 50%;
 }
 
 .center_left img {
-    width: 100%;
+    width: 95%;
 }
 
 #name_err{
@@ -101,7 +101,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50%;
+    /* width: 100%; */
 }
 
 
