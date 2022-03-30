@@ -155,7 +155,7 @@ app.get('/aboutus', (req, res) => {
 app.get('/info', (req, res) => {
     res.render('info')
 })
-
+//temporary get not used now
 app.get('/addClass', (req, res) => {
     res.render('class')
 })
@@ -209,6 +209,8 @@ app.get('/showAttendance', async (req, res) => {
     res.render('showAttendance', classObj)
 });
 
+//temporary get not used now
+
 app.get('/markAttendance', (req, res) => {
     res.render('markAttendance')
 })
@@ -248,16 +250,14 @@ app.post('/markAttendance', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
     try {
-        let classObj = await Class.findOne({ name: "FSD-1" })
-        let id = ""
-        classObj.students.forEach(element => {
-            if (element.id == req.cookies[COOKIE_NAME]._id) {
-                id = element.id;
-            }
-        });
-        res.render('profile', {
-            tempID: id
-        })
+        // let classObj = await Class.findOne({ name: "FSD-1" })
+        // let id = ""
+        // classObj.students.forEach(element => {
+        //     if (element.id == req.cookies[COOKIE_NAME]._id) {
+        //         id = element.id;
+        //     }
+        // });
+        res.render('profile', req.cookies[COOKIE_NAME])
     } catch (error) {
         console.log(error);
     }
@@ -283,7 +283,7 @@ app.post('/admin/addAdmin', async (req, res) => {
     const {
         full_name,
         email,
-        password,
+        password
     } = req.body
     const registerAdmin = new Admin({
         name: full_name,
@@ -294,6 +294,10 @@ app.post('/admin/addAdmin', async (req, res) => {
     const registeredAdmin = await registerAdmin.save()
     console.log(registeredAdmin);
     res.redirect('/admin')
+})
+
+app.get('/getCookieDetails', (req, res) => {
+    res.send(req.cookies)
 })
 
 app.get('*', (req, res) => {
