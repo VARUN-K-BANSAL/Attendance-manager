@@ -84,6 +84,25 @@
 
             <section class="classes">
 
+                <div class="addClassBtn">
+                    <button id="addClass" value="Add New Class"></button>
+                </div>
+
+                <div class="modal modal-animate" id="qrCodeScannerModal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <div class="row">
+                            <div class="col">
+                                <div id="reader"></div>
+                            </div>
+                            <div class="col" style="padding:3rem;">
+                                <h4>SCAN RESULT</h4>
+                                <div id="result">Result Here</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="class" id = "class-1">
                     <div class = "class_name">
                         <h3>FSD - 1</h3>
@@ -91,8 +110,8 @@
                     <div class = "function_links">
                         <button class = "btn" id="scanQrCodeBtn" style="border: none; outline: none;">Scan QR Code</button>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <a href="/addClass" class = "btn" target="__blank">Add Class</a>
-                        <a href="#" class = "btn" target="__blank">Generate QR</a>
+                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
+                        <a href="#" class = "btn">Generate QR</a>
                         <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
                     </div>
 
@@ -113,7 +132,7 @@
         
                 </div>
 
-                <div class="class" id = "class-1">
+                <div class="class" id = "class-2">
                     <div class = "class_name">
                         <h3>DSA</h3>
                     </div>
@@ -122,14 +141,14 @@
                     <div class = "function_links">
                         <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <a href="/addClass" class = "btn" target="__blank">Add Class</a>
+                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
                         <a href="#" class = "btn" target="__blank">Generate QR</a>
                         <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
                     </div>
         
                 </div>
 
-                <div class="class" id = "class-1">
+                <div class="class" id = "class-3">
                     <div class = "class_name">
                         <h3>CCN</h3>
                     </div>
@@ -138,14 +157,14 @@
                     <div class = "function_links">
                         <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <a href="/addClass" class = "btn" target="__blank">Add Class</a>
+                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
                         <a href="#" class = "btn" target="__blank">Generate QR</a>
                         <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
                     </div>
         
                 </div>
 
-                <div class="class" id = "class-1">
+                <div class="class" id = "class-4">
                     <div class = "class_name">
                         <h3>TOC</h3>
                     </div>
@@ -154,7 +173,7 @@
                     <div class = "function_links">
                         <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <a href="/addClass" class = "btn" target="__blank">Add Class</a>
+                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
                         <a href="#" class = "btn" target="__blank">Generate QR</a>
                         <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
                     </div>

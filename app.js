@@ -250,16 +250,14 @@ app.post('/markAttendance', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
     try {
-        let classObj = await Class.findOne({ name: "FSD-1" })
-        let id = ""
-        classObj.students.forEach(element => {
-            if (element.id == req.cookies[COOKIE_NAME]._id) {
-                id = element.id;
-            }
-        });
-        res.render('profile', {
-            tempID: id
-        })
+        // let classObj = await Class.findOne({ name: "FSD-1" })
+        // let id = ""
+        // classObj.students.forEach(element => {
+        //     if (element.id == req.cookies[COOKIE_NAME]._id) {
+        //         id = element.id;
+        //     }
+        // });
+        res.render('profile', req.cookies[COOKIE_NAME])
     } catch (error) {
         console.log(error);
     }
@@ -296,6 +294,10 @@ app.post('/admin/addAdmin', async (req, res) => {
     const registeredAdmin = await registerAdmin.save()
     console.log(registeredAdmin);
     res.redirect('/admin')
+})
+
+app.get('/getCookieDetails', (req, res) => {
+    res.send(req.cookies)
 })
 
 app.get('*', (req, res) => {
