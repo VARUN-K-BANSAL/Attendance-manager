@@ -88,7 +88,6 @@ function check_roll() {
 }}
 
 function validate() {
-
     let email_val = document.querySelector("#email").value;
     let cval = document.querySelector("#c_pass").value;
     let pval = document.querySelector("#pass").value;
@@ -97,8 +96,7 @@ function validate() {
     if (!email_val.includes("@iiits.in")) {
     return false
     }
-
-    if (user_ele.value == "Student") {
+   if(user_ele.value == "Student") {
         if (roll_val.length == 0 || roll_val == "" || !roll_val) {
             return false
         }
