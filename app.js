@@ -89,7 +89,7 @@ app.post('/register', async (req, res) => {
 
 app.get('/login', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
-        res.render('login')
+        return res.render('login')
     }
 
     const email = req.cookies[COOKIE_NAME].email;
