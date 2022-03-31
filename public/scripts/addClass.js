@@ -17,6 +17,9 @@ let classTemplate = (name) => {
         <button class = "btn ${name}" id="scanQrCodeBtn" style="border: none; outline: none;">Scan QR Code</button>
         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
         <a href="#" class = "btn">Generate QR</a>
+        <a href="#" class = "btn">Add Student</a>
+        <a href="#" class = "btn">Add Teacher</a>
+        <a href="#" class = "btn">Remove Class</a>
     </div>
 
     <div class="modal modal-animate" id="qrCodeScannerModal">
