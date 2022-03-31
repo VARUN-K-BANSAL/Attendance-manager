@@ -1,5 +1,5 @@
 let sliders = document.querySelectorAll(".slide_in");
-let faders = document.querySelectorAll("fade_in");
+let faders = document.querySelectorAll(".fade_in");
 
 const appearOptions = {
     threshold: 0
