@@ -25,13 +25,12 @@ nameSearchbtn.addEventListener("click" , () => {
     
     let rows = document.querySelectorAll("#sheet tr");
     
+    filterRows(rows,-1,"revert");
     
     if(val == ""){
-        filterRows(rows,-1,"revert");
+        // filterRows(rows,-1,"revert");
         return;
     }
-
-    filterRows(rows,-1,"revert");
 
     rows.forEach((row) => {
         let cellValue = row.cells[0].innerHTML;

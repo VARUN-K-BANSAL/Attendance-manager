@@ -82,13 +82,50 @@
                 </div>
             </div>
 
+            
             <section class="classes">
 
-                <div class="addClassBtn">
-                    <button id="addClass" value="Add New Class"></button>
+                <div class="link_bar">
+                    <button href="#" id="addClass" onclick="addClass()" class = "add_class btn">Add New Class</button>
                 </div>
 
-                <div class="modal modal-animate" id="qrCodeScannerModal">
+                <!-- Add Class Modal -->
+
+                <div class="modal modal-animate" id="addClassModal">
+                    <div class="modal-content">
+                        <div class = "close_element">
+                            <a href="#" onclick = "closeAddModal()">&times;</a>
+                        </div>
+                        
+                        <form action="/addClass" method="POST">
+                            <div class="element">
+                                <label for="className">Class Name &nbsp;</label>
+                                <input type="text" name = "className" id = "className">
+                            </div>
+
+                            <div class="element">
+                                <label for="teacherEmail">Add Teacher &nbsp;</label>
+                                <input type="text" name="teacherEmail" id="teacherEmail" placeholder = "Teacher Email (Optional)">
+                                <input type="file" name="" id="">
+                                <!-- <button class="btn">Add csv &nabsp;<i class="fa-solid fa-file-csv"></i></button> -->
+                            </div>
+
+                            <div class="element">
+                                <label for="studentEmail">Add Student &nbsp;</label>
+                                <input type="text" name="studentEmail" id="studentEmail" placeholder = "Student Email (Optional)">
+                                <input type="file" name="" id="" placeholder="">
+                                <!-- <button class="btn">Add csv &nabsp;<i class="fa-solid fa-file-csv"></i></button> -->
+                            </div>
+
+                            <div class="submit_element">
+                                <button type="submit" class = "btn">Submit</button>
+                                <!-- <button " onclick = "addClassFinal()">Click!</button> -->
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="modal modal-animate qrCodeScannerModal" id="qrCodeScannerModal">
                     <div class="modal-content">
                         <span class="close">&times;</span>
                         <div class="row">
@@ -103,16 +140,14 @@
                     </div>
                 </div>
 
-                <div class="class" id = "class-1">
-                    <div class = "class_name">
+                <!-- <div class="class">
+                    <div class = "class_name" id = "FSD-1">
                         <h3>FSD - 1</h3>
                     </div>                    
                     <div class = "function_links">
                         <button class = "btn" id="scanQrCodeBtn" style="border: none; outline: none;">Scan QR Code</button>
                         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
                         <a href="#" class = "btn">Generate QR</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
                     </div>
 
                     <div class="modal modal-animate" id="qrCodeScannerModal">
@@ -129,56 +164,8 @@
                             </div>
                         </div>
                     </div>
-        
-                </div>
+                </div> -->
 
-                <div class="class" id = "class-2">
-                    <div class = "class_name">
-                        <h3>DSA</h3>
-                    </div>
-                        <!-- <p>Easy to take attendence.<br>Just to place the scanner .<br>Track all class attendence. <br>View the students excuses and queries</p> -->
-                    
-                    <div class = "function_links">
-                        <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
-                        <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
-                        <a href="#" class = "btn" target="__blank">Generate QR</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
-                    </div>
-        
-                </div>
-
-                <div class="class" id = "class-3">
-                    <div class = "class_name">
-                        <h3>CCN</h3>
-                    </div>
-                        <!-- <p>Easy to take attendence.<br>Just to place the scanner .<br>Track all class attendence. <br>View the students excuses and queries</p> -->
-                    
-                    <div class = "function_links">
-                        <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
-                        <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
-                        <a href="#" class = "btn" target="__blank">Generate QR</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
-                    </div>
-        
-                </div>
-
-                <div class="class" id = "class-4">
-                    <div class = "class_name">
-                        <h3>TOC</h3>
-                    </div>
-                        <!-- <p>Easy to take attendence.<br>Just to place the scanner .<br>Track all class attendence. <br>View the students excuses and queries</p> -->
-                    
-                    <div class = "function_links">
-                        <a href="/scanQrCode" class = "btn" target="__blank">Scan QR Code</a>
-                        <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank">Add Class</a> -->
-                        <a href="#" class = "btn" target="__blank">Generate QR</a>
-                        <!-- <a href="/addClass" class = "btn" target="__blank"><%= name%></a> -->
-                    </div>
-        
-                </div>
             </section>
 
         </div>
@@ -187,6 +174,15 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="../scripts/qrcode.min.js"></script>
+    <script src="../scripts/addClass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(() => {
+            let classes = <%- JSON.stringify(classes) %>;
+            addClassFinal(classes[0].name);
+            addClassFinal(classes[1].name);
+        });
+    </script>
     <script src="../scripts/dashboardTeacher.js"></script>
 </body>
 

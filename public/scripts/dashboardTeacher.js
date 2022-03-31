@@ -1,20 +1,45 @@
 // Modal JS
-let modal = document.getElementById('qrCodeScannerModal')
-let btn = document.getElementById('scanQrCodeBtn')
-let span = document.getElementsByClassName("close")[0];
+// let modal = document.getElementById('qrCodeScannerModal')
+// let btn = document.getElementById('scanQrCodeBtn')
+// let span = document.getElementsByClassName("close")[0];
 
-btn.onclick = function () {
-    modal.style.display = "block";
-    scanQrCode()
+// btn.onclick = function () {
+//     modal.style.display = "block";
+//     scanQrCode()
+// }
+
+// span.onclick = function () {
+//     modal.style.display = "none";
+// }
+
+// window.onclick = function (event) {
+//     if (event.target == modal) {
+//         modal.style.display = "none";
+//     }
+// }
+
+let newClassModal = document.getElementById('addClassModal')
+function addClass() {
+    console.log('check 1');
+    newClassModal.style.display = "block";
 }
 
-span.onclick = function () {
-    modal.style.display = "none";
+// let newClassModal = document.getElementById('addClassModal')
+let classBtn = document.getElementById('addClass')
+let classSpan = document.getElementsByClassName("close")[0];
+
+classBtn.onclick = function () {
+    console.log('check');
+    newClassModal.style.display = "block";
+}
+
+classSpan.onclick = function () {
+    newClassModal.style.display = "none";
 }
 
 window.onclick = function (event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == newClassModal) {
+        addClassModal.style.display = "none";
     }
 }
 
@@ -55,3 +80,13 @@ function scanQrCode() {
 
     html5QrcodeScanner.render(markAttendance, errorInScanning);
 }
+
+
+// adding class js
+// let classes = '<%- JSON.stringify(classes) %>'
+// console.log(classes[0].name);
+
+// let classes = <%- JSON.stringify(classes[0].name) %>;
+// document.getElementById('classObj').style.display = 'block';
+// document.getElementById('classObj').innerHTML = classes;
+// console.log(classes);
