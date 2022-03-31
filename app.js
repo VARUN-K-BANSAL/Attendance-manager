@@ -161,22 +161,22 @@ app.get('/addClass', (req, res) => {
 })
 
 app.post('/addClass', async (req, res) => {
-    const { name, teacher_email, student_email } = req.body
+    const { className, teacherEmail, studentEmail } = req.body
     let date = new Date()
 
-    let student = await Student.findOne({ student_email })
-    let teacher = await Teacher.findOne({ teacher_email })
+    let student = await Student.findOne({ studentEmail })
+    let teacher = await Teacher.findOne({ teacherEmail })
 
     const tID = {
         id: teacher.id
     }
     const sID = {
         id: student.id,
-        qrcode_string: `${student.id}%%${name}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        qrcode_string: `${student.id}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
 
     const classObject = new Class({
-        name: name,
+        name: className,
         teachers: [tID],
         students: [sID],
         attendance: []
@@ -184,7 +184,16 @@ app.post('/addClass', async (req, res) => {
 
     const registeredClass = await classObject.save()
     // console.log(registeredClass);
-    res.redirect('/')
+
+    // const classes = await Class.find()
+    // console.log(classes);
+    res.redirect('/dashboardTeacher')
+})
+
+app.get('/getClasses', async (req, res) => {
+    const classes = await Class.find()
+    console.log(classes);
+    res.send(classes);
 })
 
 app.get('/dashboardStudent', (req, res) => {
@@ -195,10 +204,12 @@ app.get('/dashboardStudent', (req, res) => {
     }
 });
 
-app.get('/dashboardTeacher', (req, res) => {
+app.get('/dashboardTeacher', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
     } else {
+        const classes = await Class.find()
+        req.cookies[COOKIE_NAME].classes = classes;
         res.render('dashboardTeacher', req.cookies[COOKIE_NAME])
     }
 });
