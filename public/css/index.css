@@ -24,6 +24,11 @@ a {
     text-decoration: none;
 }
 
+section {
+    overflow: hidden;
+
+}
+
 /* Nav Bar */
 
 header {
@@ -100,16 +105,6 @@ header {
     transform: translate(1px,1px) ;
     /* box-shadow: 1px 1px 10px rgba(0,0,0,0.3); */
 }
-
-/* .main-nav a#login:hover{
-    background-color: var(--red-pink);
-    color: #fff;
-}
-
-.main-nav a#register:hover{
-    background-color: #fff;
-    color: var(--red-pink);
-} */
 
 .main-nav a#login {
     margin-right: 0.6rem;
@@ -241,7 +236,7 @@ hr {
 }
 
 .feature:hover {
-    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.5);
 }
 
 .feature img {
@@ -300,6 +295,41 @@ footer a:hover {
     color: #d1d1d1;
 }
 
+/* Effects  */
+
+.fade_in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+.fade_in.appear {
+    opacity: 1;
+}
+
+.from_left {
+    transform: translateX(-75%);
+}
+
+.from_right {
+    transform: translateX(75%);
+}
+
+.from_left,
+.from_right {
+    opacity: 0;
+    transition: opacity 0.3s ease-in, transform 0.7s ease-in;
+}
+
+.from_left.slow,
+.from_right.slow {
+    transition: opacity 0.5s ease-in, transform 1s ease-in;
+}
+
+.from_left.appear,
+.from_right.appear {
+    opacity: 1;
+    transform: translateX(0);
+}
 
 @media screen and (max-width: 480px) {
 
