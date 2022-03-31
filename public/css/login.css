@@ -153,6 +153,7 @@ form input[type="submit"] {
     border: none;
     width: 100%;
     border-radius: 2rem;
+    cursor: pointer;
     padding: 0.5rem;
     font-size: larger;
     /* font-weight: bold; */
