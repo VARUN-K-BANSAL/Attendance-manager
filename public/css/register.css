@@ -159,18 +159,19 @@ form input {
     font-size: large;
 }
 
-form input[type="submit"] {
+form .button {
     background-color: #2691d9;
     color: white;
     border: none;
     width: 100%;
     border-radius: 2rem;
+    cursor: pointer;
     padding: 0.5rem;
     font-size: larger;
     /* font-weight: bold; */
 }
 
-form input[type="submit"]:hover {
+button:hover {
     background-color: #4070f4;
 }
 

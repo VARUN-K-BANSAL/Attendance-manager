@@ -107,7 +107,7 @@ app.get('/login', async (req, res) => {
         res.render('login')
     }
 })
-
+//------Start
 app.post('/login', async (req, res) => {
     const { email, password } = req.body
 
