@@ -1,49 +1,38 @@
 // Modal JS
-// let modal = document.getElementById('qrCodeScannerModal')
-// let btn = document.getElementById('scanQrCodeBtn')
-// let span = document.getElementsByClassName("close")[0];
 
-// btn.onclick = function () {
-//     modal.style.display = "block";
-//     scanQrCode()
-// }
-
-// span.onclick = function () {
-//     modal.style.display = "none";
-// }
-
-// window.onclick = function (event) {
-//     if (event.target == modal) {
-//         modal.style.display = "none";
-//     }
-// }
-
-let newClassModal = document.getElementById('addClassModal')
-function addClass() {
-    console.log('check 1');
-    newClassModal.style.display = "block";
+function showScanQrCode() {
+    let modal = document.getElementById('qrCodeScannerModal')
+    let btn = document.getElementById('scanQrCodeBtn')
+    let span = document.getElementsByClassName("close")[0];
+    modal.style.display = "block";
+    scanQrCode()
 }
 
-// let newClassModal = document.getElementById('addClassModal')
-let classBtn = document.getElementById('addClass')
-let classSpan = document.getElementsByClassName("close")[0];
-
-classBtn.onclick = function () {
-    console.log('check');
-    newClassModal.style.display = "block";
-}
-
-classSpan.onclick = function () {
-    newClassModal.style.display = "none";
+function closeScanningModal() {
+    document.getElementById('qrCodeScannerModal').style.display = "none";
 }
 
 window.onclick = function (event) {
-    if (event.target == newClassModal) {
-        addClassModal.style.display = "none";
+    if (event.target == document.getElementById('qrCodeScannerModal')) {
+        document.getElementById('qrCodeScannerModal').style.display = "none";
+    }
+    else if (event.target == document.getElementById('addClassModal')) {
+        document.getElementById('addClassModal').style.display = "none";
     }
 }
 
-//Menu Toggle
+
+// JS for adding new class modal
+function addClass() {
+    document.getElementById('addClassModal').style.display = "block";
+}
+
+function closeAddClassModal() {
+    console.log('check 2');
+    document.getElementById('addClassModal').style.display = "none";
+}
+
+//Menu Toggle JS
 let toggle = document.querySelector('.toggle');
 let navigation = document.querySelector('.navigation');
 let main = document.querySelector('.main');
@@ -63,6 +52,9 @@ function activelink() {
 list.forEach((item) =>
     item.addEventListener('mouseover', activelink));
 
+
+/* Scanning Qr Code js */
+
 function markAttendance(qrCodeMessage) {
     document.getElementById('result').innerHTML = '<span class="result">' + qrCodeMessage + '</span>';
 }
@@ -74,19 +66,8 @@ function errorInScanning(errorMessage) {
 }
 
 function scanQrCode() {
-    console.log('test');
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader", { fps: 10, qrbox: 300 });
 
     html5QrcodeScanner.render(markAttendance, errorInScanning);
 }
-
-
-// adding class js
-// let classes = '<%- JSON.stringify(classes) %>'
-// console.log(classes[0].name);
-
-// let classes = <%- JSON.stringify(classes[0].name) %>;
-// document.getElementById('classObj').style.display = 'block';
-// document.getElementById('classObj').innerHTML = classes;
-// console.log(classes);

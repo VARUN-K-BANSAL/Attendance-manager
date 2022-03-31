@@ -14,17 +14,17 @@ let classTemplate = (name) => {
         <h3>${name}</h3>
     </div>                    
     <div class = "function_links">
-        <button class = "btn ${name}" id="scanQrCodeBtn" style="border: none; outline: none;">Scan QR Code</button>
+        <button class = "btn ${name}" id="scanQrCodeBtn" style="border: none; outline: none;" onclick="showScanQrCode()">Scan QR Code</button>
         <a href="/showAttendance" class = "btn" target="__blank">Show Attendance</a>
         <a href="#" class = "btn">Generate QR</a>
         <a href="#" class = "btn">Add Student</a>
         <a href="#" class = "btn">Add Teacher</a>
-        <a href="#" class = "btn">Remove Class</a>
+        <a href="/removeClass/${name}" class = "btn">Remove Class</a>
     </div>
 
     <div class="modal modal-animate" id="qrCodeScannerModal">
         <div class="modal-content">
-            <span class="close">&times;</span>
+            <a class="close" onclick="closeScanningModal()">&times;</a>
             <div class="row">
                 <div class="col">
                     <div id="reader"></div>

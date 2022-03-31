@@ -1,10 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400-500;780&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400-500;780&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -246,7 +247,7 @@ h3 {
 }
 
 .brief-colm:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
     box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
 }
@@ -323,8 +324,34 @@ form input[type="submit"] {
 
 form input[type="submit"]:hover {
     background-color: #4070f4;
+    cursor: pointer;
 }
 
+.addAdminDiv {
+    display: flex;
+    padding: 15px;
+    justify-content: flex-start;
+    font-family: 'Roboto';
+}
+
+.addAdminDiv button {
+    border: none;
+    outline: none;
+    background-color: var(--blue);
+    color: var(--white);
+    padding: 14px;
+    font-size: 18px;
+    border-radius: 10px;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+.addAdminDiv button:hover {
+    cursor: pointer;
+    background: var(--white);
+    color: var(--blue);
+    transform: scale(1.1);
+}
 
 @media screen and (max-width:500px) {
     .navigation {

@@ -174,10 +174,13 @@ app.post('/addClass', async (req, res) => {
         id: student.id,
         qrcode_string: `${student.id}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
+    const uID = {
+        id: req.cookies[COOKIE_NAME]._id
+    }
 
     const classObject = new Class({
         name: className,
-        teachers: [tID],
+        teachers: [tID, uID],
         students: [sID],
         attendance: []
     })
@@ -185,14 +188,12 @@ app.post('/addClass', async (req, res) => {
     const registeredClass = await classObject.save()
     // console.log(registeredClass);
 
-    // const classes = await Class.find()
-    // console.log(classes);
     res.redirect('/dashboardTeacher')
 })
 
 app.get('/getClasses', async (req, res) => {
     const classes = await Class.find()
-    console.log(classes);
+    // console.log(classes);c
     res.send(classes);
 })
 
@@ -216,12 +217,10 @@ app.get('/dashboardTeacher', async (req, res) => {
 
 app.get('/showAttendance', async (req, res) => {
     let classObj = await Class.findOne({ name: "FSD-1" })
-    console.log(classObj);
     res.render('showAttendance', classObj)
 });
 
 //temporary get not used now
-
 app.get('/markAttendance', (req, res) => {
     res.render('markAttendance')
 })
@@ -261,14 +260,17 @@ app.post('/markAttendance', async (req, res) => {
 
 app.get('/profile', async (req, res) => {
     try {
-        // let classObj = await Class.findOne({ name: "FSD-1" })
-        // let id = ""
-        // classObj.students.forEach(element => {
-        //     if (element.id == req.cookies[COOKIE_NAME]._id) {
-        //         id = element.id;
-        //     }
-        // });
         res.render('profile', req.cookies[COOKIE_NAME])
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.get('/removeClass/:x', async (req, res) => {
+    try {
+        let classObj = await Class.deleteOne({name : req.params.x})
+        console.log(classObj);
+        res.redirect('/dashboardTeacher')
     } catch (error) {
         console.log(error);
     }

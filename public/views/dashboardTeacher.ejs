@@ -93,9 +93,9 @@
 
                 <div class="modal modal-animate addClassModal" id="addClassModal">
                     <div class="modal-content">
-                        <div class = "close_element">
-                            <a href="#" onclick = "closeAddModal()">&times;</a>
-                        </div>
+                        <!-- <div class = "close_element"> -->
+                            <a href="#" class="close_class" onclick="closeAddClassModal()">&times;</a>
+                        <!-- </div> -->
                         
                         <form action="/addClass" method="POST">
                             <div class="element">
@@ -127,7 +127,7 @@
 
                 <div class="modal modal-animate qrCodeScannerModal" id="qrCodeScannerModal">
                     <div class="modal-content">
-                        <span class="close">&times;</span>
+                        <a class="close" onclick="closeScanningModal()">&times;</a>
                         <div class="row">
                             <div class="col">
                                 <div id="reader"></div>
@@ -155,6 +155,10 @@
             let classes = <%- JSON.stringify(classes) %>;
             addClassFinal(classes[0].name);
             addClassFinal(classes[1].name);
+            addClassFinal(classes[2].name);
+            addClassFinal(classes[3].name);
+            addClassFinal(classes[4].name);
+            addClassFinal(classes[5].name);
         });
     </script>
     <script src="../scripts/dashboardTeacher.js"></script>
