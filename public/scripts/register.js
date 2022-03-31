@@ -1,20 +1,20 @@
 
-const user_ele = document.getElementById("usrType")
-const rollno = document.getElementById("roll")
+let user_ele = document.getElementById("usrType")
+let rollno = document.getElementById("roll")
+let roll_div = document.getElementById("roll_div")
 
 user_ele.addEventListener("change", () => {
     if (user_ele.value == "Student") {
-        rollno.style.display = "block";
+        roll_div.style.display = "block";
+        document.querySelector("#roll").setAttribute("required",true)
     }
     else {
-        rollno.style.display = "none";
+        roll_div.style.display = "none";
+        document.querySelector("#roll").removeAttribute("required")
     }
 })
 
-function check_name() {
-    let msg = document.querySelector("#name_err")
-    msg.innerHTML = "*Mandatory Field"
-}
+
 
 function check_email() {
     let ele = document.querySelector("#email");
@@ -25,15 +25,18 @@ function check_email() {
         msg.innerHTML = "Only iiits.in extension allowed";
         msg.style.display = "block"
         return false
+        
     } else if (val.includes("@iiits.in")) {
         ele.style.borderBottom = "2px solid green";
         msg.style.display = "none";
         return true
+       
     } else {
         ele.style.borderBottom = "2px solid red";
         msg.innerHTML = "Username must contain an @ and iiits.in extension";
         msg.style.display = "block"
         return false
+       
     }
 }
 
@@ -42,10 +45,10 @@ function check_pass() {
     let val = document.querySelector("#pass").value;
     let msg = document.querySelector("#pass_err");
 
-    if (val.length < 8 || val.length > 15) {
+    if (val.length < 4 || val.length > 10) {
         ele.style.borderBottom = "2px solid red";
         msg.style.display = "block"
-        msg.innerHTML = "Password must br between 8 and 15 characters";
+        msg.innerHTML = "Password must br between 4 and 10 characters";
 
     } else {
         ele.style.borderBottom = "2px solid green";
@@ -65,56 +68,68 @@ function conf_pass() {
         msg.style.display = "block"
         msg.innerHTML = "Password matched";
         msg.style.color = "green"
+        return true
 
     } else {
         ele.style.borderBottom = "2px solid red";
         msg.style.display = "block";
         msg.innerHTML = "Password not matched"
         msg.style.color = "red";
-
+        return false
     }
 }
 
 function check_roll() {
-    const user_ele = document.getElementById("usrType")
+   let user_ele = document.getElementById("usrType")
     let val = document.querySelector("#roll").value
-   
-  
-    if (user_ele.value == "Student") {
-      if (val.length == 0 || val == "" || !val) {
-        return false
-    }
-        else {return true}
-}}
 
-function validate() {
-    let email_val = document.querySelector("#email").value;
-    let cval = document.querySelector("#c_pass").value;
-    let pval = document.querySelector("#pass").value;
-    const user_ele = document.getElementById("usrType")
-    let roll_val = document.querySelector("#roll").value
-    if (!email_val.includes("@iiits.in")) {
-    return false
-    }
-   if(user_ele.value == "Student") {
-        if (roll_val.length == 0 || roll_val == "" || !roll_val) {
+
+    if (user_ele.value == "Student") {
+        if (val.length == 0 || val == "" || !val) {
             return false
         }
-        else{
-            return true
-        } 
+        else { return true }
     }
+}
 
-    if(pval.length>15 || pval.length<8){
+function confirmPassword() {
+    let pass = document.querySelector("#pass").value
+    let c_pass = document.querySelector("#c_pass").value
+    if (c_pass != pass) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+function validatePassword() {
+    let val = document.querySelector("#pass").value;
+    if (val.length < 4 || val.length > 15) {
         return false
     }
-
-    if (pval!==cval) {
-    return false
+    else {
+        return true
     }
-   else{
-    return true
-}}
+}
+
+function validateEmail() {
+    let val = document.querySelector("#email").value;
+    if(val.includes("@iiits.in")) {return true} 
+    else{return false}
+}
+
+
+document.getElementById("btn").onclick = function validate() {
+    if (confirmPassword() && validatePassword() && validateEmail() ) {
+       
+        return true;
+    }
+    else {
+       
+        return false;
+    }
+}
 
 
 

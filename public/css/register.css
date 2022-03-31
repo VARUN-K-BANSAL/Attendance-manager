@@ -159,7 +159,7 @@ form input {
     font-size: large;
 }
 
-form input[type="submit"] {
+form .button {
     background-color: #2691d9;
     color: white;
     border: none;
@@ -170,7 +170,7 @@ form input[type="submit"] {
     /* font-weight: bold; */
 }
 
-form input[type="submit"]:hover {
+button:hover {
     background-color: #4070f4;
 }
 
