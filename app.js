@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
 const { CONNECTION_URL } = require('./public/db/conn')
-const { setCookie } = require('./public/scripts/cookies')
 const { config } = require('process')
 
 app.set("view engine", "ejs")
