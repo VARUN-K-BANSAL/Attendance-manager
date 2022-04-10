@@ -163,18 +163,21 @@ app.post('/addClass', async (req, res) => {
     const { className, teacherEmail, studentEmail } = req.body
     let date = new Date()
 
-    let student = await Student.findOne({ studentEmail })
-    let teacher = await Teacher.findOne({ teacherEmail })
+    let student = await Student.findOne({ email: studentEmail })
+    let teacher = await Teacher.findOne({ email: teacherEmail })
 
     const tID = {
-        id: teacher.id
+        email: teacher.email
     }
+
     const sID = {
-        id: student.id,
-        qrcode_string: `${student.id}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        roll_number: student.roll_number,
+        qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
     }
+
+    console.log(sID);
     const uID = {
-        id: req.cookies[COOKIE_NAME]._id
+        email: req.cookies[COOKIE_NAME].email
     }
 
     const classObject = new Class({
@@ -275,6 +278,38 @@ app.get('/removeClass/:x', async (req, res) => {
     }
 })
 
+app.post('/addStudent/:x', async (req, res) => {
+    try {
+        let studObj = await Student.findOne({email: req.body.studentEmail})
+        let classObj = await Class.findOne({name : req.params.x})
+        if(studObj == null || classObj == null) res.redirect('/dashboardTeacher')
+        let newStudObj = {
+            roll_number : studObj.roll_number,
+            qrcode_string : `${studObj.roll_number}%%${req.params.x}%%06/04/2022`
+        }
+        classObj.students.push(newStudObj)
+        classObj.save();
+        res.redirect('/dashboardTeacher')
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+app.post('/addTeacher/:x', async (req, res) => {
+    try {
+        let teacObj = await Teacher.findOne({email: req.body.teacherEmail})
+        let classObj = await Class.findOne({name : req.params.x})
+        if(teacObj == null || classObj == null) res.redirect('/dashboardTeacher')
+        classObj.teachers.push({
+            email : teacObj.email
+        })
+        classObj.save();
+        res.redirect('/dashboardTeacher')
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 app.get('/logout', (req, res) => {
     res.clearCookie(COOKIE_NAME);
     res.redirect('/');
@@ -288,6 +323,31 @@ app.get('/admin', async (req, res) => {
         req.cookies[COOKIE_NAME].teacherCount = await Teacher.estimatedDocumentCount();
         req.cookies[COOKIE_NAME].courseCount = await Class.estimatedDocumentCount();
         res.render('dashboardAdmin', req.cookies[COOKIE_NAME])
+    }
+})
+
+app.get('/admin/getStudents', async (req, res) => {
+    try {
+        let studObj = await Student.find()
+        res.send(studObj);
+    } catch (error) {
+        console.log(error);
+    }
+})
+app.get('/admin/getTeachers', async (req, res) => {
+    try {
+        let teachObj = await Teacher.find()
+        res.send(teachObj);
+    } catch (error) {
+        console.log(error);
+    }
+})
+app.get('/admin/getCourses', async (req, res) => {
+    try {
+        let classObj = await Class.find()
+        res.send(classObj);
+    } catch (error) {
+        console.log(error);
     }
 })
 

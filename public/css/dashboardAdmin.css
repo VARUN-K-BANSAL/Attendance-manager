@@ -16,9 +16,24 @@
     --black2: #999;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 body {
     min-height: 100vh;
     overflow-x: hidden;
+    text-align: center;
+}
+
+.main_content {
+    margin-top: 20px;
+    border: 1px solid var(--black2);
+    box-shadow: 0 0 4px var(--black2), 0 0 9px var(--black2);
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 8px;
+    /* padding: 10px; */
 }
 
 .container {
@@ -212,8 +227,8 @@ body {
     object-fit: cover;
 }
 
-.brief {
-    width: 90%;
+section {
+    width: 100%;
     margin: auto;
     text-align: center;
     padding-top: 30px;
@@ -274,7 +289,7 @@ h3 {
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 
 .close {
@@ -346,11 +361,137 @@ form input[type="submit"]:hover {
     transition: 0.3s ease;
 }
 
+#removeAdmin {
+    margin-left: 20px;
+}
+
 .addAdminDiv button:hover {
     cursor: pointer;
     background: var(--white);
     color: var(--blue);
     transform: scale(1.1);
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: var(--blue);
+    border-radius: 5px;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    color: var(--white);
+    font-size: 20px;
+    transition: .2s ease;
+}
+
+.tab button:hover {
+    background-color: var(--white);
+    color: var(--blue);
+}
+
+.tab button.active {
+    background-color: #fff3f3;
+    color: var(--blue);
+    transform: scale(1.1);
+    border-radius: 2px;
+}
+
+.tabContent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tabsSection {
+    padding: 10px;
+}
+
+.table_container {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+table, th, td {
+    border: 2px solid var(--blue);
+    border-collapse: collapse;
+    padding: 10px;
+}
+
+table td button {
+    border: none;
+    outline: none;
+    padding: 10px;
+    background-color: var(--blue);
+    color: var(--white);
+    border-radius: 5px;
+    font-size: 15px;
+    transition: 0.3s ease;
+}
+
+table {
+    margin-top: 20px;
+}
+
+table td button:hover {
+    cursor: pointer;
+    background: var(--white);
+    color: var(--blue);
+    transform: scale(1.1);
+}
+
+#studentsTable td {
+    width: 25%;
+}
+
+#coursesTable td {
+    width: 25%;
+}
+
+#teachersTable td {
+    width: 35%;
+}
+
+#studentsTable td:nth-child(4) {
+    width: 20%;
+}
+
+#coursesTable td:nth-child(3) {
+    width: 20%;
+}
+
+.btn {
+    padding:  0.4rem 1rem;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: inherit;
+    background-color: var(--blue);
+    border: none;
+    border-radius: 4px;
+    color: #fafafa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    color: var(--blue);
+    background-color: #fafafa;
+}
+
+.search_std input {
+    width: 50%;
+    padding: 0.4rem;
 }
 
 @media screen and (max-width:500px) {

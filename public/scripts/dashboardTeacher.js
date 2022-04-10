@@ -2,21 +2,38 @@
 
 function showScanQrCode() {
     let modal = document.getElementById('qrCodeScannerModal')
-    let btn = document.getElementById('scanQrCodeBtn')
-    let span = document.getElementsByClassName("close")[0];
     modal.style.display = "block";
     scanQrCode()
+}
+
+function addStudent() {
+    let modal = document.getElementById('addStudentModal')
+    modal.style.display = "block";
+}
+
+function addTeacher() {
+    let modal = document.getElementById('addTeacherModal')
+    modal.style.display = "block";
 }
 
 function closeScanningModal() {
     document.getElementById('qrCodeScannerModal').style.display = "none";
 }
+function closeAddStudentModal() {
+    document.getElementById('addStudentModal').style.display = "none";
+}
+function closeAddTeacherModal() {
+    document.getElementById('addTeacherModal').style.display = "none";
+}
 
 window.onclick = function (event) {
     if (event.target == document.getElementById('qrCodeScannerModal')) {
         document.getElementById('qrCodeScannerModal').style.display = "none";
-    }
-    else if (event.target == document.getElementById('addClassModal')) {
+    } else if (event.target == document.getElementById('addStudentModal')) {
+        document.getElementById('addStudentModal').style.display = "none";
+    } else if (event.target == document.getElementById('addTeacherModal')) {
+        document.getElementById('addTeacherModal').style.display = "none";
+    } else if (event.target == document.getElementById('addClassModal')) {
         document.getElementById('addClassModal').style.display = "none";
     }
 }
@@ -28,7 +45,6 @@ function addClass() {
 }
 
 function closeAddClassModal() {
-    console.log('check 2');
     document.getElementById('addClassModal').style.display = "none";
 }
 

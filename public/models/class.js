@@ -7,7 +7,7 @@ const classSchema = mongoose.Schema({
     },
     teachers: [
         {
-            id: {
+            email: {
                 type: String,
                 required: true
             }
@@ -15,7 +15,7 @@ const classSchema = mongoose.Schema({
     ],
     students: [
         {
-            id: {
+            roll_number: {
                 type: String,
             },
             qrcode_string: {

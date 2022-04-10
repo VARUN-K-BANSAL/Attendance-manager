@@ -99,74 +99,168 @@
                     <img src="../assets/profile_pic.svg" alt="user-img">
                 </div>
             </div>
-            
-            <section class="brief">
-                <h1>Admin Dashboard</h1>
-                <div class="addAdminDiv">
-                    <button id="addAdmin">Add new admin</button>
-                </div><br>
-                <div class="row">
-                    <div class="brief-colm">
-                        <h3>Number of Students</h3>
-                        <p><%= studentCount%></p>
-                    </div>
-                    <div class="brief-colm">
-                        <h3>Number of Teachers</h3>
-                        <p><%= teacherCount%></p>
-                    </div>
-                    <div class="brief-colm">
-                        <h3>Number of Courses</h3>
-                        <p><%= courseCount%></p>
-                    </div>
-                </div>
 
-                <div class="modal modal-animate" id="addAdminModal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2>Add new admin</h2>
-                        <form action="/admin/addAdmin" method="post">
-                            <div class="txt_field">
-                                <label>Full Name</label><br>
-                                <input type="text" name="full_name" onfocus="check_name()" id="full_name" placeholder="Enter Full name" required>
-                                <!-- <div class="txt_field" id="name_err"></div> -->
-                            </div>
-                            <div class="txt_field">
-                                <label>Email</label><br>
-                                <input type="email" name="email" onchange="check_email()" oninput="check_email()" id="email" placeholder="Enter Email" required>
-                                <!-- <div class="txt_field" id="email_err"></div> -->
-                                <p style="display: none;" id="temp_pass"><%= password%></p>
-                            </div>
-                            <div class="txt_field">
-                                <label>Password</label><br>
-                                <span></span>
-                                <input type="password" name="password" onchange="check_pass()" oninput="check_pass()" id="pass" placeholder="Enter password"
-                                    required>
-                                <!-- <div class="txt_field" id="pass_err"></div> -->
-                            </div>
-                            <div class="txt_field">
-                                <label>Confirm Password</label><br>
-                                <span></span>
-                                <input type="password" name="confirm_password" onchange="conf_pass()" oninput="conf_pass()" id="c_pass" placeholder="Confirm password"
-                                    required>
-                                <!-- <div class="txt_field" id="c_pass_err"></div> -->
-                            </div>
-                            <div class="txt_field">
-                                <label>Enter Your Password</label><br>
-                                <span></span>
-                                <input type="password" name="admin_password" id="admin_pass" onchange="check_pass()" oninput="check_pass()" id="admin_pass" placeholder="Enter your password"
-                                    required>
-                                <!-- <div class="txt_field" id="c_pass_err"></div> -->
-                            </div><br>
-                            <input type="submit" value="Add admin" onclick="return check()">
-                        </form>
+            <h1>Admin Dashboard</h1>
+            <div class="main_content">
+                <section class="brief">
+                    <div class="addAdminDiv">
+                        <button id="addAdmin" onclick="addAdmin()">Add new admin</button>
+                        <button id="removeAdmin" onclick="removeAdmin()">Remove admin</button>
+                    </div><br>
+                    <div class="row">
+                        <div class="brief-colm">
+                            <h3>Number of Students</h3>
+                            <p>
+                                <%= studentCount%>
+                            </p>
+                        </div>
+                        <div class="brief-colm">
+                            <h3>Number of Teachers</h3>
+                            <p>
+                                <%= teacherCount%>
+                            </p>
+                        </div>
+                        <div class="brief-colm">
+                            <h3>Number of Courses</h3>
+                            <p>
+                                <%= courseCount%>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </section>
+
+                    <div class="modal" id="addAdminModal">
+                        <div class="modal-content modal-animate">
+                            <span class="close">&times;</span>
+                            <h2>Add new admin</h2>
+                            <form action="/admin/addAdmin" method="post">
+                                <div class="txt_field">
+                                    <label>Full Name</label><br>
+                                    <input type="text" name="full_name" onfocus="check_name()" id="full_name"
+                                        placeholder="Enter Full name" required>
+                                    <!-- <div class="txt_field" id="name_err"></div> -->
+                                </div>
+                                <div class="txt_field">
+                                    <label>Email</label><br>
+                                    <input type="email" name="email" onchange="check_email()" oninput="check_email()"
+                                        id="email" placeholder="Enter Email" required>
+                                    <!-- <div class="txt_field" id="email_err"></div> -->
+                                    <p style="display: none;" id="temp_pass">
+                                        <%= password%>
+                                    </p>
+                                </div>
+                                <div class="txt_field">
+                                    <label>Password</label><br>
+                                    <span></span>
+                                    <input type="password" name="password" onchange="check_pass()"
+                                        oninput="check_pass()" id="pass" placeholder="Enter password" required>
+                                    <!-- <div class="txt_field" id="pass_err"></div> -->
+                                </div>
+                                <div class="txt_field">
+                                    <label>Confirm Password</label><br>
+                                    <span></span>
+                                    <input type="password" name="confirm_password" onchange="conf_pass()"
+                                        oninput="conf_pass()" id="c_pass" placeholder="Confirm password" required>
+                                    <!-- <div class="txt_field" id="c_pass_err"></div> -->
+                                </div>
+                                <div class="txt_field">
+                                    <label>Enter Your Password</label><br>
+                                    <span></span>
+                                    <input type="password" name="admin_password" id="admin_pass" onchange="check_pass()"
+                                        oninput="check_pass()" id="admin_pass" placeholder="Enter your password"
+                                        required>
+                                    <!-- <div class="txt_field" id="c_pass_err"></div> -->
+                                </div><br>
+                                <input type="submit" value="Add admin" onclick="return check()">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal" id="removeAdminModal">
+                        <div class="modal-content modal-animate">
+                            <span class="close">&times;</span>
+                            <h2>Remove admin</h2>
+                            <form action="/admin/removeAdmin" method="post">
+                                <div class="txt_field">
+                                    <label>Email</label><br>
+                                    <input type="email" name="email" onchange="check_email()" oninput="check_email()"
+                                        id="adminEmail" placeholder="Enter Email" required>
+                                </div>
+                                <input type="submit" value="Remove admin">
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="tabsSection">
+                    <div class="tab">
+                        <button class="tabLinks" onclick="tabChange(event, 'students')">Students</button>
+                        <button class="tabLinks" onclick="tabChange(event, 'teachers')">Teachers</button>
+                        <button class="tabLinks" onclick="tabChange(event, 'courses')">Courses</button>
+                    </div>
+                    <div class="tabContent" id="students">
+                        <div class="search_std">
+                            <input type="text" name="studentInput" id="studentInput"
+                                placeholder="Enter name or email or roll number" onkeyup="checkStudent()">
+                        </div>
+                        <div class="table_container">
+                            <table id="studentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>e-mail</th>
+                                        <th>Roll number</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tabContent" id="teachers">
+                        <div class="search_std">
+                            <input type="text" name="teacherInput" id="teacherInput" placeholder="Enter name or email" onkeyup="checkTeacher()">
+                        </div>
+                        <div class="table_container">
+                            <table id="teachersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>e-mail</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tabContent" id="courses">
+                        <div class="search_std">
+                            <input type="text" name="courseInput" id="courseInput" placeholder="Enter name" onkeyup="checkCourse()">
+                        </div>
+                        <div class="table_container">
+                            <table id="coursesTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Number of teachers</th>
+                                        <th>Number of students</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </div>
     </div>
 
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="../scripts/dashboardAdmin.js"></script>
     <script src="../scripts/register.js"></script>
 
