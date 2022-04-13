@@ -69,9 +69,23 @@ list.forEach((item) =>
     item.addEventListener('mouseover', activelink));
 
 
+// Global 
+
+let stdSet = new Set();
+let i = 0;
+
 /* Scanning Qr Code js */
 
+// let closeBtnEl = document.querySelector(".close");
+
+// closeBtnEl.addEventListener("click" , () => {
+//     console.log("click close !!!!")
+// })
+
 function markAttendance(qrCodeMessage) {
+    console.log(`QR = ${qrCodeMessage}`);
+    stdSet.add(qrCodeMessage);
+    console.log(stdSet)
     document.getElementById('result').innerHTML = '<span class="result">' + qrCodeMessage + '</span>';
 }
 
@@ -80,6 +94,7 @@ function errorInScanning(errorMessage) {
     console.log(errorMessage);
     // document.getElementById('result').innerHTML = '<span class="result">Some Internal Error occurred, please reload the page.<br>If problem persists please reach out to our developer team.</span>';
 }
+
 
 function scanQrCode() {
     let html5QrcodeScanner = new Html5QrcodeScanner(
