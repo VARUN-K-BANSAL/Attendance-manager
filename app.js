@@ -372,6 +372,50 @@ app.get('/getCookieDetails', (req, res) => {
     res.send(req.cookies)
 })
 
+app.get('/generateQrCode/:x', async (req,res) => {
+    
+    try{
+        let classObj = await Class.findOne({name : req.params.x});
+        let studClass = classObj.students;
+
+        // console.log(`!! len = ${studClass.length}`);
+
+        let arr = [];
+
+        for(let i = 0 ; i < studClass.length ; i++) {
+            let tempObj = {
+                roll_no: studClass[i].roll_number,
+                status: "A"
+            }
+
+            arr.push(tempObj);
+        }
+
+        // console.log(arr);
+
+        let d = new Date();
+
+        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+
+        console.log(dateStr);
+
+        let attObj = {
+            date: dateStr,
+            values: arr
+        }
+
+        classObj.attendance.push(attObj);
+
+        classObj.save();
+
+        res.redirect('/dashboardTeacher');
+    }
+    catch(error) {
+        console.log(error);
+    }
+
+})
+
 app.get('*', (req, res) => {
     res.render('404NotFound')
 })
