@@ -120,12 +120,12 @@ app.post('/login', async (req, res) => {
     if (student != null) {
         if (password == student.password) {
             let studentCookie = {
-                name : student.name,
-                email : student.email,
-                roll_number : student.roll_number,
-                password : student.password,
-                userType : "student",
-                __v : student.__v
+                name: student.name,
+                email: student.email,
+                roll_number: student.roll_number,
+                password: student.password,
+                userType: "student",
+                __v: student.__v
             }
             res.cookie(COOKIE_NAME, studentCookie)
             return res.redirect('/dashboardStudent')
@@ -135,11 +135,11 @@ app.post('/login', async (req, res) => {
     } else if (teacher != null) {
         if (password == teacher.password) {
             let teacherCookie = {
-                name : teacher.name,
-                email : teacher.email,
-                password : teacher.password,
-                userType : "teacher",
-                __v : teacher.__v
+                name: teacher.name,
+                email: teacher.email,
+                password: teacher.password,
+                userType: "teacher",
+                __v: teacher.__v
             }
             res.cookie(COOKIE_NAME, teacherCookie)
             return res.redirect('/dashboardTeacher')
@@ -149,12 +149,12 @@ app.post('/login', async (req, res) => {
     } else if (admin != null) {
         if (password == admin.password) {
             let adminCookie = {
-                name : admin.name,
-                email : admin.email,
-                roll_number : admin.roll_number,
-                password : admin.password,
-                userType : "admin",
-                __v : admin.__v
+                name: admin.name,
+                email: admin.email,
+                roll_number: admin.roll_number,
+                password: admin.password,
+                userType: "admin",
+                __v: admin.__v
             }
             res.cookie(COOKIE_NAME, adminCookie)
             return res.redirect('/admin')
@@ -221,7 +221,7 @@ app.get('/getClasses', async (req, res) => {
 app.get('/dashboardStudent', (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
-    } else if(req.cookies[COOKIE_NAME].userType == "teacher" || req.cookies[COOKIE_NAME].userType == "admin") {
+    } else if (req.cookies[COOKIE_NAME].userType == "teacher" || req.cookies[COOKIE_NAME].userType == "admin") {
         res.redirect('/pageNotFound')
     } else {
         res.render('dashboardStudent', req.cookies[COOKIE_NAME])
@@ -231,7 +231,7 @@ app.get('/dashboardStudent', (req, res) => {
 app.get('/dashboardTeacher', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
-    } else if(req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "admin") {
+    } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "admin") {
         res.redirect('/pageNotFound')
     } else {
         const classes = await Class.find()
@@ -241,17 +241,17 @@ app.get('/dashboardTeacher', async (req, res) => {
 });
 
 app.get('/showAttendance/:name/:roll_number', async (req, res) => {
-    let className = req.params.name.replace('%20',' ')
+    let className = req.params.name.replace('%20', ' ')
     console.log(className);
     let roll_number = req.params.roll_number
     console.log(roll_number);
     let classObj = await Class.findOne({ name: className })
     let dataObj = {
-        name : classObj.name,
-        teachers : classObj.teachers,
-        students : classObj.students,
-        attendance : classObj.attendance,
-        roll_number : roll_number
+        name: classObj.name,
+        teachers: classObj.teachers,
+        students: classObj.students,
+        attendance: classObj.attendance,
+        roll_number: roll_number
     }
     console.log(dataObj);
     res.render('showAttendance', dataObj)
@@ -304,7 +304,7 @@ app.get('/profile', async (req, res) => {
 
 app.get('/removeClass/:x', async (req, res) => {
     try {
-        let classObj = await Class.deleteOne({name : req.params.x})
+        let classObj = await Class.deleteOne({ name: req.params.x })
         console.log(classObj);
         res.redirect('/dashboardTeacher')
     } catch (error) {
@@ -314,19 +314,19 @@ app.get('/removeClass/:x', async (req, res) => {
 
 app.post('/addStudent/:x', async (req, res) => {
     try {
-        let studObj = await Student.findOne({email: req.body.studentEmail})
-        let classObj = await Class.findOne({name : req.params.x})
-        if(studObj == null || classObj == null) res.redirect('/dashboardTeacher')
+        let studObj = await Student.findOne({ email: req.body.studentEmail })
+        let classObj = await Class.findOne({ name: req.params.x })
+        if (studObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
-        while(i < classObj.students.length) {
-            if(classObj.students[i].roll_number == studObj.roll_number) {
+        while (i < classObj.students.length) {
+            if (classObj.students[i].roll_number == studObj.roll_number) {
                 return res.redirect('/dashboardTeacher')
             }
             i++
         }
         let newStudObj = {
-            roll_number : studObj.roll_number,
-            qrcode_string : `${studObj.roll_number}%%${req.params.x}%%06/04/2022`
+            roll_number: studObj.roll_number,
+            qrcode_string: `${studObj.roll_number}%%${req.params.x}%%06/04/2022`
         }
         classObj.students.push(newStudObj)
         classObj.save();
@@ -338,18 +338,18 @@ app.post('/addStudent/:x', async (req, res) => {
 
 app.post('/addTeacher/:x', async (req, res) => {
     try {
-        let teacObj = await Teacher.findOne({email: req.body.teacherEmail})
-        let classObj = await Class.findOne({name : req.params.x})
-        if(teacObj == null || classObj == null) res.redirect('/dashboardTeacher')
+        let teacObj = await Teacher.findOne({ email: req.body.teacherEmail })
+        let classObj = await Class.findOne({ name: req.params.x })
+        if (teacObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
-        while(i < classObj.teachers.length) {
-            if(classObj.teachers[i].email == studObj.email) {
+        while (i < classObj.teachers.length) {
+            if (classObj.teachers[i].email == studObj.email) {
                 return res.redirect('/dashboardTeacher')
             }
             i++
         }
         classObj.teachers.push({
-            email : teacObj.email
+            email: teacObj.email
         })
         classObj.save();
         res.redirect('/dashboardTeacher')
@@ -366,7 +366,7 @@ app.get('/logout', (req, res) => {
 app.get('/admin', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         res.redirect('login')
-    } else if(req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
+    } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         console.log(req.cookies[COOKIE_NAME].userType);
         res.redirect('/pageNotFound')
     } else {
@@ -448,7 +448,7 @@ app.post('/admin/removeAdmin', async (req, res) => {
     const {
         email
     } = req.body
-    let admin = await Admin.deleteOne({email : email})
+    let admin = await Admin.deleteOne({ email: email })
     console.log(admin);
     res.redirect('/admin')
 })
@@ -457,7 +457,7 @@ app.get('/admin/removeStudent/:x', async (req, res) => {
         return res.redirect('login')
     }
     const email = req.params.x
-    let student = await Student.deleteOne({email : email})
+    let student = await Student.deleteOne({ email: email })
     console.log(student);
     res.redirect('/admin')
 })
@@ -466,7 +466,7 @@ app.get('/admin/removeTeacher/:x', async (req, res) => {
         return res.redirect('login')
     }
     const email = req.params.x
-    let teacher = await Teacher.deleteOne({email : email})
+    let teacher = await Teacher.deleteOne({ email: email })
     console.log(teacher);
     res.redirect('/admin')
 })
@@ -475,7 +475,7 @@ app.get('/admin/removeCourse/:x', async (req, res) => {
         return res.redirect('login')
     }
     const name = req.params.x
-    let Course = await Class.deleteOne({name : name})
+    let Course = await Class.deleteOne({ name: name })
     console.log(Course);
     res.redirect('/admin')
 })
@@ -487,6 +487,50 @@ app.get('/getCookieDetails', (req, res) => {
 app.get('/getClasses', async (req, res) => {
     let classObj = await Class.find()
     res.send(classObj)
+})
+
+app.get('/generateQrCode/:x', async (req, res) => {
+
+    try {
+        let classObj = await Class.findOne({ name: req.params.x });
+        let studClass = classObj.students;
+
+        // console.log(`!! len = ${studClass.length}`);
+
+        let arr = [];
+
+        for (let i = 0; i < studClass.length; i++) {
+            let tempObj = {
+                roll_no: studClass[i].roll_number,
+                status: "A"
+            }
+
+            arr.push(tempObj);
+        }
+
+        // console.log(arr);
+
+        let d = new Date();
+
+        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+
+        console.log(dateStr);
+
+        let attObj = {
+            date: dateStr,
+            values: arr
+        }
+
+        classObj.attendance.push(attObj);
+
+        classObj.save();
+
+        res.redirect('/dashboardTeacher');
+    }
+    catch (error) {
+        console.log(error);
+    }
+
 })
 
 app.get('*', (req, res) => {
