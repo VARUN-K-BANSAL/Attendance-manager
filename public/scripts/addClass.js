@@ -1,13 +1,3 @@
-"use strict"
-
-// let addClassModal = document.querySelector(".addClassModal");
-// // let closeButton = document.querySelector(".closeM")
-// // let id = ""
-
-// function closeAddModal() {
-//     addClassModal.style.display = "none";
-// }
-
 let classTemplate = (name) => {
     return `<div class="class">
     <div class = "class_name" id = "${name}">
@@ -56,7 +46,7 @@ let classTemplate = (name) => {
         </div>
     </div>
 
-    </div>`;
+    </div>`
 }
 
 let initialClasses = document.querySelector(".classes").innerHTML;
