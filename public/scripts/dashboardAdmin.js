@@ -52,9 +52,14 @@ window.onclick = function (event) {
     }
 }
 
-function check() {
-    let pass = document.getElementById('temp_pass').innerHTML
+async function check() {
+    let pass = ""
+    await $.getJSON("/getCookieDetails", function (res) {
+        pass = res["user"].password.trim()
+        console.log(res["user"].password);
+    })
     let input_pass = document.getElementById('admin_pass').value
+    console.log(pass + " " + input_pass);
     if (input_pass == pass) {
         return true
     }
@@ -126,6 +131,22 @@ function checkCourse() {
     }
 }
 
+function checkAdmin() {
+    let input = document.getElementById('adminInput').value.toUpperCase()
+    let rows = document.getElementById('adminTable').getElementsByTagName('tr')
+
+    for (let i = 1; i < rows.length; i++) {
+        let name = rows[i].getElementsByTagName('td')[0].textContent
+        if (name) {
+            if (name.toUpperCase().indexOf(input) > -1) {
+                rows[i].style.display = ""
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+    }
+}
+
 $(document).ready(function () {
 
     $.getJSON("/admin/getStudents", function (res) {
@@ -136,7 +157,7 @@ $(document).ready(function () {
                     <td>${res[i].name}</td>
                     <td>${res[i].email}</td>
                     <td>${res[i].roll_number}</td>
-                    <td><button id="${res[i].email}" onclick="removeStudent(${res[i].email})">Remove Student</button></td>
+                    <td><form action="/admin/removeStudent/${res[i].email}" method="GET" onsubmit="return confirmRemove()"><button type="submit" id="${res[i].email}">Remove Student</button></form></td>
                 </tr>
             `
             $("#studentsTable").append(newStudent);
@@ -151,7 +172,7 @@ $(document).ready(function () {
                 <tr>
                     <td>${res[i].name}</td>
                     <td>${res[i].email}</td>
-                    <td><button id="${res[i].email}" onclick="removeTeacher(${res[i].email})">Remove Teacher</button></td>
+                    <td><form action="/admin/removeTeacher/${res[i].email}" method="GET" onsubmit="return confirmRemove()"><button type="submit" id="${res[i].email}">Remove Teacher</button></form></td>
                 </tr>
             `
             $("#teachersTable").append(newTeacher);
@@ -167,7 +188,7 @@ $(document).ready(function () {
                     <td>${res[i].name}</td>
                     <td>${res[i].name}</td>
                     <td>${res[i].name}</td>
-                    <td><button id="${res[i].email}" onclick="removeCourse(${res[i].email})">Remove Course</button></td>
+                    <td><form action="/admin/removeCourse/${res[i].name}" method="GET" onsubmit="return confirmRemove()"><button type="submit" id="${res[i].name}">Remove Course</button></form></td>
                 </tr>
             `
             $("#coursesTable").append(newCourse);
@@ -175,4 +196,24 @@ $(document).ready(function () {
         }
         // console.log(res);
     })
+    $.getJSON("/admin/getAdmins", function (res) {
+        let i = 0;
+        while (res[i] != undefined) {
+            const newAdmin = `
+                <tr>
+                    <td>${res[i].name}</td>
+                    <td>${res[i].email}</td>
+                    <td><button type="submit" id="${res[i].name}" onclick="removeAdmin()">Remove Admin</button></td>
+                </tr>
+            `
+            $("#adminTable").append(newAdmin);
+            i++;
+        }
+        // console.log(res);
+    })
 })
+
+
+function confirmRemove() {
+    return confirm("Do you really want to remove")
+}

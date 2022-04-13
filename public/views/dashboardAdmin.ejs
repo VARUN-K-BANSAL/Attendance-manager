@@ -18,7 +18,7 @@
         <div class="navigation active">
             <ul>
                 <li>
-                    <a href="#">
+                    <a href="/admin">
                         <span class="icon">
                             <ion-icon name="accessibility-outline"></ion-icon>
                         </span>
@@ -28,7 +28,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="/admin">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -178,7 +178,7 @@
                         <div class="modal-content modal-animate">
                             <span class="close">&times;</span>
                             <h2>Remove admin</h2>
-                            <form action="/admin/removeAdmin" method="post">
+                            <form action="/admin/removeAdmin" method="post" onsubmit="return confirmRemove();">
                                 <div class="txt_field">
                                     <label>Email</label><br>
                                     <input type="email" name="email" onchange="check_email()" oninput="check_email()"
@@ -195,6 +195,7 @@
                         <button class="tabLinks" onclick="tabChange(event, 'students')">Students</button>
                         <button class="tabLinks" onclick="tabChange(event, 'teachers')">Teachers</button>
                         <button class="tabLinks" onclick="tabChange(event, 'courses')">Courses</button>
+                        <button class="tabLinks" onclick="tabChange(event, 'admins')">Admins</button>
                     </div>
                     <div class="tabContent" id="students">
                         <div class="search_std">
@@ -245,6 +246,24 @@
                                         <th>Name</th>
                                         <th>Number of teachers</th>
                                         <th>Number of students</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tabContent" id="admins">
+                        <div class="search_std">
+                            <input type="text" name="adminInput" id="adminInput" placeholder="Enter name" onkeyup="checkAdmin()">
+                        </div>
+                        <div class="table_container">
+                            <table id="adminTable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>email</th>
                                         <th></th>
                                     </tr>
                                 </thead>
