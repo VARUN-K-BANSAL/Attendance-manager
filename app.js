@@ -508,17 +508,26 @@ app.get('/generateQrCode/:x', async (req, res) => {
             arr.push(tempObj);
         }
 
-        // console.log(arr);
-
         let d = new Date();
 
+        let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
+        let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
         let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
-        console.log(dateStr);
+        
+        let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
 
         let attObj = {
-            date: dateStr,
+            date: timeStampStr,
             values: arr
+        }
+
+        for(let i = 0 ; i < classObj.attendance.length ; i++){
+            dateVal = classObj.attendance[i].date.split(" ");
+
+            if((dateVal[0] == dateStr) && (dateVal[1] >= timeStr1) && (dateVal[1] <= timeStr2)){
+                return res.redirect("/dashboardTeacher")
+            }
         }
 
         classObj.attendance.push(attObj);
