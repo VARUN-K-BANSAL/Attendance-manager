@@ -10,6 +10,7 @@ user_ele.addEventListener("change", () => {
     }
     else {
         roll_div.style.display = "none";
+        rollno.value="none";
         document.querySelector("#roll").removeAttribute("required")
     }
 })

@@ -48,6 +48,9 @@ let qr;
   });
 })();
 
+
+
+//incomplete
 function generateQRCode() {
   var qrtext = document.getElementById("qr-text").value;
   document.getElementById("qr-result").innerHTML = "QR code for " + qrtext + ":";
