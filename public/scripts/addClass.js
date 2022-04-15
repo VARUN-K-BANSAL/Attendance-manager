@@ -20,10 +20,18 @@ let classTemplate = (name) => {
                     <div id="reader"></div>
                 </div>
                 <div class="col" style="padding:3rem;">
-                    <h4>SCAN RESULT</h4>
+                    <h4 style = "margin-bottom: 2rem;">SCAN RESULT</h4>
                     <div id="result">Result Here</div>
+                    
+                    <form action="/markAttendance/${name}" class = "attendanceForm" method = "post">
+                        <input id = "attendanceInput" type="text" name = "qrCodeArr">
+                        <button type="submit" class = "attendance_btn btn" onclick = "addStudentAttendance()">Submit</button>
+                    </form>
+                    
+
                 </div>
             </div>
+
         </div>
     </div>
     <div class="modal" id="addStudentModal">
