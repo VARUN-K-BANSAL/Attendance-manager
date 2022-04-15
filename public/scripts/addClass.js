@@ -24,7 +24,7 @@ let classTemplate = (name) => {
                     <div id="result">Result Here</div>
                     
                     <form action="/markAttendance/${name}" class = "attendanceForm" method = "post">
-                        <input id = "attendanceInput" type="text" name = "qrCodeArr">
+                        <input id = "attendanceInput" type="text" name = "qrCodeArr" style = "display: none;">
                         <button type="submit" class = "attendance_btn btn" onclick = "addStudentAttendance()">Submit</button>
                     </form>
                     
