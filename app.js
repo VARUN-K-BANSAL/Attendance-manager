@@ -12,6 +12,7 @@ const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
 const { CONNECTION_URL } = require('./public/db/conn')
 const { config } = require('process')
+const { strictEqual } = require('assert')
 
 app.set("view engine", "ejs")
 app.set("views", __dirname + "/public/views")
@@ -257,42 +258,49 @@ app.get('/showAttendance/:name/:roll_number', async (req, res) => {
     res.render('showAttendance', dataObj)
 });
 
-//temporary get not used now
-app.get('/markAttendance', (req, res) => {
-    res.render('markAttendance')
-})
+app.post('/markAttendance/:cname',async (req, res) => {
 
-app.post('/markAttendance', async (req, res) => {
-    const { roll_no, status, date, className } = req.body;
+    let val = req.body.qrCodeArr;
+    const classObj = await Class.findOne({name: req.params.cname})
+    const stds = classObj.students;
+    const attend = classObj.attendance;
 
-    let classObject = await Class.findOne({ name: className })
-    if (classObject != null) {
-        isFound = false
-        classObject.attendance.forEach(element => {
-            if (element.date == date) {
-                element.values.push({
-                    roll_no,
-                    status
-                })
-                classObject.save()
-                isFound = true
+    // console.log(`stud att = ${val}`)
+
+    let passStr = val.split(";;")
+
+    for(let i = 0 ; i < passStr.length ; i++){
+
+        let tempStr = passStr[i];
+
+        for(let j = 0 ; j < stds.length ; j++){
+            if(stds[j].qrcode_string == tempStr){
+                let tempRoll = stds[j].roll_number;
+                let tempArr = tempStr.split("%%");
+                let dateStr = tempArr[2];
+                let timeStr = tempArr[3];
+
+                attend.forEach((att) => {
+                    let attDate = att.date.split(" ");
+
+                    if((attDate[0] == dateStr) && (attDate[1] == timeStr)){
+                        att.values.forEach((stdVal) => {
+                            if(stdVal.roll_no == tempRoll){
+                                stdVal.status = "P";
+                            }
+                        })
+                    }
+                });
+
             }
-        });
-
-        if (!isFound) {
-            let obj = {
-                date,
-                values: [{
-                    roll_no,
-                    status
-                }]
-            }
-            classObject.attendance.push(obj)
-            classObject.save()
         }
     }
-    res.redirect('/')
+
+    const co = await classObj.save();
+
+    res.redirect("/dashboardTeacher")
 })
+
 
 app.get('/profile', async (req, res) => {
     try {
@@ -499,6 +507,8 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
         let arr = [];
 
+        // Adding Absent array
+
         for (let i = 0; i < studClass.length; i++) {
             let tempObj = {
                 roll_no: studClass[i].roll_number,
@@ -510,8 +520,10 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
         let d = new Date();
 
-        let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
-        let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
+        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
+        // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
+        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
+        // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
         let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
         
@@ -532,7 +544,18 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
         classObj.attendance.push(attObj);
 
-        classObj.save();
+        
+        // Generating Qr Unique String
+        
+        studClass.forEach((std) => {
+            let roll = std.roll_number;
+            let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
+            
+            std.qrcode_string = qrStr;
+        });
+        
+        
+        const co = await classObj.save();
 
         res.redirect('/dashboardTeacher');
     }
