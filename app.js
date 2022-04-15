@@ -1,8 +1,31 @@
+const multer = require('multer');
+//fileStorageEngine tells multer where and how to save our files
+
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/Files')
+    },
+    filename: (req, file, cb) => {
+
+        cb(null, file.originalname)
+    }
+})
+//upload is middleware
+const upload = multer({ storage: fileStorageEngine })
+
+
+
+const csv = require('csv-parser')
+const fs = require('fs')
 const express = require('express')
 const path = require('path')
 const app = express()
+// app.use(multer({
+//     dest: 'Files/'
+//   }).any());
 const PORT = 80
 const STATIC_PATH = path.join(__dirname + '/public')
+
 const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
 const Class = require('./public/models/class')
@@ -33,6 +56,14 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register')
 });
+
+// app.post('/single',upload.single('studentDetails'),(req,res)=>{
+//     console.log(req.file);
+//     res.send("File upload successfull")
+// });
+
+
+
 
 app.post('/register', async (req, res) => {
     const {
@@ -178,8 +209,11 @@ app.get('/addClass', (req, res) => {
     res.render('class')
 })
 
-app.post('/addClass', async (req, res) => {
-    const { className, teacherEmail, studentEmail } = req.body
+app.post('/addClass', upload.array("Files", 2), async (req, res) => {
+    let { className, teacherEmail, studentEmail } = req.body
+    // let file1=document.getElementById("Fl1").value
+    // let file2=document.getElementById("Fl2").value
+
     let date = new Date()
 
     let student = await Student.findOne({ email: studentEmail })
@@ -206,12 +240,88 @@ app.post('/addClass', async (req, res) => {
         attendance: []
     })
 
-    const registeredClass = await classObject.save()
-    // console.log(registeredClass);
+    // const registeredClass = await classObject.save()
 
+
+
+    const results1 = [];
+    fs.createReadStream(`public/Files/file1.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results1.push(data))
+        .on('end', async () => {
+            console.log(results1);
+            let j = 0;
+            while (j < results1.length) {
+                
+                try {
+                    let detail = `${results1[j].mail}`;
+                    let teacObj = await Teacher.findOne({ email: detail })
+                    console.log(teacObj);
+                    // let classObj = await Class.findOne({ name: req.params.x })
+                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.teachers.length) {
+                        if (classObject.teachers[i].email == teacObj.email) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    classObject.teachers.push({
+                        email: teacObj.email
+                    })
+                    // res.redirect('/dashboardTeacher')
+                } catch (error) {
+                    console.log(error);
+                }
+                // classObject.save();
+                j++;
+            }
+
+        });
+
+
+
+
+    const results = [];
+    fs.createReadStream(`public/Files/file2.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+            console.log(results);
+            let j = 0;
+            while (j < results.length) {
+                try {
+                    let detail = `${results[j].mail}`;
+                    // console.log(detail);
+                    let studObj = await Student.findOne({ email: detail })
+                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.students.length) {
+                        if (classObject.students[i].roll_number == studObj.roll_number) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    let newStudObj = {
+                        roll_number: studObj.roll_number,
+                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
+                    }
+                    classObject.students.push(newStudObj)
+
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                j++;
+            }
+            classObject.save()
+        });
     res.redirect('/dashboardTeacher')
 })
 
+
+//?
 app.get('/getClasses', async (req, res) => {
     const classes = await Class.find()
     // console.log(classes);c
@@ -315,6 +425,7 @@ app.get('/removeClass/:x', async (req, res) => {
 app.post('/addStudent/:x', async (req, res) => {
     try {
         let studObj = await Student.findOne({ email: req.body.studentEmail })
+        console.log(studObj);
         let classObj = await Class.findOne({ name: req.params.x })
         if (studObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
@@ -510,11 +621,11 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
         let d = new Date();
 
-        let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
-        let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
+        let timeStr1 = `${Math.floor(d.getTime() / (1000 * 60 * 60))}`
+        let timeStr2 = `${Math.floor(d.getTime() / (1000 * 60 * 60)) + 1}`
         let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
-        
+
         let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
 
         let attObj = {
@@ -522,10 +633,10 @@ app.get('/generateQrCode/:x', async (req, res) => {
             values: arr
         }
 
-        for(let i = 0 ; i < classObj.attendance.length ; i++){
+        for (let i = 0; i < classObj.attendance.length; i++) {
             dateVal = classObj.attendance[i].date.split(" ");
 
-            if((dateVal[0] == dateStr) && (dateVal[1] >= timeStr1) && (dateVal[1] <= timeStr2)){
+            if ((dateVal[0] == dateStr) && (dateVal[1] >= timeStr1) && (dateVal[1] <= timeStr2)) {
                 return res.redirect("/dashboardTeacher")
             }
         }
