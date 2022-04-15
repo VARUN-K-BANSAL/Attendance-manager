@@ -218,11 +218,6 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
     // let file1=document.getElementById("Fl1").value
     // let file2=document.getElementById("Fl2").value
 
-app.post('/addClass', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
-        return res.redirect('login')
-    }
-    const { className, teacherEmail, studentEmail } = req.body
     let date = new Date()
 
     let student = await Student.findOne({ email: studentEmail })
@@ -624,15 +619,10 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
         let d = new Date();
 
-<<<<<<< HEAD
-        let timeStr1 = `${Math.floor(d.getTime() / (1000 * 60 * 60))}`
-        let timeStr2 = `${Math.floor(d.getTime() / (1000 * 60 * 60)) + 1}`
-=======
         let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
         // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
         let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
         // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
->>>>>>> 4f7c7be53489dac35aec5cc549a696cfe8a03f57
         let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
 
