@@ -69,24 +69,41 @@ list.forEach((item) =>
     item.addEventListener('mouseover', activelink));
 
 
-// Global 
+// Scanning QR and Marking attendance
 
 let stdSet = new Set();
 let i = 0;
 
-/* Scanning Qr Code js */
+// let attendInpEl = document.getElementById("attendanceInput");
+// let attendBtnEl = document.querySelector(".attendance_btn");
 
-// let closeBtnEl = document.querySelector(".close");
 
-// closeBtnEl.addEventListener("click" , () => {
-//     console.log("click close !!!!")
-// })
+let addStudentAttendance = () => {
+
+    let attendInpEl = document.getElementById("attendanceInput");
+
+    let stdStr = "";
+    stdSet.forEach((ele) => {
+        stdStr += `${ele};;`;
+    })
+
+    // console.log("Click !!")
+
+    // console.log(`stdStr = ${stdStr}`);
+
+    // console.log(attendInpEl)
+
+    attendInpEl.value = stdStr;
+
+    // console.log(`input field = ${attendInpEl.value}`);
+
+}
 
 function markAttendance(qrCodeMessage) {
-    console.log(`QR = ${qrCodeMessage}`);
+    // console.log(`QR = ${qrCodeMessage}`);
     stdSet.add(qrCodeMessage);
-    console.log(stdSet)
-    document.getElementById('result').innerHTML = '<span class="result">' + qrCodeMessage + '</span>';
+    // console.log(stdSet)
+    document.getElementById('result').innerHTML = '<div style = "margin: 1rem 0rem;" class="result">' + qrCodeMessage + '</div>';
 }
 
 function errorInScanning(errorMessage) {
@@ -97,6 +114,10 @@ function errorInScanning(errorMessage) {
 
 
 function scanQrCode() {
+
+    document.getElementById('result').innerHTML = '';
+
+
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader", { fps: 10, qrbox: 300 });
 
