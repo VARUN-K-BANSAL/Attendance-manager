@@ -32,7 +32,7 @@ body {
     box-shadow: 0 0 4px var(--black2), 0 0 9px var(--black2);
     margin-left: 2%;
     margin-right: 2%;
-    border-radius: 8px;
+    border-radius: 20px;
     /* padding: 10px; */
 }
 
@@ -390,6 +390,7 @@ form input[type="submit"]:hover {
     color: var(--white);
     font-size: 20px;
     transition: .2s ease;
+    width: 25%;
 }
 
 .tab button:hover {
