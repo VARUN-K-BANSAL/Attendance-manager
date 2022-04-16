@@ -46,3 +46,9 @@ nameSearchbtn.addEventListener("click" , () => {
     filterRows(rows,id,"none");
 });
 
+$(document).ready(function () {
+    $.getJSON('/getClasses', function (res) {
+        console.log(classes);
+    })
+})
+

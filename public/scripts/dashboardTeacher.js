@@ -48,27 +48,6 @@ function closeAddClassModal() {
     document.getElementById('addClassModal').style.display = "none";
 }
 
-//Menu Toggle JS
-let toggle = document.querySelector('.toggle');
-let navigation = document.querySelector('.navigation');
-let main = document.querySelector('.main');
-
-toggle.onclick = function () {
-    navigation.classList.toggle('active');
-    main.classList.toggle('active')
-}
-
-let list = document.querySelectorAll('.navigation li ');
-
-function activelink() {
-    list.forEach((item) =>
-        item.classList.remove('hovered'));
-    this.classList.add('hovered');
-}
-list.forEach((item) =>
-    item.addEventListener('mouseover', activelink));
-
-
 // Scanning QR and Marking attendance
 
 let stdSet = new Set();
