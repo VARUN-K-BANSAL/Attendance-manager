@@ -97,7 +97,7 @@
                             <a href="#" class="close_class" onclick="closeAddClassModal()">&times;</a>
                         <!-- </div> -->
                         
-                        <form action="/addClass" method="POST">
+                        <form action="/addClass" method="POST" enctype="multipart/form-data">
                             <div class="element">
                                 <label for="className">Class Name &nbsp;</label>
                                 <input type="text" name = "className" id = "className">
@@ -106,14 +106,14 @@
                             <div class="element">
                                 <label for="teacherEmail">Add Teacher &nbsp;</label>
                                 <input type="text" name="teacherEmail" id="teacherEmail" placeholder = "Teacher Email (Optional)">
-                                <input type="file" name="" id="">
+                                <input type="file" accept=".csv,.xlsx,.xls" name="Files" id="Fl1">
                                 <!-- <button class="btn">Add csv &nabsp;<i class="fa-solid fa-file-csv"></i></button> -->
                             </div>
 
                             <div class="element">
                                 <label for="studentEmail">Add Student &nbsp;</label>
                                 <input type="text" name="studentEmail" id="studentEmail" placeholder = "Student Email (Optional)">
-                                <input type="file" name="" id="" placeholder="">
+                                <input type="file" accept=".csv,.xlsx,.xls" name="Files" id="Fl2" placeholder="">
                                 <!-- <button class="btn">Add csv &nabsp;<i class="fa-solid fa-file-csv"></i></button> -->
                             </div>
 
@@ -146,6 +146,7 @@
             addClassFinal(classes[5].name);
         });
     </script>
+    <script src="../scripts/sidebar.js"></script>
     <script src="../scripts/dashboardTeacher.js"></script>
 </body>
 

@@ -1,8 +1,31 @@
+const multer = require('multer');
+//fileStorageEngine tells multer where and how to save our files
+
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/Files')
+    },
+    filename: (req, file, cb) => {
+
+        cb(null, file.originalname)
+    }
+})
+//upload is middleware
+const upload = multer({ storage: fileStorageEngine })
+
+
+
+const csv = require('csv-parser')
+const fs = require('fs')
 const express = require('express')
 const path = require('path')
 const app = express()
+// app.use(multer({
+//     dest: 'Files/'
+//   }).any());
 const PORT = 80
 const STATIC_PATH = path.join(__dirname + '/public')
+
 const Student = require('./public/models/student')
 const Teacher = require('./public/models/teacher')
 const Class = require('./public/models/class')
@@ -10,9 +33,7 @@ const Admin = require('./public/models/Admin')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
-const { CONNECTION_URL } = require('./public/db/conn')
-const { config } = require('process')
-const { strictEqual } = require('assert')
+require('./public/db/conn')
 
 app.set("view engine", "ejs")
 app.set("views", __dirname + "/public/views")
@@ -34,6 +55,14 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register')
 });
+
+// app.post('/single',upload.single('studentDetails'),(req,res)=>{
+//     console.log(req.file);
+//     res.send("File upload successfull")
+// });
+
+
+
 
 app.post('/register', async (req, res) => {
     const {
@@ -176,17 +205,22 @@ app.get('/info', (req, res) => {
 })
 //temporary get not used now
 app.get('/addClass', (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     res.render('class')
 })
 
-app.post('/addClass', async (req, res) => {
+app.post('/addClass', upload.array("Files", 2), async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         return res.redirect('login')
     }
-    const { className, teacherEmail, studentEmail } = req.body
+    let { className, teacherEmail, studentEmail } = req.body
+    // console.log(teacherFile);
+    // console.log(studentFile);
+    // let file1=document.getElementById("Fl1").value
+    // let file2=document.getElementById("Fl2").value
+
     let date = new Date()
 
     let student = await Student.findOne({ email: studentEmail })
@@ -213,14 +247,99 @@ app.post('/addClass', async (req, res) => {
         attendance: []
     })
 
-    const registeredClass = await classObject.save()
-    // console.log(registeredClass);
+    // const registeredClass = await classObject.save()
 
+
+
+    const results1 = [];
+    fs.createReadStream(`public/Files/file1.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results1.push(data))
+        .on('end', async () => {
+            console.log(results1);
+            let j = 0;
+            while (j < results1.length) {
+                
+                try {
+                    let detail = `${results1[j].mail}`;
+                    let teacObj = await Teacher.findOne({ email: detail })
+                    console.log(teacObj);
+                    // let classObj = await Class.findOne({ name: req.params.x })
+                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.teachers.length) {
+                        if (classObject.teachers[i].email == teacObj.email) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    classObject.teachers.push({
+                        email: teacObj.email
+                    })
+                    // res.redirect('/dashboardTeacher')
+                } catch (error) {
+                    console.log(error);
+                }
+                // classObject.save();
+                j++;
+            }
+
+        });
+
+
+
+
+    const results = [];
+    fs.createReadStream(`public/Files/file2.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+            console.log(results);
+            let j = 0;
+            while (j < results.length) {
+                try {
+                    let detail = `${results[j].mail}`;
+                    // console.log(detail);
+                    let studObj = await Student.findOne({ email: detail })
+                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.students.length) {
+                        if (classObject.students[i].roll_number == studObj.roll_number) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    let newStudObj = {
+                        roll_number: studObj.roll_number,
+                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
+                    }
+                    classObject.students.push(newStudObj)
+
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                j++;
+            }
+            classObject.save()
+        });
     res.redirect('/dashboardTeacher')
 })
 
-app.get('/dashboardStudent', (req, res) => {
+
+//?
+app.get('/getClasses', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
+    const classes = await Class.find()
+    // console.log(classes);c
+    res.send(classes);
+})
+
+app.get('/dashboardStudent', (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "teacher" || req.cookies[COOKIE_NAME].userType == "admin") {
         res.redirect('/pageNotFound')
@@ -230,7 +349,7 @@ app.get('/dashboardStudent', (req, res) => {
 });
 
 app.get('/dashboardTeacher', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "admin") {
         res.redirect('/pageNotFound')
@@ -242,7 +361,7 @@ app.get('/dashboardTeacher', async (req, res) => {
 });
 
 app.get('/showAttendance/:name/:roll_number', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     let className = req.params.name.replace('%20', ' ')
@@ -262,7 +381,7 @@ app.get('/showAttendance/:name/:roll_number', async (req, res) => {
 });
 
 app.post('/markAttendance/:cname',async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
 
@@ -308,14 +427,14 @@ app.post('/markAttendance/:cname',async (req, res) => {
 })
 
 app.get('/profileDashboard', (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
-    if(req.body.cookies[COOKIE_NAME].userType == 'student') {
+    if(req.cookies[COOKIE_NAME].userType == 'student') {
         res.redirect('/dashboardStudent')
-    } else if(req.body.cookies[COOKIE_NAME].userType == 'teacher') {
+    } else if(req.cookies[COOKIE_NAME].userType == 'teacher') {
         res.redirect('/dashboardTeacher')
-    } else if(req.body.cookies[COOKIE_NAME].userType == 'admin') {
+    } else if(req.cookies[COOKIE_NAME].userType == 'admin') {
         res.redirect('/admin')
     } else {
         res.redirect('/pageNotFound')
@@ -323,7 +442,7 @@ app.get('/profileDashboard', (req, res) => {
 })
 
 app.get('/profile', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     try {
@@ -334,7 +453,7 @@ app.get('/profile', async (req, res) => {
 })
 
 app.get('/removeClass/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     try {
@@ -347,11 +466,12 @@ app.get('/removeClass/:x', async (req, res) => {
 })
 
 app.post('/addStudent/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     try {
         let studObj = await Student.findOne({ email: req.body.studentEmail })
+        console.log(studObj);
         let classObj = await Class.findOne({ name: req.params.x })
         if (studObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
@@ -374,7 +494,7 @@ app.post('/addStudent/:x', async (req, res) => {
 })
 
 app.post('/addTeacher/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     try {
@@ -399,7 +519,7 @@ app.post('/addTeacher/:x', async (req, res) => {
 })
 
 app.get('/admin', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         res.redirect('/pageNotFound')
@@ -412,7 +532,7 @@ app.get('/admin', async (req, res) => {
 })
 
 app.post('/admin/addAdmin', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -429,11 +549,10 @@ app.post('/admin/addAdmin', async (req, res) => {
     })
 
     const registeredAdmin = await registerAdmin.save()
-    console.log(registeredAdmin);
     res.redirect('/admin')
 })
 app.post('/admin/removeAdmin', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -446,7 +565,7 @@ app.post('/admin/removeAdmin', async (req, res) => {
     res.redirect('/admin')
 })
 app.get('/admin/removeStudent/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -457,7 +576,7 @@ app.get('/admin/removeStudent/:x', async (req, res) => {
     res.redirect('/admin')
 })
 app.get('/admin/removeTeacher/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -468,7 +587,7 @@ app.get('/admin/removeTeacher/:x', async (req, res) => {
     res.redirect('/admin')
 })
 app.get('/admin/removeCourse/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -480,7 +599,7 @@ app.get('/admin/removeCourse/:x', async (req, res) => {
 })
 
 app.get('/generateQrCode/:x', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
 
@@ -508,7 +627,8 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
             arr.push(tempObj);
         }
-        
+
+
         let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
 
         let matchFound = false;
@@ -555,9 +675,9 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
 
 // getting data from database
-app.get('/getClasses/:x', async (req, res) => {
-    const classes = await Class.findOne({name : req.params.x})
-    // console.log(classes);c
+app.get('/getClasses', async (req, res) => {
+    const classes = await Class.find()
+    // console.log(classes);
     res.send(classes);
 })
 
@@ -567,7 +687,7 @@ app.get('/getCookieDetails', (req, res) => {
 
 // Providing data only to admins others cannot access it
 app.get('/admin/getStudents', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -580,7 +700,7 @@ app.get('/admin/getStudents', async (req, res) => {
     }
 })
 app.get('/admin/getTeachers', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -593,7 +713,7 @@ app.get('/admin/getTeachers', async (req, res) => {
     }
 })
 app.get('/admin/getCourses', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
@@ -606,7 +726,7 @@ app.get('/admin/getCourses', async (req, res) => {
     }
 })
 app.get('/admin/getAdmins', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     } else if (req.cookies[COOKIE_NAME].userType == "student" || req.cookies[COOKIE_NAME].userType == "teacher") {
         return res.redirect('/pageNotFound')
