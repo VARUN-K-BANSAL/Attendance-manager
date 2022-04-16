@@ -522,7 +522,7 @@ app.get('/generateQrCode/:x', async (req, res) => {
         for(let i = 0 ; i < classObj.attendance.length ; i++){
             dateVal = classObj.attendance[i].date.split(" ");
 
-            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))){
+            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) <= parseInt(timeStr1)) && (parseInt(dateVal[2]) >= parseInt(timeStr1))){
                 console.log("here")
                 matchFound = true;
     
@@ -555,8 +555,8 @@ app.get('/generateQrCode/:x', async (req, res) => {
 
 
 // getting data from database
-app.get('/getClasses', async (req, res) => {
-    const classes = await Class.find()
+app.get('/getClasses/:x', async (req, res) => {
+    const classes = await Class.findOne({name : req.params.x})
     // console.log(classes);c
     res.send(classes);
 })
