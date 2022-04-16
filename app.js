@@ -214,6 +214,9 @@ app.get('/addClass', (req, res) => {
 })
 
 app.post('/addClass', upload.array("Files", 2), async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
     let { className, teacherEmail, studentEmail } = req.body
     // console.log(teacherFile);
     // console.log(studentFile);
@@ -329,6 +332,9 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
 
 //?
 app.get('/getClasses', async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
     const classes = await Class.find()
     // console.log(classes);c
     res.send(classes);
