@@ -215,6 +215,8 @@ app.get('/addClass', (req, res) => {
 
 app.post('/addClass', upload.array("Files", 2), async (req, res) => {
     let { className, teacherEmail, studentEmail } = req.body
+    // console.log(teacherFile);
+    // console.log(studentFile);
     // let file1=document.getElementById("Fl1").value
     // let file2=document.getElementById("Fl2").value
 
