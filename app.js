@@ -604,7 +604,13 @@ app.get('/generateQrCode/:x', async (req, res) => {
         let classObj = await Class.findOne({ name: req.params.x });
         let studClass = classObj.students;
 
-        // console.log(`!! len = ${studClass.length}`);
+        let d = new Date();
+
+        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
+        // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
+        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
+        // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
+        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
 
         let arr = [];
 
@@ -619,46 +625,44 @@ app.get('/generateQrCode/:x', async (req, res) => {
             arr.push(tempObj);
         }
 
-        let d = new Date();
-
-        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
-        // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
-        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
-        // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
-        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-
 
         let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
+
+        let matchFound = false;
 
         let attObj = {
             date: timeStampStr,
             values: arr
         }
 
-        for (let i = 0; i < classObj.attendance.length; i++) {
+
+        for(let i = 0 ; i < classObj.attendance.length ; i++){
             dateVal = classObj.attendance[i].date.split(" ");
 
-            if ((dateVal[0] == dateStr) && (dateVal[1] >= timeStr1) && (dateVal[1] <= timeStr2)) {
-                return res.redirect("/dashboardTeacher")
+            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))){
+                console.log("here")
+                matchFound = true;
+    
             }
         }
+        
+        if(!matchFound){
+            // Generating Qr Unique String
+        
+            studClass.forEach((std) => {
+                let roll = std.roll_number;
+                let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
+                
+                std.qrcode_string = qrStr;
+            });
 
-        classObj.attendance.push(attObj);
+            classObj.attendance.push(attObj);  
 
-        
-        // Generating Qr Unique String
-        
-        studClass.forEach((std) => {
-            let roll = std.roll_number;
-            let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
-            
-            std.qrcode_string = qrStr;
-        });
-        
-        
-        const co = await classObj.save();
+            const co = await classObj.save();
+        }
 
-        res.redirect('/dashboardTeacher');
+        return res.redirect('/dashboardTeacher');
+
     }
     catch (error) {
         console.log(error);
