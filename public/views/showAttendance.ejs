@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=6.0">
     <title>Attendance</title>
 
-    <link rel="stylesheet" href="../css/showAttendance.css">
+    <link rel="stylesheet" href="../../../css/showAttendance.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -18,7 +18,7 @@
 <body>
 
     <header>
-        <h1 class="class_name">FSD - 1</h1>
+        <h1 class="class_name" id="className"><%= name%></h1>
     </header>
 
     <main>
@@ -46,281 +46,11 @@
 
                 <table class="attendance_sheet" id="sheet" style = "width: 100%;">
                     <thead>
-                        <tr>
+                        <tr id="heading">
                             <th class="fixed_column" scope="column">&nbsp;</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
-                            <th scope="col">26/02/2022</th>
-                            <th scope="col">27/02/2022</th>
-                            <th scope="col">28/02/2022</th>
-                            <th scope="col">02/03/2022</th>
-                            <th scope="col">03/03/2022</th>
-                            <th scope="col">04/03/2022</th>
-                            <th scope="col">08/03/2022</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="column">Student 1</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column" width = "100">Student 2</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 3</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 4</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 5</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 6</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 7</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 8</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 9</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
-
-                        <tr>
-                            <th  scope="column">Student 10</th>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                            <td>P</td>
-                            <td>A</td>
-                            <td>P</td>
-                        </tr>
+                    <tbody id="tableBody">
                     </tbody>
                 </table>
             </section>
@@ -333,8 +63,7 @@
         <p class = "content" >© Group-27</p>
     </footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="../scripts/showAttendance.js"></script>
+    <script src="../../../scripts/showAttendance.js"></script>
 </body>
 
 </html>

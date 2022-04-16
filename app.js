@@ -1,28 +1,9 @@
-const multer = require('multer');
-//fileStorageEngine tells multer where and how to save our files
-
-const fileStorageEngine = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, './public/Files')
-    },
-    filename: (req, file, cb) => {
-
-        cb(null, file.originalname)
-    }
-})
-//upload is middleware
-const upload = multer({ storage: fileStorageEngine })
-
-
-
+/*Varun Bansal */
 const csv = require('csv-parser')
 const fs = require('fs')
 const express = require('express')
 const path = require('path')
 const app = express()
-// app.use(multer({
-//     dest: 'Files/'
-//   }).any());
 const PORT = 80
 const STATIC_PATH = path.join(__dirname + '/public')
 
@@ -35,12 +16,26 @@ const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
 require('./public/db/conn')
 
+/**Saket Ranjan */
+const multer = require('multer');
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './public/Files')
+    },
+    filename: (req, file, cb) => {
+
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({ storage: fileStorageEngine })
+
 app.set("view engine", "ejs")
 app.set("views", __dirname + "/public/views")
 
 app.use(express.static(STATIC_PATH));
 app.use(cookieParser())
 
+/**Varun Bansal */
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -55,14 +50,6 @@ app.get('/', (req, res) => {
 app.get('/register', (req, res) => {
     res.render('register')
 });
-
-// app.post('/single',upload.single('studentDetails'),(req,res)=>{
-//     console.log(req.file);
-//     res.send("File upload successfull")
-// });
-
-
-
 
 app.post('/register', async (req, res) => {
     const {
@@ -211,133 +198,6 @@ app.get('/addClass', (req, res) => {
     res.render('class')
 })
 
-app.post('/addClass', upload.array("Files", 2), async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
-        return res.redirect('login')
-    }
-    let { className, teacherEmail, studentEmail } = req.body
-    // console.log(teacherFile);
-    // console.log(studentFile);
-    // let file1=document.getElementById("Fl1").value
-    // let file2=document.getElementById("Fl2").value
-
-    let date = new Date()
-
-    let student = await Student.findOne({ email: studentEmail })
-    let teacher = await Teacher.findOne({ email: teacherEmail })
-
-    const tID = {
-        email: teacher.email
-    }
-
-    const sID = {
-        roll_number: student.roll_number,
-        qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-    }
-
-    console.log(sID);
-    const uID = {
-        email: req.cookies[COOKIE_NAME].email
-    }
-
-    const classObject = new Class({
-        name: className,
-        teachers: [tID, uID],
-        students: [sID],
-        attendance: []
-    })
-
-    // const registeredClass = await classObject.save()
-
-
-
-    const results1 = [];
-    fs.createReadStream(`public/Files/file1.csv`)
-        .pipe(csv({}))
-        .on('data', (data) => results1.push(data))
-        .on('end', async () => {
-            console.log(results1);
-            let j = 0;
-            while (j < results1.length) {
-                
-                try {
-                    let detail = `${results1[j].mail}`;
-                    let teacObj = await Teacher.findOne({ email: detail })
-                    console.log(teacObj);
-                    // let classObj = await Class.findOne({ name: req.params.x })
-                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
-                    let i = 0
-                    while (i < classObject.teachers.length) {
-                        if (classObject.teachers[i].email == teacObj.email) {
-                            return res.redirect('/dashboardTeacher')
-                        }
-                        i++
-                    }
-                    classObject.teachers.push({
-                        email: teacObj.email
-                    })
-                    // res.redirect('/dashboardTeacher')
-                } catch (error) {
-                    console.log(error);
-                }
-                // classObject.save();
-                j++;
-            }
-
-        });
-
-
-
-
-    const results = [];
-    fs.createReadStream(`public/Files/file2.csv`)
-        .pipe(csv({}))
-        .on('data', (data) => results.push(data))
-        .on('end', async () => {
-            console.log(results);
-            let j = 0;
-            while (j < results.length) {
-                try {
-                    let detail = `${results[j].mail}`;
-                    // console.log(detail);
-                    let studObj = await Student.findOne({ email: detail })
-                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
-                    let i = 0
-                    while (i < classObject.students.length) {
-                        if (classObject.students[i].roll_number == studObj.roll_number) {
-                            return res.redirect('/dashboardTeacher')
-                        }
-                        i++
-                    }
-                    let newStudObj = {
-                        roll_number: studObj.roll_number,
-                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
-                    }
-                    classObject.students.push(newStudObj)
-
-
-
-                } catch (error) {
-                    console.log(error);
-                }
-                j++;
-            }
-            classObject.save()
-        });
-    res.redirect('/dashboardTeacher')
-})
-
-
-//?
-app.get('/getClasses', async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
-        return res.redirect('login')
-    }
-    const classes = await Class.find()
-    // console.log(classes);c
-    res.send(classes);
-})
-
 app.get('/dashboardStudent', (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         res.redirect('login')
@@ -360,71 +220,16 @@ app.get('/dashboardTeacher', async (req, res) => {
     }
 });
 
-app.get('/showAttendance/:name/:roll_number', async (req, res) => {
+app.get('/showAttendance/:name/', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     let className = req.params.name.replace('%20', ' ')
-    console.log(className);
-    let roll_number = req.params.roll_number
-    console.log(roll_number);
-    let classObj = await Class.findOne({ name: className })
     let dataObj = {
-        name: classObj.name,
-        teachers: classObj.teachers,
-        students: classObj.students,
-        attendance: classObj.attendance,
-        roll_number: roll_number
+        name: className
     }
-    console.log(dataObj);
     res.render('showAttendance', dataObj)
 });
-
-app.post('/markAttendance/:cname',async (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
-        return res.redirect('login')
-    }
-
-    let val = req.body.qrCodeArr;
-    const classObj = await Class.findOne({name: req.params.cname})
-    const stds = classObj.students;
-    const attend = classObj.attendance;
-
-    // console.log(`stud att = ${val}`)
-
-    let passStr = val.split(";;")
-
-    for(let i = 0 ; i < passStr.length ; i++){
-
-        let tempStr = passStr[i];
-
-        for(let j = 0 ; j < stds.length ; j++){
-            if(stds[j].qrcode_string == tempStr){
-                let tempRoll = stds[j].roll_number;
-                let tempArr = tempStr.split("%%");
-                let dateStr = tempArr[2];
-                let timeStr = tempArr[3];
-
-                attend.forEach((att) => {
-                    let attDate = att.date.split(" ");
-
-                    if((attDate[0] == dateStr) && (attDate[1] == timeStr)){
-                        att.values.forEach((stdVal) => {
-                            if(stdVal.roll_no == tempRoll){
-                                stdVal.status = "P";
-                            }
-                        })
-                    }
-                });
-
-            }
-        }
-    }
-
-    const co = await classObj.save();
-
-    res.redirect("/dashboardTeacher")
-})
 
 app.get('/profileDashboard', (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
@@ -547,7 +352,6 @@ app.post('/admin/addAdmin', async (req, res) => {
         email,
         password
     })
-
     const registeredAdmin = await registerAdmin.save()
     res.redirect('/admin')
 })
@@ -598,86 +402,11 @@ app.get('/admin/removeCourse/:x', async (req, res) => {
     res.redirect('/admin')
 })
 
-app.get('/generateQrCode/:x', async (req, res) => {
+app.get('/getClasses', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
-
-    try {
-        let classObj = await Class.findOne({ name: req.params.x });
-        let studClass = classObj.students;
-
-        let d = new Date();
-
-        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
-        // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
-        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
-        // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
-        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
-
-        let arr = [];
-
-        // Adding Absent array
-
-        for (let i = 0; i < studClass.length; i++) {
-            let tempObj = {
-                roll_no: studClass[i].roll_number,
-                status: "A"
-            }
-
-            arr.push(tempObj);
-        }
-
-
-        let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
-
-        let matchFound = false;
-
-        let attObj = {
-            date: timeStampStr,
-            values: arr
-        }
-
-
-        for(let i = 0 ; i < classObj.attendance.length ; i++){
-            dateVal = classObj.attendance[i].date.split(" ");
-
-            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))){
-                console.log("here")
-                matchFound = true;
-    
-            }
-        }
-        
-        if(!matchFound){
-            // Generating Qr Unique String
-        
-            studClass.forEach((std) => {
-                let roll = std.roll_number;
-                let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
-                
-                std.qrcode_string = qrStr;
-            });
-
-            classObj.attendance.push(attObj);  
-
-            const co = await classObj.save();
-        }
-
-        return res.redirect('/dashboardTeacher');
-
-    }
-    catch (error) {
-        console.log(error);
-    }
-
-})
-
-
-// getting data from database
-app.get('/getClasses', async (req, res) => {
     const classes = await Class.find()
-    // console.log(classes);
     res.send(classes);
 })
 
@@ -685,7 +414,6 @@ app.get('/getCookieDetails', (req, res) => {
     res.send(req.cookies)
 })
 
-// Providing data only to admins others cannot access it
 app.get('/admin/getStudents', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
@@ -747,4 +475,198 @@ app.get('/logout', (req, res) => {
 
 app.get('*', (req, res) => {
     res.render('404NotFound')
+})
+
+
+/**Varun Mukherjee */
+app.get('/generateQrCode/:x', async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
+        return res.redirect('login')
+    }
+    try {
+        let classObj = await Class.findOne({ name: req.params.x });
+        let studClass = classObj.students;
+        let d = new Date();
+        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
+        // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
+        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
+        // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
+        let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+        let arr = [];
+        // Adding Absent array
+        for (let i = 0; i < studClass.length; i++) {
+            let tempObj = {
+                roll_no: studClass[i].roll_number,
+                status: "A"
+            }
+            arr.push(tempObj);
+        }
+        let timeStampStr = `${dateStr} ${timeStr1} ${timeStr2}`
+        let matchFound = false;
+        let attObj = {
+            date: timeStampStr,
+            values: arr
+        }
+        for(let i = 0 ; i < classObj.attendance.length ; i++){
+            dateVal = classObj.attendance[i].date.split(" ");
+            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))){
+                console.log("here")
+                matchFound = true;
+            }
+        }
+        if(!matchFound){
+            // Generating Qr Unique String
+            studClass.forEach((std) => {
+                let roll = std.roll_number;
+                let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
+                
+                std.qrcode_string = qrStr;
+            });
+            classObj.attendance.push(attObj);
+            const co = await classObj.save();
+        }
+
+        return res.redirect('/dashboardTeacher');
+
+    }
+    catch (error) {
+        console.log(error);
+    }
+})
+
+app.post('/markAttendance/:cname',async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
+        return res.redirect('login')
+    }
+    let val = req.body.qrCodeArr;
+    const classObj = await Class.findOne({name: req.params.cname})
+    const stds = classObj.students;
+    const attend = classObj.attendance;
+    let passStr = val.split(";;")
+    for(let i = 0 ; i < passStr.length ; i++){
+        let tempStr = passStr[i];
+        for(let j = 0 ; j < stds.length ; j++){
+            if(stds[j].qrcode_string == tempStr){
+                let tempRoll = stds[j].roll_number;
+                let tempArr = tempStr.split("%%");
+                let dateStr = tempArr[2];
+                let timeStr = tempArr[3];
+                attend.forEach((att) => {
+                    let attDate = att.date.split(" ");
+                    if((attDate[0] == dateStr) && (attDate[1] == timeStr)){
+                        att.values.forEach((stdVal) => {
+                            if(stdVal.roll_no == tempRoll){
+                                stdVal.status = "P";
+                            }
+                        })
+                    }
+                });
+            }
+        }
+    }
+    const co = await classObj.save();
+    res.redirect("/dashboardTeacher")
+})
+
+
+
+/**Saket Ranjan */
+app.post('/addClass', upload.array("Files", 2), async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
+    let { className, teacherEmail, studentEmail } = req.body
+    let date = new Date()
+
+    let student = await Student.findOne({ email: studentEmail })
+    let teacher = await Teacher.findOne({ email: teacherEmail })
+
+    const tID = {
+        email: teacher.email
+    }
+
+    const sID = {
+        roll_number: student.roll_number,
+        qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    }
+
+    const uID = {
+        email: req.cookies[COOKIE_NAME].email
+    }
+    const classObject = new Class({
+        name: className,
+        teachers: [tID, uID],
+        students: [sID],
+        attendance: []
+    })
+    const results1 = [];
+    fs.createReadStream(`public/Files/file1.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results1.push(data))
+        .on('end', async () => {
+            console.log(results1);
+            let j = 0;
+            while (j < results1.length) {
+                
+                try {
+                    let detail = `${results1[j].mail}`;
+                    let teacObj = await Teacher.findOne({ email: detail })
+                    console.log(teacObj);
+                    // let classObj = await Class.findOne({ name: req.params.x })
+                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.teachers.length) {
+                        if (classObject.teachers[i].email == teacObj.email) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    classObject.teachers.push({
+                        email: teacObj.email
+                    })
+                    // res.redirect('/dashboardTeacher')
+                } catch (error) {
+                    console.log(error);
+                }
+                // classObject.save();
+                j++;
+            }
+
+        });
+    const results = [];
+    fs.createReadStream(`public/Files/file2.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+            console.log(results);
+            let j = 0;
+            while (j < results.length) {
+                try {
+                    let detail = `${results[j].mail}`;
+                    // console.log(detail);
+                    let studObj = await Student.findOne({ email: detail })
+                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.students.length) {
+                        if (classObject.students[i].roll_number == studObj.roll_number) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    let newStudObj = {
+                        roll_number: studObj.roll_number,
+                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
+                    }
+                    classObject.students.push(newStudObj)
+
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                j++;
+            }
+            classObject.save()
+        });
+    res.redirect('/dashboardTeacher')
 })
