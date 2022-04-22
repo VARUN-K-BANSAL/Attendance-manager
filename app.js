@@ -102,6 +102,69 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// app.get('/update',(req,res)=>{
+//     res.render('login')
+// })
+
+app.post('/update',async (req,res)=>{
+    const {full_name,email,curr_password,new_password,cn_password}=req.body;
+   
+
+    let teacher=await Teacher.findOne({email})
+    let student=await Student.findOne({email})
+    let admin=await Admin.findOne({email})
+    if(teacher!=null){
+    if(teacher.email==email && curr_password==teacher.password && new_password==cn_password){
+        
+        let result=await Teacher.updateOne({email:email},{
+            $set:{password:new_password}
+        })
+        // let teacherCookie={
+        //     name: teacher.name,
+        //     email: teacher.email,
+        //     password: new_password,
+        //     userType: "teacher",
+        //     __v: teacher.__v
+        // }
+        // res.cookie(COOKIE_NAME,teacherCookie)
+       return  res.redirect('/login')
+    }}
+    if(student!=null){
+        if(student.email==email && curr_password==student.password && new_password==cn_password){
+            esult=await Student.updateOne({email:email},{
+                $set:{password:new_password}
+            })
+            // let studentCookie = {
+            //     name: student.name,
+            //     email: student.email,
+            //     roll_number: student.roll_number,
+            //     password: new_password,
+            //     userType: "student",
+            //     __v: student.__v
+            // }
+            // res.cookie(COOKIE_NAME, studentCookie)
+          return res.redirect('/dashboardStudent')
+    }}
+    if(admin!=null){
+        if(admin.email==email && curr_password==admin.password && new_password==cn_password){
+            
+            let result=await Admin.updateOne({email:email},{
+                $set:{password:new_password}
+            })
+            // let teacherCookie={
+            //     name: teacher.name,
+            //     email: teacher.email,
+            //     password: new_password,
+            //     userType: "teacher",
+            //     __v: teacher.__v
+            // }
+            // res.cookie(COOKIE_NAME,teacherCookie)
+           return  res.redirect('/dashboardAdmin')
+        }}
+    
+})
+
+
 app.get('/login', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.render('login')
@@ -196,6 +259,132 @@ app.get('/addClass', (req, res) => {
         return res.redirect('login')
     }
     res.render('class')
+})
+
+app.post('/addClass', upload.array("Files", 2), async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
+    let { className, teacherEmail, studentEmail } = req.body
+    // console.log(teacherFile);
+    // console.log(studentFile);
+    // let file1=document.getElementById("Fl1").value
+    // let file2=document.getElementById("Fl2").value
+
+    let date = new Date()
+
+    let student = await Student.findOne({ email: studentEmail })
+    let teacher = await Teacher.findOne({ email: teacherEmail })
+
+    const tID = {
+        email: teacher.email
+    }
+
+    const sID = {
+        roll_number: student.roll_number,
+        qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    }
+
+    console.log(sID);
+    const uID = {
+        email: req.cookies[COOKIE_NAME].email
+    }
+
+    const classObject = new Class({
+        name: className,
+        teachers: [tID, uID],
+        students: [sID],
+        attendance: []
+    })
+
+    // const registeredClass = await classObject.save()
+
+
+
+    const results1 = [];
+    fs.createReadStream(`public/Files/file1.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results1.push(data))
+        .on('end', async () => {
+            console.log(results1);
+            let j = 0;
+            while (j < results1.length) {
+                
+                try {
+                    let detail = `${results1[j].mail}`;
+                    let teacObj = await Teacher.findOne({ email: detail })
+                    console.log(teacObj);
+                    // let classObj = await Class.findOne({ name: req.params.x })
+                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.teachers.length) {
+                        if (classObject.teachers[i].email == teacObj.email) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    classObject.teachers.push({
+                        email: teacObj.email
+                    })
+                    // res.redirect('/dashboardTeacher')
+                } catch (error) {
+                    console.log(error);
+                }
+                // classObject.save();
+                j++;
+            }
+
+        });
+
+
+
+
+    const results = [];
+    fs.createReadStream(`public/Files/file2.csv`)
+        .pipe(csv({}))
+        .on('data', (data) => results.push(data))
+        .on('end', async () => {
+            console.log(results);
+            let j = 0;
+            while (j < results.length) {
+                try {
+                    let detail = `${results[j].mail}`;
+                    // console.log(detail);
+                    let studObj = await Student.findOne({ email: detail })
+                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                    let i = 0
+                    while (i < classObject.students.length) {
+                        if (classObject.students[i].roll_number == studObj.roll_number) {
+                            return res.redirect('/dashboardTeacher')
+                        }
+                        i++
+                    }
+                    let newStudObj = {
+                        roll_number: studObj.roll_number,
+                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
+                    }
+                    classObject.students.push(newStudObj)
+
+
+
+                } catch (error) {
+                    console.log(error);
+                }
+                j++;
+            }
+            classObject.save()
+        });
+    res.redirect('/dashboardTeacher')
+})
+
+//?
+app.get('/getClasses', async (req, res) => {
+    if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
+        return res.redirect('login')
+    }
+    const classes = await Class.find()
+    // console.log(classes);c
+    res.send(classes);
 })
 
 app.get('/dashboardStudent', (req, res) => {
