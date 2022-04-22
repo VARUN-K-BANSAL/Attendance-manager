@@ -235,11 +235,11 @@ app.get('/profileDashboard', (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
-    if(req.cookies[COOKIE_NAME].userType == 'student') {
+    if (req.cookies[COOKIE_NAME].userType == 'student') {
         res.redirect('/dashboardStudent')
-    } else if(req.cookies[COOKIE_NAME].userType == 'teacher') {
+    } else if (req.cookies[COOKIE_NAME].userType == 'teacher') {
         res.redirect('/dashboardTeacher')
-    } else if(req.cookies[COOKIE_NAME].userType == 'admin') {
+    } else if (req.cookies[COOKIE_NAME].userType == 'admin') {
         res.redirect('/admin')
     } else {
         res.redirect('/pageNotFound')
@@ -487,9 +487,9 @@ app.get('/generateQrCode/:x', async (req, res) => {
         let classObj = await Class.findOne({ name: req.params.x });
         let studClass = classObj.students;
         let d = new Date();
-        let timeStr1 = `${Math.floor(d.getTime()/(1000*60))}`
+        let timeStr1 = `${Math.floor(d.getTime() / (1000 * 60))}`
         // let timeStr1 = `${Math.floor(d.getTime()/(1000*60*60))}`
-        let timeStr2 = `${Math.floor(d.getTime()/(1000*60)) + 5}`
+        let timeStr2 = `${Math.floor(d.getTime() / (1000 * 60)) + 5}`
         // let timeStr2 = `${Math.floor(d.getTime()/(1000*60*60)) + 1}`
         let dateStr = `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
         let arr = [];
@@ -507,19 +507,19 @@ app.get('/generateQrCode/:x', async (req, res) => {
             date: timeStampStr,
             values: arr
         }
-        for(let i = 0 ; i < classObj.attendance.length ; i++){
+        for (let i = 0; i < classObj.attendance.length; i++) {
             dateVal = classObj.attendance[i].date.split(" ");
-            if((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))){
+            if ((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))) {
                 console.log("here")
                 matchFound = true;
             }
         }
-        if(!matchFound){
+        if (!matchFound) {
             // Generating Qr Unique String
             studClass.forEach((std) => {
                 let roll = std.roll_number;
                 let qrStr = `${roll}%%${req.params.x}%%${dateStr}%%${timeStr1}`;
-                
+
                 std.qrcode_string = qrStr;
             });
             classObj.attendance.push(attObj);
@@ -534,28 +534,28 @@ app.get('/generateQrCode/:x', async (req, res) => {
     }
 })
 
-app.post('/markAttendance/:cname',async (req, res) => {
+app.post('/markAttendance/:cname', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.redirect('login')
     }
     let val = req.body.qrCodeArr;
-    const classObj = await Class.findOne({name: req.params.cname})
+    const classObj = await Class.findOne({ name: req.params.cname })
     const stds = classObj.students;
     const attend = classObj.attendance;
     let passStr = val.split(";;")
-    for(let i = 0 ; i < passStr.length ; i++){
+    for (let i = 0; i < passStr.length; i++) {
         let tempStr = passStr[i];
-        for(let j = 0 ; j < stds.length ; j++){
-            if(stds[j].qrcode_string == tempStr){
+        for (let j = 0; j < stds.length; j++) {
+            if (stds[j].qrcode_string == tempStr) {
                 let tempRoll = stds[j].roll_number;
                 let tempArr = tempStr.split("%%");
                 let dateStr = tempArr[2];
                 let timeStr = tempArr[3];
                 attend.forEach((att) => {
                     let attDate = att.date.split(" ");
-                    if((attDate[0] == dateStr) && (attDate[1] == timeStr)){
+                    if ((attDate[0] == dateStr) && (attDate[1] == timeStr)) {
                         att.values.forEach((stdVal) => {
-                            if(stdVal.roll_no == tempRoll){
+                            if (stdVal.roll_no == tempRoll) {
                                 stdVal.status = "P";
                             }
                         })
@@ -607,7 +607,7 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
             console.log(results1);
             let j = 0;
             while (j < results1.length) {
-                
+
                 try {
                     let detail = `${results1[j].mail}`;
                     let teacObj = await Teacher.findOne({ email: detail })
@@ -658,9 +658,6 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
                         qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
                     }
                     classObject.students.push(newStudObj)
-
-
-
                 } catch (error) {
                     console.log(error);
                 }
