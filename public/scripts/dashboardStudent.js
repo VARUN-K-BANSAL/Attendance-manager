@@ -62,7 +62,7 @@ let classTemplate = (name, roll_number) =>
     </div>
     <div class = "function_links">
         <button onclick="openModal('${name}', '${roll_number}')" class = "btn" id="showQrCode" style="border:none; outline:none;">My Qr Code</button>
-        <a href="/showAttendance/${name}/${roll_number}" class = "btn" target="__blank">Show Attendance</a>
+        <a href="/showAttendance/${name}" class = "btn" target="__blank">Show Attendance</a>
     </div>
 </div>
 `
