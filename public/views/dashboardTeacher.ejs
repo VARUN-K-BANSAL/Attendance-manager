@@ -83,7 +83,7 @@
             </div>
 
             
-            <section class="classes">
+            <section class="classes" id="classesSection">
 
                 <div class="link_bar">
                     <button href="#" id="addClass" onclick="addClass()" class = "add_class btn">Add New Class</button>
@@ -93,10 +93,7 @@
 
                 <div class="modal addClassModal" id="addClassModal">
                     <div class="modal-content modal-animate">
-                        <!-- <div class = "close_element"> -->
-                            <a href="#" class="close_class" onclick="closeAddClassModal()">&times;</a>
-                        <!-- </div> -->
-                        
+                        <a href="#" class="close_class" onclick="closeAddClassModal()">&times;</a>                        
                         <form action="/addClass" method="POST" enctype="multipart/form-data">
                             <div class="element">
                                 <label for="className">Class Name &nbsp;</label>
@@ -114,12 +111,10 @@
                                 <label for="studentEmail">Add Student &nbsp;</label>
                                 <input type="text" name="studentEmail" id="studentEmail" placeholder = "Student Email (Optional)">
                                 <input type="file" accept=".csv,.xlsx,.xls" name="Files" id="Fl2" placeholder="">
-                                <!-- <button class="btn">Add csv &nabsp;<i class="fa-solid fa-file-csv"></i></button> -->
                             </div>
 
                             <div class="submit_element">
                                 <button type="submit" class = "btn">Submit</button>
-                                <!-- <button " onclick = "addClassFinal()">Click!</button> -->
                             </div>
                         </form>
                     </div>
@@ -133,19 +128,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="../scripts/qrcode.min.js"></script>
-    <script src="../scripts/addClass.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $(document).ready(() => {
-            let classes = <%- JSON.stringify(classes) %>;
-            addClassFinal(classes[0].name);
-            addClassFinal(classes[1].name);
-            addClassFinal(classes[2].name);
-            addClassFinal(classes[3].name);
-            addClassFinal(classes[4].name);
-            addClassFinal(classes[5].name);
-        });
-    </script>
     <script src="../scripts/sidebar.js"></script>
     <script src="../scripts/dashboardTeacher.js"></script>
 </body>
