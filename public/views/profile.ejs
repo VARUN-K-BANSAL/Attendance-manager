@@ -10,6 +10,7 @@
         href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css"
         integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/profile.css">
+    <script src="../scripts/register.js"></script>
 </head>
 
 <body>
@@ -89,7 +90,7 @@
             <section class="brief">
                 <div class="row">
                     <div class="brief-colm">
-                        <form action="/register" method="post">
+                        <form action="/update" method="post">
                             <h1>Your Profile</h1>
                             <div class="txt_field">
                                 <label>Full Name</label>
@@ -104,20 +105,22 @@
                             <div class="txt_field">
                                 <label>Current Password</label><br>
                                 <span></span>
-                                <input type="password" name="c_password" onchange="check_pass()" oninput="check_pass()"
-                                    id="c_pass" required>
+                                <input type="password" name="curr_password" id="curr_pass" required>
+                                <!-- id c_pass changed to curr_pass -->
                             </div>
                             <div class="txt_field">
                                 <label>New Password</label><br>
                                 <span></span>
-                                <input type="password" name="n_password" onchange="check_pass()" oninput="check_pass()"
-                                    id="n_pass" required>
+                                <input type="password" name="new_password" onchange="check_pass()" oninput="check_pass()"
+                                    id="pass" required>
+                                <!-- id c_pass changed to pass -->
                             </div>
                             <div class="txt_field">
                                 <label>Confirm Password</label><br>
                                 <span></span>
-                                <input type="password" name="cn_password" onchange="check_pass()" oninput="check_pass()"
-                                    id="cn_pass" required>
+                                <input type="password" name="cn_password" onchange="conf_pass()" oninput="conf_pass()"
+                                    id="c_pass" required>
+                                <!-- id cn_pass changed to c_pass -->
                             </div>
                             <input type="submit" value="Update">
                         </form>
@@ -130,6 +133,7 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="../scripts/sidebar.js"></script>
+    <script src="../scripts/register.js"></script>
 
 </body>
 

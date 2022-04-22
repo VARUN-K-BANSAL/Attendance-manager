@@ -115,6 +115,52 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// app.get('/update',(req,res)=>{
+//     res.render('login')
+// })
+
+app.post('/update',async (req,res)=>{
+    const {full_name,email,curr_password,new_password,cn_password}=req.body;
+   
+
+    let teacher=await Teacher.findOne({email})
+    let student=await Student.findOne({email})
+    if(teacher!=null){
+    if(teacher.email==email && curr_password==teacher.password && new_password==cn_password){
+        
+        let result=await Teacher.updateOne({email:email},{
+            $set:{password:new_password}
+        })
+        // let teacherCookie={
+        //     name: teacher.name,
+        //     email: teacher.email,
+        //     password: new_password,
+        //     userType: "teacher",
+        //     __v: teacher.__v
+        // }
+        // res.cookie(COOKIE_NAME,teacherCookie)
+       return  res.redirect('/login')
+    }}
+    if(student!=null){
+        if(student.email==email && curr_password==student.password && new_password==cn_password){
+            esult=await Student.updateOne({email:email},{
+                $set:{password:new_password}
+            })
+            // let studentCookie = {
+            //     name: student.name,
+            //     email: student.email,
+            //     roll_number: student.roll_number,
+            //     password: new_password,
+            //     userType: "student",
+            //     __v: student.__v
+            // }
+            // res.cookie(COOKIE_NAME, studentCookie)
+          return res.redirect('/login')
+    }}
+    
+})
+
+
 app.get('/login', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
         return res.render('login')
@@ -326,7 +372,6 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
         });
     res.redirect('/dashboardTeacher')
 })
-
 
 //?
 app.get('/getClasses', async (req, res) => {
