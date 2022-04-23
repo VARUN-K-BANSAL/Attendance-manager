@@ -116,17 +116,18 @@ app.post('/update',async (req,res)=>{
     if(teacher!=null){
     if(teacher.email==email && curr_password==teacher.password && new_password==cn_password){
         
-        let result=await Teacher.updateOne({email:email},{
+        let result = await Teacher.updateOne({email:email},{
             $set:{password:new_password}
         })
-        // let teacherCookie={
-        //     name: teacher.name,
-        //     email: teacher.email,
-        //     password: new_password,
-        //     userType: "teacher",
-        //     __v: teacher.__v
-        // }
-        // res.cookie(COOKIE_NAME,teacherCookie)
+        let teacherCookie={
+            name: teacher.name,
+            email: teacher.email,
+            password: new_password,
+            userType: "teacher",
+            __v: teacher.__v
+        }
+        res.clearCookie(COOKIE_NAME);
+        res.cookie(COOKIE_NAME,teacherCookie)
        return  res.redirect('/login')
     }}
     if(student!=null){
@@ -134,15 +135,16 @@ app.post('/update',async (req,res)=>{
             esult=await Student.updateOne({email:email},{
                 $set:{password:new_password}
             })
-            // let studentCookie = {
-            //     name: student.name,
-            //     email: student.email,
-            //     roll_number: student.roll_number,
-            //     password: new_password,
-            //     userType: "student",
-            //     __v: student.__v
-            // }
-            // res.cookie(COOKIE_NAME, studentCookie)
+            let studentCookie = {
+                name: student.name,
+                email: student.email,
+                roll_number: student.roll_number,
+                password: new_password,
+                userType: "student",
+                __v: student.__v
+            }
+            res.clearCookie(COOKIE_NAME);
+            res.cookie(COOKIE_NAME, studentCookie)
           return res.redirect('/dashboardStudent')
     }}
     if(admin!=null){
@@ -151,14 +153,15 @@ app.post('/update',async (req,res)=>{
             let result=await Admin.updateOne({email:email},{
                 $set:{password:new_password}
             })
-            // let teacherCookie={
-            //     name: teacher.name,
-            //     email: teacher.email,
-            //     password: new_password,
-            //     userType: "teacher",
-            //     __v: teacher.__v
-            // }
-            // res.cookie(COOKIE_NAME,teacherCookie)
+            let teacherCookie={
+                name: teacher.name,
+                email: teacher.email,
+                password: new_password,
+                userType: "teacher",
+                __v: teacher.__v
+            }
+            res.clearCookie(COOKIE_NAME);
+            res.cookie(COOKIE_NAME,teacherCookie)
            return  res.redirect('/dashboardAdmin')
         }}
     
@@ -656,17 +659,6 @@ app.get('/admin/getAdmins', async (req, res) => {
     }
 })
 
-// Clearing cookie on logout
-app.get('/logout', (req, res) => {
-    res.clearCookie(COOKIE_NAME);
-    res.redirect('/');
-})
-
-app.get('*', (req, res) => {
-    res.render('404NotFound')
-})
-
-
 /**Varun Mukherjee */
 app.get('/generateQrCode/:x', async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
@@ -855,4 +847,16 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
             classObject.save()
         });
     res.redirect('/dashboardTeacher')
+})
+
+
+
+// Clearing cookie on logout
+app.get('/logout', (req, res) => {
+    res.clearCookie(COOKIE_NAME);
+    res.redirect('/');
+})
+
+app.get('*', (req, res) => {
+    res.render('404NotFound')
 })
