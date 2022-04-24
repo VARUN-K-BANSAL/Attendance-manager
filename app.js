@@ -204,7 +204,8 @@ app.post('/login', async (req, res) => {
     let admin = await Admin.findOne({ email })
 
     if (student != null) {
-        if (encryption.comparePasswords(student.password, password)) {
+        let isValid = await encryption.comparePasswords(student.password, password)
+        if (isValid) {
             let studentCookie = {
                 name: student.name,
                 email: student.email,
@@ -219,7 +220,8 @@ app.post('/login', async (req, res) => {
             return res.redirect('/login')
         }
     } else if (teacher != null) {
-        if (encryption.comparePasswords(teacher.password, password)) {
+        let isValid = await encryption.comparePasswords(teacher.password, password)
+        if (isValid) {
             let teacherCookie = {
                 name: teacher.name,
                 email: teacher.email,
@@ -233,7 +235,8 @@ app.post('/login', async (req, res) => {
             return res.redirect('/login')
         }
     } else if (admin != null) {
-        if (encryption.comparePasswords(admin.password, password)) {
+        let isValid = await encryption.comparePasswords(admin.password, password)
+        if (isValid) {
             let adminCookie = {
                 name: admin.name,
                 email: admin.email,
