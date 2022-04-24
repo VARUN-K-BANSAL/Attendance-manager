@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const DATABASE_NAME = 'projectDataBase'
+const DATABASE_NAME = 'group_27'
 const CONNECTION_URL = `mongodb://localhost:27017/${DATABASE_NAME}`
 
 mongoose.connect(CONNECTION_URL, {

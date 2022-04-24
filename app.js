@@ -15,6 +15,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const COOKIE_NAME = 'user'
 require('./public/db/conn')
+const encryption = require('./public/scripts/encryption')
 
 /**Saket Ranjan */
 const multer = require('multer');
@@ -58,8 +59,10 @@ app.post('/register', async (req, res) => {
         email,
         password,
         user_type,
-        confirm_password
     } = req.body
+
+    let encryptedPassword = String(await encryption.encrypt(password))
+    // console.log(encrypt(password));
 
     let student = await Student.findOne({ email })
     let teacher = await Teacher.findOne({ email })
@@ -73,12 +76,12 @@ app.post('/register', async (req, res) => {
                 name: full_name,
                 roll_number: roll_number,
                 email: email,
-                password: password,
+                password: encryptedPassword
             })
-
-            const registeredStudent = await registerStudent.save()
-            registerStudent.userType = "student"
+            let registeredStudent = await registerStudent.save()
+            registeredStudent.userType = "student"
             res.cookie(COOKIE_NAME, registeredStudent)
+
             res.redirect('/login')
         } catch (error) {
             console.log(error);
@@ -88,10 +91,10 @@ app.post('/register', async (req, res) => {
             const registerTeacher = new Teacher({
                 name: full_name,
                 email: email,
-                password: password,
+                password: encryptedPassword,
             })
-            const registeredTeacher = await registerTeacher.save()
-            registerTeacher.userType = "teacher"
+            let registeredTeacher = await registerTeacher.save()
+            registeredTeacher.userType = "teacher"
             res.cookie(COOKIE_NAME, registeredTeacher)
             res.redirect('/login')
         } catch (error) {
@@ -106,65 +109,69 @@ app.post('/register', async (req, res) => {
 //     res.render('login')
 // })
 
-app.post('/update',async (req,res)=>{
-    const {full_name,email,curr_password,new_password,cn_password}=req.body;
-   
+app.post('/update', async (req, res) => {
+    const { full_name, email, curr_password, new_password, cn_password } = req.body;
 
-    let teacher=await Teacher.findOne({email})
-    let student=await Student.findOne({email})
-    let admin=await Admin.findOne({email})
-    if(teacher!=null){
-    if(teacher.email==email && curr_password==teacher.password && new_password==cn_password){
-        
-        let result = await Teacher.updateOne({email:email},{
-            $set:{password:new_password}
-        })
-        let teacherCookie={
-            name: teacher.name,
-            email: teacher.email,
-            password: new_password,
-            userType: "teacher",
-            __v: teacher.__v
+
+    let teacher = await Teacher.findOne({ email })
+    let student = await Student.findOne({ email })
+    let admin = await Admin.findOne({ email })
+    if (teacher != null) {
+        if (encryption.comparePasswords(teacher.password, curr_password) && new_password == cn_password) {
+            let encryptedPassword = String(await encryption.encrypt(new_password))
+            let result = await Teacher.updateOne({ email: email }, {
+                $set: { password: encryptedPassword }
+            })
+            let teacherCookie = {
+                name: teacher.name,
+                email: teacher.email,
+                password: encryptedPassword,
+                userType: "teacher",
+                __v: teacher.__v
+            }
+            res.clearCookie(COOKIE_NAME);
+            res.cookie(COOKIE_NAME, teacherCookie)
+            return res.redirect('/dashboardTeacher')
         }
-        res.clearCookie(COOKIE_NAME);
-        res.cookie(COOKIE_NAME,teacherCookie)
-       return  res.redirect('/login')
-    }}
-    if(student!=null){
-        if(student.email==email && curr_password==student.password && new_password==cn_password){
-            esult=await Student.updateOne({email:email},{
-                $set:{password:new_password}
+    }
+    if (student != null) {
+        if (student.email == email && curr_password == student.password && new_password == cn_password) {
+            let encryptedPassword = String(await encryption.encrypt(new_password))
+            let result = await Student.updateOne({ email: email }, {
+                $set: { password: encryptedPassword }
             })
             let studentCookie = {
                 name: student.name,
                 email: student.email,
                 roll_number: student.roll_number,
-                password: new_password,
+                password: encryptedPassword,
                 userType: "student",
                 __v: student.__v
             }
             res.clearCookie(COOKIE_NAME);
             res.cookie(COOKIE_NAME, studentCookie)
-          return res.redirect('/dashboardStudent')
-    }}
-    if(admin!=null){
-        if(admin.email==email && curr_password==admin.password && new_password==cn_password){
-            
-            let result=await Admin.updateOne({email:email},{
-                $set:{password:new_password}
+            return res.redirect('/dashboardStudent')
+        }
+    }
+    if (admin != null) {
+        if (admin.email == email && curr_password == admin.password && new_password == cn_password) {
+            let encryptedPassword = String(await encryption.encrypt(new_password))
+            let result = await Admin.updateOne({ email: email }, {
+                $set: { password: encryptedPassword }
             })
-            let teacherCookie={
+            let teacherCookie = {
                 name: teacher.name,
                 email: teacher.email,
-                password: new_password,
+                password: encryptedPassword,
                 userType: "teacher",
                 __v: teacher.__v
             }
             res.clearCookie(COOKIE_NAME);
-            res.cookie(COOKIE_NAME,teacherCookie)
-           return  res.redirect('/dashboardAdmin')
-        }}
-    
+            res.cookie(COOKIE_NAME, teacherCookie)
+            return res.redirect('/dashboardAdmin')
+        }
+    }
+
 })
 
 
@@ -196,12 +203,8 @@ app.post('/login', async (req, res) => {
     let teacher = await Teacher.findOne({ email })
     let admin = await Admin.findOne({ email })
 
-    // if (!student && !teacher && !admin) {
-    //     return res.redirect('/login')
-    // }
-
     if (student != null) {
-        if (password == student.password) {
+        if (encryption.comparePasswords(student.password, password)) {
             let studentCookie = {
                 name: student.name,
                 email: student.email,
@@ -216,7 +219,7 @@ app.post('/login', async (req, res) => {
             return res.redirect('/login')
         }
     } else if (teacher != null) {
-        if (password == teacher.password) {
+        if (encryption.comparePasswords(teacher.password, password)) {
             let teacherCookie = {
                 name: teacher.name,
                 email: teacher.email,
@@ -230,7 +233,7 @@ app.post('/login', async (req, res) => {
             return res.redirect('/login')
         }
     } else if (admin != null) {
-        if (password == admin.password) {
+        if (encryption.comparePasswords(admin.password, password)) {
             let adminCookie = {
                 name: admin.name,
                 email: admin.email,
@@ -255,13 +258,6 @@ app.get('/aboutus', (req, res) => {
 
 app.get('/info', (req, res) => {
     res.render('info')
-})
-//temporary get not used now
-app.get('/addClass', (req, res) => {
-    if (req.cookies == undefined || req.cookies == null || req.cookies[COOKIE_NAME] == null) {
-        return res.redirect('login')
-    }
-    res.render('class')
 })
 
 app.post('/addClass', upload.array("Files", 2), async (req, res) => {
@@ -312,7 +308,7 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
             console.log(results1);
             let j = 0;
             while (j < results1.length) {
-                
+
                 try {
                     let detail = `${results1[j].mail}`;
                     let teacObj = await Teacher.findOne({ email: detail })
