@@ -165,12 +165,17 @@ function errorInScanning(errorMessage) {
 
 
 function scanQrCode() {
-
     document.getElementById('result').innerHTML = '';
-
-
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader", { fps: 10, qrbox: 300 });
 
     html5QrcodeScanner.render(markAttendance, errorInScanning);
 }
+
+window.addEventListener('beforeunload', function(e) {
+    if($('.result').length == 0) {
+        return
+    }
+    e.preventDefault()
+    e.returnValue = 'Please submit the attendance first'
+})
