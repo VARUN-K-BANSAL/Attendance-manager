@@ -536,9 +536,13 @@ app.post('/admin/addAdmin', async (req, res) => {
     const {
         full_name,
         email,
-        password
+        password,
+        admin_password
     } = req.body
     let encryptedPassword = String(await encryption.encrypt(password))
+    if(!(await encryption.comparePasswords(req.cookies[COOKIE_NAME].password, admin_password))) {
+        return res.redirect('/admin')
+    }
     const registerAdmin = new Admin({
         name: full_name,
         email,

@@ -32,20 +32,18 @@ window.onclick = function (event) {
     }
 }
 
-async function check() {
-    let pass = ""
-    await $.getJSON("/getCookieDetails", function (res) {
-        pass = res["user"].password.trim()
-        console.log(res["user"].password);
-    })
-    let input_pass = document.getElementById('admin_pass').value
-    console.log(pass + " " + input_pass);
-    if (input_pass == pass) {
-        return true
-    }
-    alert('Entered Password does not match')
-    return false
-}
+// async function check() {
+//     let pass = ""
+//     await $.getJSON("/getCookieDetails", function (res) {
+//         pass = res["user"].password.trim()
+//     })
+//     let input_pass = document.getElementById('admin_pass').value
+//     if (input_pass == pass) {
+//         return true
+//     }
+//     alert('Entered Password does not match')
+//     return false
+// }
 
 
 function tabChange(event, tabName) {
@@ -69,6 +67,7 @@ function checkStudent() {
 
     for (let i = 1; i < rows.length; i++) {
         let name = rows[i].getElementsByTagName('td')[0].textContent
+        name = name.toUpperCase()
         if (name) {
             if (name.indexOf(input) > -1) {
                 rows[i].style.display = ""
@@ -85,6 +84,7 @@ function checkTeacher() {
 
     for (let i = 1; i < rows.length; i++) {
         let name = rows[i].getElementsByTagName('td')[0].textContent
+        name = name.toUpperCase()
         if (name) {
             if (name.indexOf(input) > -1) {
                 rows[i].style.display = ""
@@ -101,6 +101,7 @@ function checkCourse() {
 
     for (let i = 1; i < rows.length; i++) {
         let name = rows[i].getElementsByTagName('td')[0].textContent
+        name = name.toUpperCase()
         if (name) {
             if (name.toUpperCase().indexOf(input) > -1) {
                 rows[i].style.display = ""
@@ -166,8 +167,8 @@ $(document).ready(function () {
             const newCourse = `
                 <tr>
                     <td>${res[i].name}</td>
-                    <td>${res[i].name}</td>
-                    <td>${res[i].name}</td>
+                    <td>${res[i].teachers.length}</td>
+                    <td>${res[i].students.length}</td>
                     <td><form action="/admin/removeCourse/${res[i].name}" method="GET" onsubmit="return confirmRemove()"><button type="submit" id="${res[i].name}">Remove Course</button></form></td>
                 </tr>
             `
