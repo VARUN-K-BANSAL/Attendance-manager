@@ -1,9 +1,8 @@
-"use strict"
-
 function exportTable() {
+    let className = document.getElementById('className').innerHTML
     $("#sheet").table2excel({
         name: "Class Attendance",
-        filename: "attendance.xls",
+        filename: `${className} attendance.xls`,
         preserveColors: true
     });
 }

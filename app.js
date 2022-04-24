@@ -499,7 +499,7 @@ app.post('/addTeacher/:x', async (req, res) => {
         if (teacObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
         while (i < classObj.teachers.length) {
-            if (classObj.teachers[i].email == studObj.email) {
+            if (classObj.teachers[i].email == teacObj.email) {
                 return res.redirect('/dashboardTeacher')
             }
             i++
@@ -538,10 +538,11 @@ app.post('/admin/addAdmin', async (req, res) => {
         email,
         password
     } = req.body
+    let encryptedPassword = String(await encryption.encrypt(password))
     const registerAdmin = new Admin({
         name: full_name,
         email,
-        password
+        password : encryptedPassword
     })
     const registeredAdmin = await registerAdmin.save()
     res.redirect('/admin')
