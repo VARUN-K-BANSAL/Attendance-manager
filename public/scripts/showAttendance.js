@@ -117,6 +117,8 @@ let compareDates = (d1 , d2) => {
     }
 }
 
+// This is a comment 
+
 let dateSearchbtn = document.querySelector(".date_filter");
 
 dateSearchbtn.addEventListener("click" , () => {
