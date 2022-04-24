@@ -1,3 +1,5 @@
+"use strict"
+
 function exportTable() {
     $("#sheet").table2excel({
         name: "Class Attendance",
@@ -6,55 +8,16 @@ function exportTable() {
     });
 }
 
-let filterRows = (rows, idx, property) => {
-    for (let i = 1; i < rows.length; i++) {
-        if (i != idx) {
-            rows[i].style.display = property;
-        }
-    }
-}
-
-let nameSearchbtn = document.querySelector(".std_search");
-let nameSearchEl = document.querySelector("#searchByName");
-
-nameSearchbtn.addEventListener("click", () => {
-    let val = nameSearchEl.value;
-    let idx = 0;
-    let id = -1;
-
-
-    let rows = document.querySelectorAll("#sheet tr");
-
-    filterRows(rows, -1, "revert");
-
-    if (val == "") {
-        // filterRows(rows,-1,"revert");
-        return;
-    }
-
-    rows.forEach((row) => {
-        let cellValue = row.cells[0].innerHTML;
-
-        if (cellValue === val) {
-            id = idx;
-        }
-        else {
-            idx++;
-        }
-    })
-
-    filterRows(rows, id, "none");
-});
 
 let tableHeadingTemplate = (date) => {
     return `
-        <th scope="col">${date}</th>
+    <th scope="col">${date}</th>
     `
 }
 
 let tableRowsTemplate = (status) => {
     return `
-        <td>${status}</td>
+    <td>${status}</td>
     `
 }
 
@@ -92,3 +55,113 @@ $(document).ready(function () {
     })
 })
 
+
+// Roll No. Filter
+
+let searchByRoll = () => {
+    let rollVal = document.querySelector("#searchByRoll").value.toUpperCase();
+    let rows = document.getElementById("tableBody").getElementsByTagName("tr");
+
+    for (let i = 0 ; i < rows.length ; i++) {
+        let roll = rows[i].getElementsByTagName("th")[0].innerHTML;
+
+        if(roll) {
+            if(roll.indexOf(rollVal) > -1){
+                rows[i].style.display = "";
+            }
+            else {
+                rows[i].style.display = "none";
+            }
+        }
+    }    
+
+}
+
+// Date Filter
+
+let compareDates = (d1 , d2) => {
+
+    let y1 = d1[0];
+    let y2 = d2[0];
+
+    if((y1 - y2) > 0){
+        return 1;
+    }
+    else if((y1 - y2) < 0) {
+        return -1;
+    }
+    else {
+
+        let m1 = d1[1];
+        let m2 = d2[1];
+
+        if((m1 - m2) > 0){
+            return 1;
+        }
+        else if((m1 - m2) < 0) {
+            return -1;
+        }
+        else {
+            let dt1 = d1[2];
+            let dt2 = d2[2];
+
+            if((dt1 - dt2) > 0){
+                return 1;
+            }
+            else if((dt1 - dt2) < 0) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
+        }
+    }
+}
+
+let dateSearchbtn = document.querySelector(".date_filter");
+
+dateSearchbtn.addEventListener("click" , () => {
+
+    let fromDateVal = document.getElementById("date_from").value;
+    let toDateVal = document.getElementById("date_to").value;
+
+    let tableHead = document.getElementById("heading").getElementsByTagName("th");
+    let rows = document.getElementById("tableBody").getElementsByTagName("tr");
+
+    for(let i = 1 ; i < tableHead.length ; i++){
+
+
+        for(let j = 0 ; j < rows.length ; j++){
+            rows[j].getElementsByTagName("td")[i-1].style.display = "";
+            
+        }
+        
+        tableHead[i].style.display = "";
+    }
+
+    if( !fromDateVal || !toDateVal) {
+        return;
+    }
+
+    let from = fromDateVal.split("-");
+    let to = toDateVal.split("-")
+
+
+    for(let i = 1 ; i < tableHead.length ; i++){
+        
+        let reqVal = tableHead[i].innerHTML;
+        let dates = reqVal.split("/");
+        dates = dates.reverse();
+
+        if(!(compareDates(dates,from) >= 0 && compareDates(dates,to) <= 0)){
+
+            for(let j = 0 ; j < rows.length ; j++){
+                rows[j].getElementsByTagName("td")[i-1].style.display = "none";
+                
+            }
+            
+            tableHead[i].style.display = "none";
+        }
+
+    }
+})

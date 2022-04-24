@@ -307,11 +307,11 @@ footer a:hover {
 }
 
 .from_left {
-    transform: translateX(-75%);
+    transform: translateX(-25%);
 }
 
 .from_right {
-    transform: translateX(75%);
+    transform: translateX(25%);
 }
 
 .from_left,
