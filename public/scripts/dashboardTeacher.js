@@ -1,4 +1,5 @@
 // Modal JS
+let isSubmitted = false;
 
 function showScanQrCode() {
     let modal = document.getElementById('qrCodeScannerModal')
@@ -60,6 +61,11 @@ let addStudentAttendance = () => {
         stdStr += `${ele};;`;
     })
     attendInpEl.value = stdStr;
+    isSubmitted = true
+}
+
+function confirmRemove() {
+    return confirm("Do you really want to remove")
 }
 
 let classTemplate = (name) => {
@@ -73,7 +79,7 @@ let classTemplate = (name) => {
         <a href="/generateQrCode/${name}" class = "btn">Generate QR</a>
         <button href="#" class="btn ${name}" id="addStudentBtn" style="border: none; outline: none;" onclick="addStudent()">Add Student</button>
         <button href="#" class="btn ${name}" id="addTeacherBtn" style="border: none; outline: none;" onclick="addTeacher()">Add Teacher</button>
-        <a href="/removeClass/${name}" class = "btn">Remove Class</a>
+        <a href="/removeClass/${name}" class = "btn" onclick="return confirmRemove()">Remove Class</a>
     </div>
 
     <div class="modal" id="qrCodeScannerModal">
@@ -173,7 +179,7 @@ function scanQrCode() {
 }
 
 window.addEventListener('beforeunload', function(e) {
-    if($('.result').length == 0) {
+    if($('.result').length == 0 || isSubmitted) {
         return
     }
     e.preventDefault()
