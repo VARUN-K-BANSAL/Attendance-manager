@@ -690,11 +690,12 @@ app.get('/generateQrCode/:x', async (req, res) => {
         }
         for (let i = 0; i < classObj.attendance.length; i++) {
             dateVal = classObj.attendance[i].date.split(" ");
-            if ((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))) {
+            if ((dateVal[0] == dateStr) && (parseInt(dateVal[1]) <= parseInt(timeStr1)) && (parseInt(dateVal[2]) >= parseInt(timeStr1))) {
                 console.log("here")
                 matchFound = true;
             }
         }
+
         if (!matchFound) {
             // Generating Qr Unique String
             studClass.forEach((std) => {
