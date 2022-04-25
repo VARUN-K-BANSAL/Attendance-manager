@@ -306,28 +306,30 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
         .pipe(csv({}))
         .on('data', (data) => results1.push(data))
         .on('end', async () => {
-            let j = 0;
-            while (j < results1.length) {
-                try {
-                    let detail = `${results1[j].mail}`;
-                    let teacObj = await Teacher.findOne({ email: detail })
-                    if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
-                    let i = 0
-                    while (i < classObject.teachers.length) {
-                        if (classObject.teachers[i].email == teacObj.email) {
-                            return res.redirect('/dashboardTeacher')
+            if(results1 != '') {
+                let j = 0;
+                while (j < results1.length) {
+                    try {
+                        let detail = `${results1[j].mail}`;
+                        let teacObj = await Teacher.findOne({ email: detail })
+                        if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                        let i = 0
+                        while (i < classObject.teachers.length) {
+                            if (classObject.teachers[i].email == teacObj.email) {
+                                return res.redirect('/dashboardTeacher')
+                            }
+                            i++
                         }
-                        i++
+                        classObject.teachers.push({
+                            email: teacObj.email
+                        })
+                    } catch (error) {
+                        console.log(error);
                     }
-                    classObject.teachers.push({
-                        email: teacObj.email
-                    })
-                } catch (error) {
-                    console.log(error);
+                    j++;
                 }
-                j++;
+                await classObject.save();
             }
-            await classObject.save();
         });
 
     let results = [];
