@@ -730,12 +730,16 @@ app.post('/markAttendance/:cname', async (req, res) => {
     let passStr = val.split(";;")
     for (let i = 0; i < passStr.length; i++) {
         let tempStr = passStr[i];
+
         for (let j = 0; j < stds.length; j++) {
+
             if (stds[j].qrcode_string == tempStr) {
+
                 let tempRoll = stds[j].roll_number;
                 let tempArr = tempStr.split("%%");
                 let dateStr = tempArr[2];
                 let timeStr = tempArr[3];
+                
                 attend.forEach((att) => {
                     let attDate = att.date.split(" ");
                     if ((attDate[0] == dateStr) && (attDate[1] == timeStr)) {
