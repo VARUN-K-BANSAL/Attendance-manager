@@ -267,56 +267,50 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
     if (req.cookies == undefined || req.cookies == null || req.cookies['user'] == null) {
         return res.redirect('login')
     }
-    let { className, teacherEmail, studentEmail } = req.body
-    // console.log(teacherFile);
-    // console.log(studentFile);
-    // let file1=document.getElementById("Fl1").value
-    // let file2=document.getElementById("Fl2").value
 
+    let { className, teacherEmail, studentEmail } = req.body
     let date = new Date()
 
-    let student = await Student.findOne({ email: studentEmail })
-    let teacher = await Teacher.findOne({ email: teacherEmail })
-
-    const tID = {
-        email: teacher.email
-    }
-
-    const sID = {
-        roll_number: student.roll_number,
-        qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-    }
-
-    console.log(sID);
     const uID = {
         email: req.cookies[COOKIE_NAME].email
     }
-
-    const classObject = new Class({
+    let classObj = new Class({
         name: className,
-        teachers: [tID, uID],
-        students: [sID],
+        teachers: [uID],
+        students: [],
         attendance: []
     })
 
-    // const registeredClass = await classObject.save()
+    classObj.save()
 
+    let classObject = await Class.findOne({name: className})
 
+    if(studentEmail != '') {
+        let student = await Student.findOne({ email: studentEmail })
+        const sID = {
+            roll_number: student.roll_number,
+            qrcode_string: `${student.roll_number}%%${className}%%${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        }
+        classObject.students.push(sID);
+    }
+    if(teacherEmail != '') {
+        let teacher = await Teacher.findOne({email: teacherEmail})
+        const tID = {
+            email: teacher.email
+        }
+        classObject.teachers.push(tID);
+    }
 
-    const results1 = [];
-    fs.createReadStream(`public/Files/file1.csv`)
+    let results1 = [];
+    fs.createReadStream(`public/Files/teachers.csv`)
         .pipe(csv({}))
         .on('data', (data) => results1.push(data))
         .on('end', async () => {
-            console.log(results1);
             let j = 0;
             while (j < results1.length) {
-
                 try {
                     let detail = `${results1[j].mail}`;
                     let teacObj = await Teacher.findOne({ email: detail })
-                    console.log(teacObj);
-                    // let classObj = await Class.findOne({ name: req.params.x })
                     if (teacObj == null || classObject == null) res.redirect('/dashboardTeacher')
                     let i = 0
                     while (i < classObject.teachers.length) {
@@ -328,25 +322,19 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
                     classObject.teachers.push({
                         email: teacObj.email
                     })
-                    // res.redirect('/dashboardTeacher')
                 } catch (error) {
                     console.log(error);
                 }
-                // classObject.save();
                 j++;
             }
-
+            await classObject.save();
         });
 
-
-
-
-    const results = [];
-    fs.createReadStream(`public/Files/file2.csv`)
+    let results = [];
+    fs.createReadStream(`public/Files/students.csv`)
         .pipe(csv({}))
         .on('data', (data) => results.push(data))
         .on('end', async () => {
-            console.log(results);
             let j = 0;
             while (j < results.length) {
                 try {
@@ -366,16 +354,18 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
                         qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
                     }
                     classObject.students.push(newStudObj)
-
-
-
                 } catch (error) {
                     console.log(error);
                 }
                 j++;
             }
-            classObject.save()
+            await classObject.save();
         });
+
+    await classObject.save()
+
+    fs.writeFile(__dirname + '/public/Files/teachers.csv', '', function() {console.log("File 1 cleared");})
+    fs.writeFile(__dirname + '/public/Files/students.csv', '', function() {console.log("File 2 cleared");})
     res.redirect('/dashboardTeacher')
 })
 
@@ -467,7 +457,6 @@ app.post('/addStudent/:x', async (req, res) => {
     }
     try {
         let studObj = await Student.findOne({ email: req.body.studentEmail })
-        console.log(studObj);
         let classObj = await Class.findOne({ name: req.params.x })
         if (studObj == null || classObj == null) res.redirect('/dashboardTeacher')
         let i = 0
@@ -480,6 +469,13 @@ app.post('/addStudent/:x', async (req, res) => {
         let newStudObj = {
             roll_number: studObj.roll_number,
             qrcode_string: `${studObj.roll_number}%%${req.params.x}%%06/04/2022`
+        }
+        for(let i = 0; i < classObj.attendance.length; i++) {
+            let newObj = {
+                roll_no: studObj.roll_number,
+                status: "A"
+            }
+            classObj.attendance[i].values.push(newObj);
         }
         classObj.students.push(newStudObj)
         classObj.save();
@@ -785,7 +781,7 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
         attendance: []
     })
     const results1 = [];
-    fs.createReadStream(`public/Files/file1.csv`)
+    fs.createReadStream(`public/Files/teachers.csv`)
         .pipe(csv({}))
         .on('data', (data) => results1.push(data))
         .on('end', async () => {
@@ -819,7 +815,7 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
 
         });
     const results = [];
-    fs.createReadStream(`public/Files/file2.csv`)
+    fs.createReadStream(`public/Files/students.csv`)
         .pipe(csv({}))
         .on('data', (data) => results.push(data))
         .on('end', async () => {
