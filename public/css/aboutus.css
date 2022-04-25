@@ -88,6 +88,7 @@ body {
     border-radius: 50%;
     /* border: 2px solid black; */
     margin-bottom: 2rem;
+    overflow: hidden;
 }
 
 .member .pic img {
