@@ -1,4 +1,3 @@
-/*Varun Bansal */
 const csv = require('csv-parser')
 const fs = require('fs')
 const express = require('express')
@@ -283,9 +282,9 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
 
     classObj.save()
 
-    let classObject = await Class.findOne({name: className})
+    let classObject = await Class.findOne({ name: className })
 
-    if(studentEmail != '') {
+    if (studentEmail != '') {
         let student = await Student.findOne({ email: studentEmail })
         const sID = {
             roll_number: student.roll_number,
@@ -293,8 +292,8 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
         }
         classObject.students.push(sID);
     }
-    if(teacherEmail != '') {
-        let teacher = await Teacher.findOne({email: teacherEmail})
+    if (teacherEmail != '') {
+        let teacher = await Teacher.findOne({ email: teacherEmail })
         const tID = {
             email: teacher.email
         }
@@ -337,37 +336,39 @@ app.post('/addClass', upload.array("Files", 2), async (req, res) => {
         .pipe(csv({}))
         .on('data', (data) => results.push(data))
         .on('end', async () => {
-            let j = 0;
-            while (j < results.length) {
-                try {
-                    let detail = `${results[j].mail}`;
-                    // console.log(detail);
-                    let studObj = await Student.findOne({ email: detail })
-                    if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
-                    let i = 0
-                    while (i < classObject.students.length) {
-                        if (classObject.students[i].roll_number == studObj.roll_number) {
-                            return res.redirect('/dashboardTeacher')
+            if(results != '') {
+                let j = 0;
+                while (j < results.length) {
+                    try {
+                        let detail = `${results[j].mail}`;
+                        // console.log(detail);
+                        let studObj = await Student.findOne({ email: detail })
+                        if (studObj == null || classObject == null) res.redirect('/dashboardTeacher')
+                        let i = 0
+                        while (i < classObject.students.length) {
+                            if (classObject.students[i].roll_number == studObj.roll_number) {
+                                return res.redirect('/dashboardTeacher')
+                            }
+                            i++
                         }
-                        i++
+                        let newStudObj = {
+                            roll_number: studObj.roll_number,
+                            qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
+                        }
+                        classObject.students.push(newStudObj)
+                    } catch (error) {
+                        console.log(error);
                     }
-                    let newStudObj = {
-                        roll_number: studObj.roll_number,
-                        qrcode_string: `${studObj.roll_number}%%${className}%%06/04/2022`
-                    }
-                    classObject.students.push(newStudObj)
-                } catch (error) {
-                    console.log(error);
+                    j++;
                 }
-                j++;
+                await classObject.save();
             }
-            await classObject.save();
         });
 
     await classObject.save()
 
-    fs.writeFile(__dirname + '/public/Files/teachers.csv', '', function() {console.log("File 1 cleared");})
-    fs.writeFile(__dirname + '/public/Files/students.csv', '', function() {console.log("File 2 cleared");})
+    fs.writeFile(__dirname + '/public/Files/teachers.csv', '', function () { console.log("File 1 cleared"); })
+    fs.writeFile(__dirname + '/public/Files/students.csv', '', function () { console.log("File 2 cleared"); })
     res.redirect('/dashboardTeacher')
 })
 
@@ -472,7 +473,7 @@ app.post('/addStudent/:x', async (req, res) => {
             roll_number: studObj.roll_number,
             qrcode_string: `${studObj.roll_number}%%${req.params.x}%%06/04/2022`
         }
-        for(let i = 0; i < classObj.attendance.length; i++) {
+        for (let i = 0; i < classObj.attendance.length; i++) {
             let newObj = {
                 roll_no: studObj.roll_number,
                 status: "A"
@@ -538,13 +539,13 @@ app.post('/admin/addAdmin', async (req, res) => {
         admin_password
     } = req.body
     let encryptedPassword = String(await encryption.encrypt(password))
-    if(!(await encryption.comparePasswords(req.cookies[COOKIE_NAME].password, admin_password))) {
+    if (!(await encryption.comparePasswords(req.cookies[COOKIE_NAME].password, admin_password))) {
         return res.redirect('/admin')
     }
     const registerAdmin = new Admin({
         name: full_name,
         email,
-        password : encryptedPassword
+        password: encryptedPassword
     })
     const registeredAdmin = await registerAdmin.save()
     res.redirect('/admin')
@@ -692,12 +693,11 @@ app.get('/generateQrCode/:x', async (req, res) => {
         }
         for (let i = 0; i < classObj.attendance.length; i++) {
             dateVal = classObj.attendance[i].date.split(" ");
-            if ((dateVal[0] == dateStr) && (parseInt(dateVal[1]) <= parseInt(timeStr1)) && (parseInt(dateVal[2]) >= parseInt(timeStr1))) {
+            if ((dateVal[0] == dateStr) && (parseInt(dateVal[1]) >= parseInt(timeStr1)) && (parseInt(dateVal[1]) <= parseInt(timeStr2))) {
                 console.log("here")
                 matchFound = true;
             }
         }
-
         if (!matchFound) {
             // Generating Qr Unique String
             studClass.forEach((std) => {
@@ -738,7 +738,7 @@ app.post('/markAttendance/:cname', async (req, res) => {
                 let tempArr = tempStr.split("%%");
                 let dateStr = tempArr[2];
                 let timeStr = tempArr[3];
-                
+
                 attend.forEach((att) => {
                     let attDate = att.date.split(" ");
                     if ((attDate[0] == dateStr) && (attDate[1] == timeStr)) {
