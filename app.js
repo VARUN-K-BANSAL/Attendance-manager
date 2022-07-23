@@ -3,7 +3,7 @@ const fs = require('fs')
 const express = require('express')
 const path = require('path')
 const app = express()
-const PORT = 80
+const PORT = process.env.PORT || 3005
 const STATIC_PATH = path.join(__dirname + '/public')
 
 const Student = require('./public/models/student')
