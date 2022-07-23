@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const DATABASE_NAME = 'group_27'
-const CONNECTION_URL = `mongodb://localhost:27017/${DATABASE_NAME}`
+const CONNECTION_URL = process.env.CONNECTION_URL
 
 mongoose.connect(CONNECTION_URL, {
     useNewUrlParser: true,

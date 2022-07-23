@@ -4,3 +4,4 @@
 /public/html/.DS_STORE
 
 /.vscode
+.env
